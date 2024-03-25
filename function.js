@@ -162,15 +162,17 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 		  hotfixes: ['px_scaling']
 		}
 		};
-		// Menambahkan nomor halaman pada PDF
-		html2pdf(element, opt).then(function(pdf) {
+		html2pdf(element, opt).from(element).set({
+		margin: [0, 0, 0, 0],
+		filename: fileName
+		}).toPdf().get('pdf').then(function(pdf) {
+		pdf.autoTable({ html: element });
+		pdf.internal.events.addEventType('onBeforePaging');
+		pdf.internal.events.subscribe('onBeforePaging', function(eventData) {
 		var pageCount = pdf.internal.getNumberOfPages();
-		for (var i = 1; i <= pageCount; i++) {
-		pdf.setPage(i);
 		pdf.setFontSize(10);
-		pdf.text('Page ' + i + ' of ' + pageCount, 10, pdf.internal.pageSize.height - 10);
-		}
-		// Menyimpan PDF setelah menambahkan nomor halaman
+		pdf.text('Page ' + eventData.pageNumber + ' of ' + pageCount, 10, pdf.internal.pageSize.height - 10);
+		});
 		pdf.save();
 		});
 
