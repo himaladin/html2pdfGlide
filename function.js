@@ -162,14 +162,18 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 		  hotfixes: ['px_scaling']
 		}
 		};
-		html2pdf(element, opt).then(function(pdf) {
 		// Menambahkan nomor halaman pada PDF
+		html2pdf(element, opt).then(function(pdf) {
 		var pageCount = pdf.internal.getNumberOfPages();
 		for (var i = 1; i <= pageCount; i++) {
 		pdf.setPage(i);
 		pdf.setFontSize(10);
 		pdf.text('Page ' + i + ' of ' + pageCount, 10, pdf.internal.pageSize.height - 10);
 		}
+		// Menyimpan PDF setelah menambahkan nomor halaman
+		pdf.save();
+		});
+
 		html2pdf().set(opt).from(element).toPdf().get('pdf').then(function(pdf) {
 		button.innerText = 'Done';
 		button.className = 'done';
