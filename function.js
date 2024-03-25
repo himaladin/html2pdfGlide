@@ -164,12 +164,11 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 		};
 		// Menambahkan nomor halaman pada PDF
 		opt.jsPDF.autotable = {
-		addPageContent: function(data) {
-		var pdf = data.doc;
-		var pageCount = pdf.internal.getNumberOfPages();
-		pdf.setFontSize(10);
-		pdf.text('Page ' + data.pageNumber + ' of ' + pageCount, data.settings.margin.left, pdf.internal.pageSize.height - 10);
-		}
+		  addPageContent: function(data) {
+		    var pageCount = pdf.internal.getNumberOfPages();
+		    pdf.setFontSize(10);
+		    pdf.text('Page ' + data.pageNumber + ' of ' + pageCount, data.settings.margin.left, pdf.internal.pageSize.height - 10);
+		  }
 		};
 		html2pdf().set(opt).from(element).toPdf().get('pdf').then(function(pdf) {
 		button.innerText = 'Done';
