@@ -162,23 +162,19 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 		  hotfixes: ['px_scaling']
 		}
 		};
-var doc = new jsPDF();
-doc.page = 1;
-
-// Add content to the PDF
-doc.text(20, 20, 'Hello, world!');
-
-// Call the footer function after adding content to each page
-footer();
-
-// Save the PDF
-doc.save('sample.pdf');
-
-// Define the footer function
-function footer() {
-    doc.text(150, 285, 'Page ' + doc.page);
-    doc.page++;
-};
+		html2pdf(element, opt).from(element).set({
+		margin: [0, 0, 0, 0],
+		filename: fileName
+		}).toPdf().get('pdf').then(function(pdf) {
+		pdf.autoTable({ html: element });
+		pdf.internal.events.addEventType('onBeforePaging');
+		pdf.internal.events.subscribe('onBeforePaging', function(eventData) {
+		var pageCount = pdf.internal.getNumberOfPages();
+		pdf.setFontSize(10);
+		pdf.text('Page ' + eventData.pageNumber + ' of ' + pageCount, 10, pdf.internal.pageSize.height - 10);
+		});
+		pdf.save();
+		});
 
 		html2pdf().set(opt).from(element).toPdf().get('pdf').then(function(pdf) {
 		button.innerText = 'Done';
