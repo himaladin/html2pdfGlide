@@ -165,15 +165,14 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 		html2pdf(element, opt).from(element).set({
 		margin: [0, 0, 0, 0],
 		filename: fileName
-		}).toPdf().get('pdf').then(function(pdf) {
-		// Add page numbers
+		}).toPdf().get('pdf').then(function (pdf) {
+		pdf.autoTable({ html: element });
 		pdf.internal.events.addEventType('onBeforePaging');
-		pdf.internal.events.subscribe('onBeforePaging', function(eventData) {
+		pdf.internal.events.subscribe('onBeforePaging', function (eventData) {
 		    var pageCount = pdf.internal.getNumberOfPages();
 		    pdf.setFontSize(10);
 		    pdf.text('Page ' + eventData.pageNumber + ' of ' + pageCount, 10, pdf.internal.pageSize.height - 10);
 		});
-		
 		pdf.save();
 		});
 		html2pdf().set(opt).from(element).toPdf().get('pdf').then(function(pdf) {
