@@ -162,16 +162,17 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 		  hotfixes: ['px_scaling']
 		},
 		};
-    html2pdf(element, opt).from(element).set({
-        margin: [0, 0, 0, 0],
-        filename: fileName
-    }).toPdf().get('pdf').then(function (pdf) {
-        for (var i = 1; i <= pdf.internal.getNumberOfPages(); i++) {
-            pdf.setPage(i);
-            pdf.text('Page ' + i + ' of ' + pdf.internal.getNumberOfPages(), pdf.internal.pageSize.width - 20, pdf.internal.pageSize.height - 10);
-        }
-        pdf.save();
-    });
+var pdfInstance = html2pdf(element, opt).from(element).set({
+    margin: [0, 0, 0, 0],
+    filename: fileName
+}).toPdf();
+
+var pdf = pdfInstance.get('pdf');
+for (var i = 1; i <= pdf.internal.getNumberOfPages(); i++) {
+    pdf.setPage(i);
+    pdf.text('Page ' + i + ' of ' + pdf.internal.getNumberOfPages(), pdf.internal.pageSize.width - 20, pdf.internal.pageSize.height - 10);
+}
+pdf.save();
 		html2pdf().set(opt).from(element).toPdf().get('pdf').then(function(pdf) {
 		button.innerText = 'Done';
 		button.className = 'done';
