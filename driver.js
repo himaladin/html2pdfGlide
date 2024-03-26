@@ -25,4 +25,4 @@ window.addEventListener("message", async function(event) {
   
     event.source.postMessage(response, "*");
   });
-  
+  const headerImageUrl = document.getElementById('headerImageUrl').value;
