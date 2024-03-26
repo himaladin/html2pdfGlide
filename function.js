@@ -66,7 +66,7 @@ headerImageUrl = headerImageUrl.value ?? "";
 	};
 
 	// GET FINAL DIMESIONS FROM SELECTED FORMAT
-	const dimensions = customDimensions || formatDimensions[format];
+	const dimensions = customDimensions || formatDimensions[format] || [0, 0];
 	const finalDimensions = dimensions.map((dimension) => Math.round(dimension / zoom));
 
 	// LOG SETTINGS TO CONSOLE
@@ -130,6 +130,7 @@ headerImageUrl = headerImageUrl.value ?? "";
 	  border-radius: 4px;
 	}
 	`;
+const headerImageUrl = document.getElementById('headerImageUrl')?.value || '';
 
 	// HTML THAT IS RETURNED AS A RENDERABLE URL
 	const originalHTML = `
@@ -162,7 +163,8 @@ headerImageUrl = headerImageUrl.value ?? "";
 		  orientation: '${orientation}',
 		  format: [${finalDimensions}],
 		  hotfixes: ['px_scaling']
-		}
+		},
+  headerImageUrl: '${headerImageUrl}'
 		};
 		html2pdf(element, opt).from(element).set({
 		margin: [0, 0, 0, 0],
