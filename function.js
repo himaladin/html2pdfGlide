@@ -1,4 +1,4 @@
-window.function = function (html, fileName, format, zoom, orientation, margin, breakBefore, breakAfter, breakAvoid, fidelity, customDimensions) {
+window.function = function (html, fileName, format, zoom, orientation, margin, breakBefore, breakAfter, breakAvoid, fidelity, customDimensions, headerImageUrl) {
 	// FIDELITY MAPPING
 	const fidelityMap = {
 		low: 1,
