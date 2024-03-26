@@ -87,47 +87,46 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	body {
 	  margin: 0!important
 	}
-button#download {
-position: fixed;
-top: 8px;
-right: 8px;
-padding: 15px 25px;
-border: unset;
-border-radius: 15px;
-color: #212121;
-z-index: 1;
-background: #e8e8e8;
-position: relative;
-font-weight: 1000;
-font-size: 17px;
--webkit-box-shadow: 4px 8px 19px -3px rgba(0,0,0,0.27);
-box-shadow: 4px 8px 19px -3px rgba(0,0,0,0.27);
-transition: all 250ms;
-overflow: hidden;
-}
-
-button#download::before {
- content: "";
- position: absolute;
- top: 0;
- left: 0;
- height: 100%;
- width: 0;
- border-radius: 15px;
- background-color: #212121;
- z-index: -1;
- -webkit-box-shadow: 4px 8px 19px -3px rgba(0,0,0,0.27);
- box-shadow: 4px 8px 19px -3px rgba(0,0,0,0.27);
- transition: all 250ms
-}
-
-button#download:hover {
- color: #e8e8e8;
-}
-
-button#download:hover::before {
- width: 100%;
-}
+	button#download {
+	    position: fixed;
+	    top: 8px;
+	    right: 8px;
+	    height: 32px;
+	    padding: 0px 12px;
+	    border: none;
+	    border-radius: 0.5rem;
+	    color: #212121;
+	    z-index: 1;
+	    background: #e8e8e8;
+	    position: relative;
+	    font-weight: 1000;
+	    font-size: 17px;
+	    box-shadow: 4px 8px 19px -3px rgba(0,0,0,0.27);
+	    transition: all 250ms;
+	    overflow: hidden;
+	}
+	
+	button#download::before {
+	    content: "";
+	    position: absolute;
+	    top: 0;
+	    left: 0;
+	    height: 100%;
+	    width: 0;
+	    border-radius: 20px; /* Ubah radius border sesuai kebutuhan */
+	    background-color: #212121;
+	    z-index: -1;
+	    box-shadow: 4px 8px 19px -3px rgba(0,0,0,0.27);
+	    transition: all 250ms;
+	}
+	
+	button#download:hover {
+	    color: #e8e8e8;
+	}
+	
+	button#download:hover::before {
+	    width: 100%;
+	}
 	/*button#download {
 	  position: fixed;
 	  border-radius: 0.5rem;
