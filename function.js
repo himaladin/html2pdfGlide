@@ -173,6 +173,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 		    pdf.setFontSize(10);
 		    pdf.text('Page ' + eventData.pageNumber + ' of ' + pageCount, 10, pdf.internal.pageSize.height - 10);
 		});
+  		footer();
 		pdf.save();
 		});
 		html2pdf().set(opt).from(element).toPdf().get('pdf').then(function(pdf) {
