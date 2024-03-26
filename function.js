@@ -97,9 +97,9 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	  color: #212121;
 	  border: none;
 	  font-family: Arial;
-	  padding: 0px 12px;
+	  padding: 0px 16px;
 	  height: 32px;
-	  background: #e8e8e8;
+	  background: #4B5D67;
 	  top: 8px;
 	  right: 8px;
 	  box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.08), 0 1px 2.5px rgba(0, 0, 0, 0.1);
@@ -152,7 +152,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	}*/
   
 	button#download.downloading {
-	  color: #cccccc;
+	  color: #404040;
 	}
   
 	button#download.done {
