@@ -102,11 +102,12 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	  background: #e8e8e8;
 	  top: 8px;
 	  right: 8px;
-	  box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.08), 0 1px 2.5px rgba(0, 0, 0, 0.1);
-  	  transition: all 250ms;
+	  box-shadow: 2px 4px 10px -3px rgba(0,0,0,0.27);
+	  transition: all 250ms;
 	  overflow: hidden;
 	  cursor: pointer;
 	}
+ 
 	button#download::before {
 	    content: "";
 	    position: absolute;
@@ -117,7 +118,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	    border-radius: 0.5rem;
 	    background-color: #4B5D67;
 	    z-index: -1;
-	    box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.06), 0 6px 12px -3px rgba(0, 0, 0, 0.1);
+	    box-shadow: 2px 4px 10px -3px rgba(0,0,0,0.27);
 	    transition: all 250ms;
 	}
 	
@@ -128,28 +129,6 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	button#download:hover::before {
 	    width: 100%;
 	}
-	/*button#download {
-	  position: fixed;
-	  border-radius: 0.5rem;
-	  font-size: 14px;
-	  font-weight: 600;
-	  line-height: 1.5rem;
-	  color: #0d0d0d;
-	  border: none;
-	  font-family: Arial;
-	  padding: 0px 12px;
-	  height: 32px;
-	  background: #ffffff;
-	  top: 8px;
-	  right: 8px;
-	  box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.08), 0 1px 2.5px rgba(0, 0, 0, 0.1);
-	  cursor: pointer;
-	}
-  
-	button#download:hover {
-	  background: #f5f5f5;
-	  box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.06), 0 6px 12px -3px rgba(0, 0, 0, 0.1);
-	}*/
   
 	button#download.downloading {
 	  color: #404040;
@@ -202,16 +181,16 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 		  hotfixes: ['px_scaling']
 		},
 		};
-html2pdf(element, opt).from(element).set({
-    margin: [0, 0, 0, 0],
-    filename: fileName
-}).toPdf().get('pdf').then(function (pdf) {
-    for (var i = 1; i <= pdf.internal.getNumberOfPages(); i++) {
-        pdf.setPage(i);
-        pdf.text('Page ' + i + ' of ' + pdf.internal.getNumberOfPages(), pdf.internal.pageSize.width - 20, pdf.internal.pageSize.height - 10);
-    }
-    pdf.save();
-});
+		html2pdf(element, opt).from(element).set({
+		    margin: [0, 0, 0, 0],
+		    filename: fileName
+		}).toPdf().get('pdf').then(function (pdf) {
+		    for (let i = 1; i <= pdf.internal.getNumberOfPages(); i++) {
+		        pdf.setPage(i);
+		        pdf.text(`Page ${i} of ${pdf.internal.getNumberOfPages()}`, pdf.internal.pageSize.getWidth() - 20, pdf.internal.pageSize.getHeight() - 10);
+		    }
+		    pdf.save();
+		});
 		html2pdf().set(opt).from(element).toPdf().get('pdf').then(function(pdf) {
 		button.innerText = 'Done';
 		button.className = 'done';
