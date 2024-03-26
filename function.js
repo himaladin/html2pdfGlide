@@ -136,6 +136,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	  <style>${customCSS}</style>
 	  <div class="main">
 	  <div class="header">
+   <img src="${headerImageUrl}" alt="Header Image" style="width: 100%;">
 		<button class="button" id="download">Download</button>
 	  </div>
 	  <div id="content">${html}</div>
