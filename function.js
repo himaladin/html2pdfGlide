@@ -87,8 +87,48 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	body {
 	  margin: 0!important
 	}
-  
-	button#download {
+button#download {
+position: fixed;
+top: 8px;
+right: 8px;
+padding: 15px 25px;
+border: unset;
+border-radius: 15px;
+color: #212121;
+z-index: 1;
+background: #e8e8e8;
+position: relative;
+font-weight: 1000;
+font-size: 17px;
+-webkit-box-shadow: 4px 8px 19px -3px rgba(0,0,0,0.27);
+box-shadow: 4px 8px 19px -3px rgba(0,0,0,0.27);
+transition: all 250ms;
+overflow: hidden;
+}
+
+button#download::before {
+ content: "";
+ position: absolute;
+ top: 0;
+ left: 0;
+ height: 100%;
+ width: 0;
+ border-radius: 15px;
+ background-color: #212121;
+ z-index: -1;
+ -webkit-box-shadow: 4px 8px 19px -3px rgba(0,0,0,0.27);
+ box-shadow: 4px 8px 19px -3px rgba(0,0,0,0.27);
+ transition: all 250ms
+}
+
+button#download:hover {
+ color: #e8e8e8;
+}
+
+button#download:hover::before {
+ width: 100%;
+}
+	/*button#download {
 	  position: fixed;
 	  border-radius: 0.5rem;
 	  font-size: 14px;
@@ -109,7 +149,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	button#download:hover {
 	  background: #f5f5f5;
 	  box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.06), 0 6px 12px -3px rgba(0, 0, 0, 0.1);
-	}
+	}*/
   
 	button#download.downloading {
 	  color: #ea580c;
