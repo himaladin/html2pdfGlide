@@ -166,24 +166,10 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
         margin: [0, 0, 0, 0],
         filename: fileName
     }).toPdf().get('pdf').then(function (pdf) {
-        pdf.autoTable({ html: element });
-        pdf.internal.events.addEventType('onBeforePaging');
-        pdf.internal.events.subscribe('onBeforePaging', function (eventData) {
-            var pageCount = pdf.internal.getNumberOfPages();
-            pdf.setFontSize(10);
-            pdf.text('Page ' + eventData.pageNumber + ' of ' + pageCount, 10, pdf.internal.pageSize.height - 10);
-        });
-
-        // Generate the footer with dynamic page number
-        function footer() {
-            var pageCount = pdf.internal.getNumberOfPages();
-            for (var i = 1; i <= pageCount; i++) {
-                pdf.setPage(i);
-                pdf.text('Page ' + i + ' of ' + pageCount, pdf.internal.pageSize.width - 40, pdf.internal.pageSize.height - 10);
-            }
+        for (var i = 1; i <= pdf.internal.getNumberOfPages(); i++) {
+            pdf.setPage(i);
+            pdf.text('Page ' + i + ' of ' + pdf.internal.getNumberOfPages(), pdf.internal.pageSize.width - 20, pdf.internal.pageSize.height - 10);
         }
-
-        footer(); // Call the footer function
         pdf.save();
     });
 		html2pdf().set(opt).from(element).toPdf().get('pdf').then(function(pdf) {
