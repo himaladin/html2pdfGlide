@@ -99,7 +99,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	  font-family: Arial;
 	  padding: 0px 16px;
 	  height: 32px;
-	  background: #4B5D67;
+	  background: #e8e8e8;
 	  top: 8px;
 	  right: 8px;
 	  box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.08), 0 1px 2.5px rgba(0, 0, 0, 0.1);
@@ -115,7 +115,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	    height: 100%;
 	    width: 0;
 	    border-radius: 0.5rem;
-	    background-color: #212121;
+	    background-color: #4B5D67;
 	    z-index: -1;
 	    box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.06), 0 6px 12px -3px rgba(0, 0, 0, 0.1);
 	    transition: all 250ms;
