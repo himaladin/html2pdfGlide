@@ -1,4 +1,4 @@
-window.function = function (html, fileName, format, zoom, orientation, margin, breakBefore, breakAfter, breakAvoid, fidelity, customDimensions, headerImageUrl) {
+window.function = function (html, fileName, format, zoom, orientation, margin, breakBefore, breakAfter, breakAvoid, fidelity, customDimensions) {
 	// FIDELITY MAPPING
 	const fidelityMap = {
 		low: 1,
@@ -18,7 +18,6 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	breakAvoid = breakAvoid.value ? breakAvoid.value.split(",") : [];
 	quality = fidelityMap[fidelity.value] ?? 1.5;
 	customDimensions = customDimensions.value ? customDimensions.value.split(",").map(Number) : null;
-headerImageUrl = headerImageUrl.value ?? "";
 
 	// DOCUMENT DIMENSIONS
 	const formatDimensions = {
@@ -66,7 +65,7 @@ headerImageUrl = headerImageUrl.value ?? "";
 	};
 
 	// GET FINAL DIMESIONS FROM SELECTED FORMAT
-	const dimensions = customDimensions || formatDimensions[format] || [0, 0];
+	const dimensions = customDimensions || formatDimensions[format];
 	const finalDimensions = dimensions.map((dimension) => Math.round(dimension / zoom));
 
 	// LOG SETTINGS TO CONSOLE
@@ -130,7 +129,6 @@ headerImageUrl = headerImageUrl.value ?? "";
 	  border-radius: 4px;
 	}
 	`;
-const headerImageUrl = document.getElementById('headerImageUrl')?.value || '';
 
 	// HTML THAT IS RETURNED AS A RENDERABLE URL
 	const originalHTML = `
@@ -138,7 +136,6 @@ const headerImageUrl = document.getElementById('headerImageUrl')?.value || '';
 	  <style>${customCSS}</style>
 	  <div class="main">
 	  <div class="header">
-   <img src="${headerImageUrl}" alt="Header Image" style="width: 100%;">
 		<button class="button" id="download">Download</button>
 	  </div>
 	  <div id="content">${html}</div>
@@ -164,7 +161,6 @@ const headerImageUrl = document.getElementById('headerImageUrl')?.value || '';
 		  format: [${finalDimensions}],
 		  hotfixes: ['px_scaling']
 		},
-  headerImageUrl: '${headerImageUrl}'
 		};
 		html2pdf(element, opt).from(element).set({
 		margin: [0, 0, 0, 0],
