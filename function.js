@@ -162,17 +162,25 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 		  hotfixes: ['px_scaling']
 		},
 		};
-var pdfInstance = html2pdf(element, opt).from(element).set({
-    margin: [0, 0, 0, 0],
-    filename: fileName
-}).toPdf();
-
-var pdf = pdfInstance.get('pdf');
-for (var i = 1; i <= pdf.internal.getNumberOfPages(); i++) {
-    pdf.setPage(i);
-    pdf.text('Page ' + i + ' of ' + pdf.internal.getNumberOfPages(), pdf.internal.pageSize.width - 20, pdf.internal.pageSize.height - 10);
-}
-pdf.save();
+    var doc = new jsPDF('p','mm','a4');
+    doc.text("First page", 10, 10);
+    doc.addPage();
+    doc.text("Second page", 10, 10);
+    doc.addPage();
+    doc.text("Third page", 10, 10);
+    doc.addPage();
+    doc.text("Fourth page", 10, 10);
+    doc.addPage();
+    doc.text("Fifth page", 10, 10);
+    doc.addPage();
+    doc.text("Last page", 10, 10);
+    const pageCount = doc.internal.getNumberOfPages();
+    
+    for(var i = 1; i <= pageCount; i++) {
+        doc.setPage(i);
+        doc.text('Page ' + String(i) + ' of ' + String(pageCount), 210-20,297-30, null, null, "right");
+    }
+    doc.save('output.pdf');
 		html2pdf().set(opt).from(element).toPdf().get('pdf').then(function(pdf) {
 		button.innerText = 'Done';
 		button.className = 'done';
