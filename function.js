@@ -1,4 +1,4 @@
-window.function = function (html, fileName, format, zoom, orientation, margin, breakBefore, breakAfter, breakAvoid, fidelity, customDimensions, letterheadUrl) {
+window.function = function (html, fileName, format, zoom, orientation, margin, breakBefore, breakAfter, breakAvoid, fidelity, customDimensions) {
 	// FIDELITY MAPPING
 	const fidelityMap = {
 		low: 1,
@@ -129,31 +129,24 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	button#download:hover::before {
 	    width: 100%;
 	}
-   
+  
 	button#download.downloading {
 	  color: #404040;
 	}
-   
+  
 	button#download.done {
 	  color: #16a34a;
 	}
-   
+  
 	::-webkit-scrollbar {
 	  width: 5px;
 	  background-color: rgb(0 0 0 / 8%);
 	}
-   
+  
 	::-webkit-scrollbar-thumb {
 	  background-color: rgb(0 0 0 / 32%);
 	  border-radius: 4px;
 	}
-         .letterhead {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: -1;
-        }
 	`;
 
 	// HTML THAT IS RETURNED AS A RENDERABLE URL
@@ -162,54 +155,53 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	  <style>${customCSS}</style>
 	  <div class="main">
 	  <div class="header">
-   		<img src="${letterheadUrl}" alt="Letterhead" style="max-width: 100%;">
 		<button class="button" id="download">Download</button>
-   	  </div>
-   	  <div id="content">${html}</div>
-   	  </div>
-   	  <script>
-   	  document.getElementById('download').addEventListener('click', function() {
-   		var element = document.getElementById('content');
-   		var button = this;
-   		button.innerText = 'Downloading...';
-   		button.className = 'downloading';
-      
-   		var opt = {
-   		pagebreak: { mode: ['css'], before: ${JSON.stringify(breakBefore)}, after: ${JSON.stringify(breakAfter)}, avoid: ${JSON.stringify(breakAvoid)} },
-   		margin: ${margin},
-   		filename: '${fileName}',
-   		html2canvas: {
-   		  useCORS: true,
-   		  scale: ${quality}
-   		},
-   		jsPDF: {
-   		  unit: 'px',
-   		  orientation: '${orientation}',
-   		  format: [${finalDimensions}],
-   		  hotfixes: ['px_scaling']
-   		},
-   		};
-   		html2pdf(element, opt).from(element).set({
-   		margin: [0, 0, 0, 0],
-   		filename: fileName
-   		}).toPdf().get('pdf').then(function (pdf) {
-   		pdf.internal.events.addEventType('onBeforePaging');
-   		pdf.internal.events.subscribe('onBeforePaging', function (eventData) {
-   		    var pageCount = pdf.internal.getNumberOfPages();
-   		    pdf.setFontSize(10);
-   		    pdf.text('Page ' + eventData.pageNumber + ' of ' + pageCount, pdf.internal.pageSize.width - 20, pdf.internal.pageSize.height - 10);
-   		});
-   		pdf.save();
-   		button.innerText = 'Done';
-   		button.className = 'done';
-   		setTimeout(function() { 
-   		    button.innerText = 'Download';
-   		    button.className = ''; 
-   		}, 2000);
-   		});
-   		});
-   	  </script>
-   	  `;
-   	var encodedHtml = encodeURIComponent(originalHTML);
-   	return "data:text/html;charset=utf-8," + encodedHtml;
-   };
+	  </div>
+	  <div id="content">${html}</div>
+	  </div>
+	  <script>
+	  document.getElementById('download').addEventListener('click', function() {
+		var element = document.getElementById('content');
+		var button = this;
+		button.innerText = 'Downloading...';
+		button.className = 'downloading';
+  
+		var opt = {
+		pagebreak: { mode: ['css'], before: ${JSON.stringify(breakBefore)}, after: ${JSON.stringify(breakAfter)}, avoid: ${JSON.stringify(breakAvoid)} },
+		margin: ${margin},
+		filename: '${fileName}',
+		html2canvas: {
+		  useCORS: true,
+		  scale: ${quality}
+		},
+		jsPDF: {
+		  unit: 'px',
+		  orientation: '${orientation}',
+		  format: [${finalDimensions}],
+		  hotfixes: ['px_scaling']
+		},
+		};
+		html2pdf(element, opt).from(element).set({
+		margin: [0, 0, 0, 0],
+		filename: fileName
+		}).toPdf().get('pdf').then(function (pdf) {
+		pdf.internal.events.addEventType('onBeforePaging');
+		pdf.internal.events.subscribe('onBeforePaging', function (eventData) {
+		    var pageCount = pdf.internal.getNumberOfPages();
+		    pdf.setFontSize(10);
+		    pdf.text('Page ' + eventData.pageNumber + ' of ' + pageCount, pdf.internal.pageSize.width - 20, pdf.internal.pageSize.height - 10);
+		});
+		pdf.save();
+		button.innerText = 'Done';
+		button.className = 'done';
+		setTimeout(function() { 
+		    button.innerText = 'Download';
+		    button.className = ''; 
+		}, 2000);
+		});
+		});
+	  </script>
+	  `;
+	var encodedHtml = encodeURIComponent(originalHTML);
+	return "data:text/html;charset=utf-8," + encodedHtml;
+};
