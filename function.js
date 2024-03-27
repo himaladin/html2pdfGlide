@@ -1,4 +1,3 @@
-window.addEventListener("message", async function(event) {
 window.function = function (html, fileName, format, zoom, orientation, margin, breakBefore, breakAfter, breakAvoid, fidelity, customDimensions) {
 	// FIDELITY MAPPING
 	const fidelityMap = {
