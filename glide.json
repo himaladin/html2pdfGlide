@@ -64,11 +64,6 @@
 				"name": "customDimensions",
 				"displayName": "Custom Dimensions (e.g: 300,300)",
 				"type": "string"
-			},
-			{
-				"name": "letterheadUrl",
-				"displayName": "Letterhead URL",
-				"type": "string"
 			}
 		],
 		"result": {
