@@ -17,7 +17,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	breakAfter = breakAfter.value ? breakAfter.value.split(",") : [];
 	breakAvoid = breakAvoid.value ? breakAvoid.value.split(",") : [];
 	quality = fidelityMap[fidelity.value] ?? 1.5;
-	customDimensions = customDimensions.value ? customDimensions.value.split(",").map(Number) : null;
+	const finalDimensions = dimensions.map((dimension) => Math.round(dimension / zoom));
 
 	// DOCUMENT DIMENSIONS
 	const formatDimensions = {
@@ -189,20 +189,20 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 		  hotfixes: ['px_scaling']
 		},
 		};
-		html2pdf(element, opt).from(element).set({
-		margin: [0, 0, 0, 0],
-		filename: fileName
-		}).toPdf().get('pdf').then(function (pdf) {
-		pdf.internal.events.addEventType('onBeforePaging');
-		pdf.internal.events.subscribe('onBeforePaging', function (eventData) {
-		// Add letterhead to every page except the first page
-		const pageNumber = eventData.pageNumber;
-		if (pageNumber > 1) {
-		    pdf.setPage(pageNumber);
-		    pdf.addImage('${letterheadUrl}', 'PNG', 0, 0, pdf.internal.pageSize.getWidth(), pdf.internal.pageSize.getHeight(), null, 'NONE');
-		}
-		});
-		pdf.save();
+        html2pdf(element, opt).from(element).set({
+            margin: [0, 0, 0, 0],
+            filename: fileName
+        }).toPdf().get('pdf').then(function (pdf) {
+            pdf.internal.events.addEventType('onBeforePaging');
+            pdf.internal.events.subscribe('onBeforePaging', function (eventData) {
+                // Add letterhead to every page except the first page
+                const pageNumber = eventData.pageNumber;
+                if (pageNumber > 1) {
+                    pdf.setPage(pageNumber);
+                    pdf.addImage('${letterheadUrl}', 'PNG', 0, 0, pdf.internal.pageSize.getWidth(), pdf.internal.pageSize.getHeight(), null, 'NONE');
+                }
+            });
+            pdf.save();
 		button.innerText = 'Done';
 		button.className = 'done';
 		setTimeout(function() { 
