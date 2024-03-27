@@ -90,7 +90,6 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
         }
 
 .header {
-    background-color: #4B5D67;
     background-image: url(${letterheadUrl});
     background-size: cover;
     background-repeat: no-repeat;
