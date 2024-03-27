@@ -91,15 +91,18 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 
 .header {
     background-color: #4B5D67;
+    background-image: url(${letterheadUrl});
     background-size: cover;
-    height: 200px; 
-    position: relative; 
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 200px;
+    position: relative;
 }
 
 .header img {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Memastikan gambar mengisi seluruh area elemen */
+    object-fit: cover;
 }
 
 	button#download {
