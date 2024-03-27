@@ -1,10 +1,11 @@
-window.function = function (html, fileName, format, zoom, orientation, margin, breakBefore, breakAfter, breakAvoid, fidelity, customDimensions, letterheadUrl) {
+window.generatePDF = function (html, fileName, format, zoom, orientation, margin, breakBefore, breakAfter, breakAvoid, fidelity, customDimensions, letterheadUrl) {
     // FIDELITY MAPPING
     const fidelityMap = {
         low: 1,
         standard: 1.5,
         high: 2,
     };
+document.querySelector('.header').style.backgroundImage = `url(${letterheadUrl})`;
 
     // DYNAMIC VALUES
     html = html.value ?? "No HTML set.";
@@ -176,7 +177,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
         <div id="content">${html}</div>
     </div>
 	  <script>
-    document.querySelector('.header').style.backgroundImage = `url(${letterheadUrl})`;
+    
     document.getElementById('download').addEventListener('click', function() {
         var element = document.getElementById('content');
         var button = this;
