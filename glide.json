@@ -16,6 +16,11 @@
 				"type": "string"
 			},
 			{
+				"name": "letterheadUrl",
+				"displayName": "Letterhead URL",
+				"type": "string"
+			},
+			{
 				"name": "format",
 				"displayName": "Format (a4, letter, etc)",
 				"type": "string"
