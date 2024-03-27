@@ -1,11 +1,11 @@
-window.function = function (html, fileName, format, zoom, orientation, margin, breakBefore, breakAfter, breakAvoid, fidelity, customDimensions) {
+window.function = function (html, fileName, format, zoom, orientation, margin, breakBefore, breakAfter, breakAvoid, fidelity, customDimensions, letterheadUrl) {
 	// FIDELITY MAPPING
 	const fidelityMap = {
-		low: 1,
-		standard: 1.5,
-		high: 2,
+	low: 1,
+	standard: 1.5,
+	high: 2,
 	};
-
+	
 	// DYNAMIC VALUES
 	html = html.value ?? "No HTML set.";
 	fileName = fileName.value ?? "file";
@@ -80,13 +80,17 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 			`Break before: ${breakBefore}\n` +
 			`Break after: ${breakAfter}\n` +
 			`Break avoid: ${breakAvoid}\n` +
-			`Quality: ${quality}`
+			`Quality: ${quality}` +
+        		`Letterhead URL: ${letterheadUrl}`
 	);
 
 	const customCSS = `
-	body {
-	  margin: 0!important
-	}
+        body {
+            margin: 0!important;
+            background-image: url('${letterheadUrl}');
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
 
 	button#download {
 	  position: fixed;
@@ -152,14 +156,14 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 
 	// HTML THAT IS RETURNED AS A RENDERABLE URL
 	const originalHTML = `
-	  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
-	  <style>${customCSS}</style>
-	  <div class="main">
-	  <div class="header">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+	<style>${customCSS}</style>
+	<div class="main">
+	    <div class="header">
 		<button class="button" id="download">Download</button>
-	  </div>
-	  <div id="content">${html}</div>
-	  </div>
+	    </div>
+	    <div id="content">${html}</div>
+	</div>
 	  <script>
 	  document.getElementById('download').addEventListener('click', function() {
 		var element = document.getElementById('content');
