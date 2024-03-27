@@ -176,7 +176,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
         <div id="content">${html}</div>
     </div>
 	  <script>
-    document.querySelector('.header').style.backgroundImage = 'url(' + letterheadUrl + ')';
+    document.querySelector('.header').style.backgroundImage = `url(${letterheadUrl})`;
     document.getElementById('download').addEventListener('click', function() {
         var element = document.getElementById('content');
         var button = this;
