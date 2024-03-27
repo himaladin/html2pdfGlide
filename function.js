@@ -16,8 +16,8 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	breakBefore = breakBefore.value ? breakBefore.value.split(",") : [];
 	breakAfter = breakAfter.value ? breakAfter.value.split(",") : [];
 	breakAvoid = breakAvoid.value ? breakAvoid.value.split(",") : [];
-	const quality = fidelityMap[fidelity.value] ?? 1.5;
-	const customDimensionsArr = customDimensions.value ? customDimensions.value.split(",").map(Number) : null;
+	quality = fidelityMap[fidelity.value] ?? 1.5;
+	customDimensions = customDimensions.value ? customDimensions.value.split(",").map(Number) : null;
 
 	// DOCUMENT DIMENSIONS
 	const formatDimensions = {
@@ -64,15 +64,9 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 		credit_card: [319, 508],
 	};
 
-// GET FINAL DIMENSIONS FROM SELECTED FORMAT
-let finalDimensions;
-if (Array.isArray(dimensions)) {
-    finalDimensions = dimensions.map((dimension) => Math.round(dimension / zoom));
-} else if (typeof dimensions === 'object' && dimensions !== null) {
-    finalDimensions = Object.values(dimensions).map((dimension) => Math.round(dimension / zoom));
-} else {
-    finalDimensions = dimensions;
-}
+	// GET FINAL DIMESIONS FROM SELECTED FORMAT
+	const dimensions = customDimensions || formatDimensions[format];
+	const finalDimensions = dimensions.map((dimension) => Math.round(dimension / zoom));
 
 	// LOG SETTINGS TO CONSOLE
 	console.log(
@@ -135,20 +129,20 @@ if (Array.isArray(dimensions)) {
 	button#download:hover::before {
 	    width: 100%;
 	}
-  
+   
 	button#download.downloading {
 	  color: #404040;
 	}
-  
+   
 	button#download.done {
 	  color: #16a34a;
 	}
-  
+   
 	::-webkit-scrollbar {
 	  width: 5px;
 	  background-color: rgb(0 0 0 / 8%);
 	}
-  
+   
 	::-webkit-scrollbar-thumb {
 	  background-color: rgb(0 0 0 / 32%);
 	  border-radius: 4px;
@@ -170,55 +164,52 @@ if (Array.isArray(dimensions)) {
 	  <div class="header">
    		<img src="${letterheadUrl}" alt="Letterhead" style="max-width: 100%;">
 		<button class="button" id="download">Download</button>
-	  </div>
-	  <div id="content">${html}</div>
-	  </div>
-	  <script>
-	  document.getElementById('download').addEventListener('click', function() {
-		var element = document.getElementById('content');
-		var button = this;
-		button.innerText = 'Downloading...';
-		button.className = 'downloading';
-  
-		var opt = {
-		pagebreak: { mode: ['css'], before: ${JSON.stringify(breakBefore)}, after: ${JSON.stringify(breakAfter)}, avoid: ${JSON.stringify(breakAvoid)} },
-		margin: ${margin},
-		filename: '${fileName}',
-		html2canvas: {
-		  useCORS: true,
-		  scale: ${quality}
-		},
-		jsPDF: {
-		  unit: 'px',
-		  orientation: '${orientation}',
-		  format: [${finalDimensions}],
-		  hotfixes: ['px_scaling']
-		},
-		};
-        html2pdf(element, opt).from(element).set({
-            margin: [0, 0, 0, 0],
-            filename: fileName
-        }).toPdf().get('pdf').then(function (pdf) {
-            pdf.internal.events.addEventType('onBeforePaging');
-            pdf.internal.events.subscribe('onBeforePaging', function (eventData) {
-                // Add letterhead to every page except the first page
-                const pageNumber = eventData.pageNumber;
-                if (pageNumber > 1) {
-                    pdf.setPage(pageNumber);
-                    pdf.addImage('${letterheadUrl}', 'PNG', 0, 0, pdf.internal.pageSize.getWidth(), pdf.internal.pageSize.getHeight(), null, 'NONE');
-                }
-            });
-            pdf.save();
-		button.innerText = 'Done';
-		button.className = 'done';
-		setTimeout(function() { 
-		    button.innerText = 'Download';
-		    button.className = ''; 
-		}, 2000);
-		});
-		});
-	  </script>
-	  `;
-	var encodedHtml = encodeURIComponent(originalHTML);
-	return "data:text/html;charset=utf-8," + encodedHtml;
-};
+   	  </div>
+   	  <div id="content">${html}</div>
+   	  </div>
+   	  <script>
+   	  document.getElementById('download').addEventListener('click', function() {
+   		var element = document.getElementById('content');
+   		var button = this;
+   		button.innerText = 'Downloading...';
+   		button.className = 'downloading';
+      
+   		var opt = {
+   		pagebreak: { mode: ['css'], before: ${JSON.stringify(breakBefore)}, after: ${JSON.stringify(breakAfter)}, avoid: ${JSON.stringify(breakAvoid)} },
+   		margin: ${margin},
+   		filename: '${fileName}',
+   		html2canvas: {
+   		  useCORS: true,
+   		  scale: ${quality}
+   		},
+   		jsPDF: {
+   		  unit: 'px',
+   		  orientation: '${orientation}',
+   		  format: [${finalDimensions}],
+   		  hotfixes: ['px_scaling']
+   		},
+   		};
+   		html2pdf(element, opt).from(element).set({
+   		margin: [0, 0, 0, 0],
+   		filename: fileName
+   		}).toPdf().get('pdf').then(function (pdf) {
+   		pdf.internal.events.addEventType('onBeforePaging');
+   		pdf.internal.events.subscribe('onBeforePaging', function (eventData) {
+   		    var pageCount = pdf.internal.getNumberOfPages();
+   		    pdf.setFontSize(10);
+   		    pdf.text('Page ' + eventData.pageNumber + ' of ' + pageCount, pdf.internal.pageSize.width - 20, pdf.internal.pageSize.height - 10);
+   		});
+   		pdf.save();
+   		button.innerText = 'Done';
+   		button.className = 'done';
+   		setTimeout(function() { 
+   		    button.innerText = 'Download';
+   		    button.className = ''; 
+   		}, 2000);
+   		});
+   		});
+   	  </script>
+   	  `;
+   	var encodedHtml = encodeURIComponent(originalHTML);
+   	return "data:text/html;charset=utf-8," + encodedHtml;
+   };
