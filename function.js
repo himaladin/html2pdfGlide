@@ -1,4 +1,4 @@
-window.function = function (html, fileName, format, zoom, orientation, margin, breakBefore, breakAfter, breakAvoid, fidelity, customDimensions) {
+window.function = function (html, fileName, format, zoom, orientation, margin, breakBefore, breakAfter, breakAvoid, fidelity, customDimensions, letterheadUrl) {
 	// FIDELITY MAPPING
 	const fidelityMap = {
 		low: 1,
@@ -147,6 +147,13 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	  background-color: rgb(0 0 0 / 32%);
 	  border-radius: 4px;
 	}
+         .letterhead {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: -1;
+        }
 	`;
 
 	// HTML THAT IS RETURNED AS A RENDERABLE URL
@@ -155,6 +162,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	  <style>${customCSS}</style>
 	  <div class="main">
 	  <div class="header">
+   		<img src="${letterheadUrl}" alt="Letterhead" style="max-width: 100%;">
 		<button class="button" id="download">Download</button>
 	  </div>
 	  <div id="content">${html}</div>
@@ -187,9 +195,12 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 		}).toPdf().get('pdf').then(function (pdf) {
 		pdf.internal.events.addEventType('onBeforePaging');
 		pdf.internal.events.subscribe('onBeforePaging', function (eventData) {
-		    var pageCount = pdf.internal.getNumberOfPages();
-		    pdf.setFontSize(10);
-		    pdf.text('Page ' + eventData.pageNumber + ' of ' + pageCount, pdf.internal.pageSize.width - 20, pdf.internal.pageSize.height - 10);
+		// Add letterhead to every page except the first page
+		const pageNumber = eventData.pageNumber;
+		if (pageNumber > 1) {
+		    pdf.setPage(pageNumber);
+		    pdf.addImage('${letterheadUrl}', 'PNG', 0, 0, pdf.internal.pageSize.getWidth(), pdf.internal.pageSize.getHeight(), null, 'NONE');
+		}
 		});
 		pdf.save();
 		button.innerText = 'Done';
