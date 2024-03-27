@@ -176,12 +176,12 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
         <div id="content">${html}</div>
     </div>
 	  <script>
-   document.querySelector('.header').style.backgroundImage = \`url(\${letterheadUrl})\`;
-	  document.getElementById('download').addEventListener('click', function() {
-		var element = document.getElementById('content');
-		var button = this;
-		button.innerText = 'Downloading...';
-		button.className = 'downloading';
+    document.querySelector('.header').style.backgroundImage = `url(${letterheadUrl})`;
+    document.getElementById('download').addEventListener('click', function() {
+        var element = document.getElementById('content');
+        var button = this;
+        button.innerText = 'Downloading...';
+        button.className = 'downloading';
   
 		var opt = {
 		pagebreak: { mode: ['css'], before: ${JSON.stringify(breakBefore)}, after: ${JSON.stringify(breakAfter)}, avoid: ${JSON.stringify(breakAvoid)} },
