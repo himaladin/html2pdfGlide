@@ -87,9 +87,13 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
     const customCSS = `
         body {
             margin: 0!important;
+        }
+
+        .header {
             background-image: url('${letterheadUrl}');
             background-repeat: no-repeat;
             background-size: cover;
+            height: 100px; /* Set the height of the header here */
         }
 
 	button#download {
@@ -158,9 +162,10 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	const originalHTML = `
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 	<style>${customCSS}</style>
-	<div class="main">
-	    <div class="header">
-         <div class="header" style="background-image: url('${letterheadUrl}');">
+        <div class="main">
+            <div class="header"></div>
+            <div id="content">${html}</div>
+        </div>
 		<button class="button" id="download">Download</button>
 	    </div>
 	    <div id="content">${html}</div>
