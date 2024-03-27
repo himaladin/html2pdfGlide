@@ -171,9 +171,8 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 	<style>${customCSS}</style>
 <div class="main">
-    <div class="header"></div>
+    <div class="header" style="background-image: url(${letterheadUrl});"></div>
     <button class="button" id="download">Download</button>
-    <img src="${letterheadUrl}" alt="Image Description">
     <div id="content">${html}</div>
 </div>
 	  <script>
