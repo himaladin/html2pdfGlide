@@ -132,6 +132,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
   
 	button#download.downloading {
 	  color: #404040;
+   	  pointer-events: none;
 	}
   
 	button#download.done {
