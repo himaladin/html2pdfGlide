@@ -186,21 +186,24 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 		margin: [0, 0, 0, 0],
 		filename: fileName
 		}).toPdf().get('pdf').then(function (pdf) {
+		pdf.autoTable({ html: element });
 		pdf.internal.events.addEventType('onBeforePaging');
 		pdf.internal.events.subscribe('onBeforePaging', function (eventData) {
 		    var pageCount = pdf.internal.getNumberOfPages();
 		    pdf.setFontSize(10);
-		    pdf.text('Page ' + eventData.pageNumber + ' of ' + pageCount, pdf.internal.pageSize.width - 20, pdf.internal.pageSize.height - 10);
+		    pdf.text('Page ' + eventData.pageNumber + ' of ' + pageCount, 10, pdf.internal.pageSize.height - 10);
 		});
 		pdf.save();
+		});
+		html2pdf().set(opt).from(element).toPdf().get('pdf').then(function(pdf) {
 		button.innerText = 'Done';
 		button.className = 'done';
 		setTimeout(function() { 
-		    button.innerText = 'Download';
-		    button.className = ''; 
+		  button.innerText = 'Download';
+		  button.className = ''; 
 		}, 2000);
-		});
-		});
+		}).save();
+	  });
 	  </script>
 	  `;
 	var encodedHtml = encodeURIComponent(originalHTML);
