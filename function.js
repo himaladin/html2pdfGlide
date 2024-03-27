@@ -16,8 +16,8 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	breakBefore = breakBefore.value ? breakBefore.value.split(",") : [];
 	breakAfter = breakAfter.value ? breakAfter.value.split(",") : [];
 	breakAvoid = breakAvoid.value ? breakAvoid.value.split(",") : [];
-	quality = fidelityMap[fidelity.value] ?? 1.5;
-	const finalDimensions = dimensions.map((dimension) => Math.round(dimension / zoom));
+	const quality = fidelityMap[fidelity.value] ?? 1.5;
+	const customDimensionsArr = customDimensions.value ? customDimensions.value.split(",").map(Number) : null;
 
 	// DOCUMENT DIMENSIONS
 	const formatDimensions = {
