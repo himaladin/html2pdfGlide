@@ -89,12 +89,18 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
             margin: 0!important;
         }
 
-        .header {
-            background-image: url('${letterheadUrl}');
-            background-repeat: no-repeat;
-            background-size: cover;
-            height: 100px; /* Set the height of the header here */
-        }
+.header {
+    background-color: #4B5D67;
+    background-size: cover;
+    height: 200px; 
+    position: relative; 
+}
+
+.header img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Memastikan gambar mengisi seluruh area elemen */
+}
 
 	button#download {
 	  position: fixed;
