@@ -64,9 +64,15 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 		credit_card: [319, 508],
 	};
 
-	// GET FINAL DIMESIONS FROM SELECTED FORMAT
-	const dimensions = customDimensions || formatDimensions[format];
-	const finalDimensions = dimensions.map((dimension) => Math.round(dimension / zoom));
+// GET FINAL DIMENSIONS FROM SELECTED FORMAT
+let finalDimensions;
+if (Array.isArray(dimensions)) {
+    finalDimensions = dimensions.map((dimension) => Math.round(dimension / zoom));
+} else if (typeof dimensions === 'object' && dimensions !== null) {
+    finalDimensions = Object.values(dimensions).map((dimension) => Math.round(dimension / zoom));
+} else {
+    finalDimensions = dimensions;
+}
 
 	// LOG SETTINGS TO CONSOLE
 	console.log(
