@@ -169,13 +169,14 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	// HTML THAT IS RETURNED AS A RENDERABLE URL
 	const originalHTML = `
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
-	<style>${customCSS}</style>
-<div class="main">
-    <div class="header" style="background-image: url(${letterheadUrl});"></div>
-    <button class="button" id="download">Download</button>
-    <div id="content">${html}</div>
-</div>
+    <style>${customCSS}</style>
+    <div class="main">
+        <div class="header"></div>
+        <button class="button" id="download">Download</button>
+        <div id="content">${html}</div>
+    </div>
 	  <script>
+   document.querySelector('.header').style.backgroundImage = \`url(\${letterheadUrl})\`;
 	  document.getElementById('download').addEventListener('click', function() {
 		var element = document.getElementById('content');
 		var button = this;
