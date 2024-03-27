@@ -160,6 +160,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	<style>${customCSS}</style>
 	<div class="main">
 	    <div class="header">
+         <div class="header" style="background-image: url('${letterheadUrl}');">
 		<button class="button" id="download">Download</button>
 	    </div>
 	    <div id="content">${html}</div>
