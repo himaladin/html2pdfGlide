@@ -87,21 +87,21 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 
 	const customCSS = `
 	body {
-	    margin: 0!important;
+	    margin: 0 !important;
 	}
     .header {
         position: relative;
         width: 100%;
     }
     .letterhead {
-        position: absolute;
+        position: fixed;
         top: 0;
         left: 0;
-        width: 100%;
+        width: auto;
         z-index: -1;
     }
     #content {
-        margin-top: 100px; /* Adjust margin to accommodate letterhead */
+        margin-top: 100px;
     }
 	button#download {
 	  position: fixed;
