@@ -1,4 +1,4 @@
-window.function = function (html, fileName, format, zoom, orientation, margin, breakBefore, breakAfter, breakAvoid, fidelity, customDimensions) {
+window.function = function (html, fileName, format, zoom, orientation, margin, breakBefore, breakAfter, breakAvoid, fidelity, customDimensions, letterheadUrl) {
 	// FIDELITY MAPPING
 	const fidelityMap = {
 		low: 1,
@@ -87,7 +87,13 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	body {
 	  margin: 0!important
 	}
-
+  @page {
+    margin-top: 100px; /* Adjust top margin to accommodate the letterhead */
+    background-image: url(${letterheadUrl});
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: top center;
+  }
 	button#download {
 	  position: fixed;
 	  border-radius: 0.5rem;
@@ -155,8 +161,10 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 	  <style>${customCSS}</style>
 	  <div class="main">
-	  <div class="header">
-		<button class="button" id="download">Download</button>
+	    <div class="header">
+	      <button class="button" id="download">Download</button>
+	    </div>
+	    <div id="content">${html}</div>
 	  </div>
 	  <div id="content">${html}</div>
 	  </div>
