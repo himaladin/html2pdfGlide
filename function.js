@@ -90,15 +90,17 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	  margin: 0!important
 	}
 	.header {
-	position: relative;
-	width: 100%;
-	}
+	  position: relative;
+	  width: 100%;
+	  text-align: center;
+	}	
 	.letterhead {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: auto;
-	z-index: -1;
+	  position: fixed;
+	  top: 0;
+	  left: 50%;
+	  transform: translateX(-50%);
+	  width: auto;
+	  z-index: 1;
 	}
 	#content {
 	margin-top: 100px;
