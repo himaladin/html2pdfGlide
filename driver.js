@@ -4,9 +4,7 @@ window.addEventListener("message", async function(event) {
     let result;
     let error;
     try {
-      // Ambil letterheadUrl dari params
-      const letterheadUrl = params.find(param => param.name === 'letterheadUrl').value;
-      result = await window.function(...params, letterheadUrl);
+      result = await window.function(...params);
     } catch (e) {
       result = undefined;
       try {
@@ -26,4 +24,4 @@ window.addEventListener("message", async function(event) {
     }
   
     event.source.postMessage(response, "*");
-});
+  });
