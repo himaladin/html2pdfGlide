@@ -87,23 +87,32 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 
 	const customCSS = `
 	body {
-	  margin: 0!important
+	    margin: 0!important;
+	    padding-top: 100px; /* Adjust top padding to accommodate the letterhead */
 	}
-.main {
-    position: relative;
-}
-
-.header {
-    position: relative;
-}
-
-.letterhead {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: -1;
-}
+	
+	.header {
+	    position: fixed;
+	    top: 0;
+	    left: 0;
+	    right: 0;
+	    height: 100px; /* Adjust height of header as needed */
+	    z-index: 1000; /* Ensure header is above other content */
+	    background-color: #ffffff; /* Set background color of header */
+	}
+	
+	.letterhead {
+	    position: absolute;
+	    top: 0;
+	    left: 0;
+	    width: 100%;
+	    height: 100px; /* Adjust height of letterhead as needed */
+	    z-index: -1;
+	}
+	
+	.content {
+	    padding-top: 100px; /* Adjust top padding to avoid overlap with header */
+	}
 	button#download {
 	  position: fixed;
 	  border-radius: 0.5rem;
@@ -168,15 +177,15 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 
 	// HTML THAT IS RETURNED AS A RENDERABLE URL
 	const originalHTML = `
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
-  <style>${customCSS}</style>
-<div class="main">
-    <div class="header">
-        <img src="${letterheadUrl}" class="letterhead" />
-        <button class="button" id="download">Download</button>
-    </div>
-    <div id="content">${html}</div>
-</div>
+	  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+	  <style>${customCSS}</style>
+		<div class="main">
+		    <div class="header">
+		        <img src="${letterheadUrl}" class="letterhead" />
+		        <button class="button" id="download">Download</button>
+		    </div>
+		    <div id="content">${html}</div>
+		</div>
 	  <script>
 	  document.getElementById('download').addEventListener('click', function() {
 		var element = document.getElementById('content');
