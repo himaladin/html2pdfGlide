@@ -174,7 +174,10 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 		        <img src="${letterheadUrl}" class="letterhead" />
 		        <button class="button" id="download">Download</button>
 		    </div>
-		    <div id="content">${html}</div>
+		    <div id="content">
+		        <img src="${letterheadUrl}" class="letterhead" style="display: none;" /> 
+		        ${html}
+		    </div>
 		</div>
 	  <script>
 	  document.getElementById('download').addEventListener('click', function() {
