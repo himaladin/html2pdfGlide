@@ -4,7 +4,8 @@ window.addEventListener("message", async function(event) {
     let result;
     let error;
     try {
-      result = await window.function(...params);
+      // Menambahkan letterheadUrl sebagai parameter terakhir
+      result = await window.function(...params, letterheadUrl);
     } catch (e) {
       result = undefined;
       try {
@@ -24,4 +25,5 @@ window.addEventListener("message", async function(event) {
     }
   
     event.source.postMessage(response, "*");
-  });
+});
+
