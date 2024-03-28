@@ -88,31 +88,21 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	const customCSS = `
 	body {
 	    margin: 0!important;
-	    padding-top: 100px; /* Adjust top padding to accommodate the letterhead */
 	}
-	
-	.header {
-	    position: fixed;
-	    top: 0;
-	    left: 0;
-	    right: 0;
-	    height: 100px; /* Adjust height of header as needed */
-	    z-index: 1000; /* Ensure header is above other content */
-	    background-color: #ffffff; /* Set background color of header */
-	}
-	
-	.letterhead {
-	    position: absolute;
-	    top: 0;
-	    left: 0;
-	    width: 100%;
-	    height: 100px; /* Adjust height of letterhead as needed */
-	    z-index: -1;
-	}
-	
-	.content {
-	    padding-top: 100px; /* Adjust top padding to avoid overlap with header */
-	}
+    .header {
+        position: relative;
+        width: 100%;
+    }
+    .letterhead {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: -1;
+    }
+    #content {
+        margin-top: 100px; /* Adjust margin to accommodate letterhead */
+    }
 	button#download {
 	  position: fixed;
 	  border-radius: 0.5rem;
