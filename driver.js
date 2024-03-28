@@ -4,7 +4,8 @@ window.addEventListener("message", async function(event) {
     let result;
     let error;
     try {
-      // Menambahkan letterheadUrl sebagai parameter terakhir
+      // Ambil letterheadUrl dari params
+      const letterheadUrl = params.find(param => param.name === 'letterheadUrl').value;
       result = await window.function(...params, letterheadUrl);
     } catch (e) {
       result = undefined;
@@ -26,4 +27,3 @@ window.addEventListener("message", async function(event) {
   
     event.source.postMessage(response, "*");
 });
-
