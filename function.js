@@ -87,18 +87,22 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 
 	const customCSS = `
 	body {
-	    margin: 0 !important;
+	  margin: 0!important
 	}
-.letterhead {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: -1;
-    display: none; /* Sembunyikan di halaman web */
-}
-argin-top: 200px; /* Sesuaikan dengan tinggi header Anda */
-}
+	.header {
+	position: relative;
+	width: 100%;
+	}
+	.letterhead {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: auto;
+	z-index: -1;
+	}
+	#content {
+	margin-top: 100px;
+	}
 	button#download {
 	  position: fixed;
 	  border-radius: 0.5rem;
@@ -163,22 +167,18 @@ argin-top: 200px; /* Sesuaikan dengan tinggi header Anda */
 
 	// HTML THAT IS RETURNED AS A RENDERABLE URL
 	const originalHTML = `
-	  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+	 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 	  <style>${customCSS}</style>
-<div class="header">
-    <img src="${letterheadUrl}" class="letterhead" />
-    <button class="button" id="download">Download</button>
-</div>
-<div class="main">
-    <div id="content">
-        <img src="${letterheadUrl}" class="letterhead" /> <!-- Tampilkan di PDF -->
-        ${html}
-    </div>
-</div>
+		<div class="main">
+		    <div class="header">
+		        <img src="${letterheadUrl}" class="letterhead" />
+		        <button class="button" id="download">Download</button>
+		    </div>
+		    <div id="content">${html}</div>
+		</div>
 	  <script>
 	  document.getElementById('download').addEventListener('click', function() {
 		var element = document.getElementById('content');
-  		var letterheadUrl = "${letterheadUrl}";
 		var button = this;
 		button.innerText = 'Downloading...';
 		button.className = 'downloading';
@@ -198,11 +198,6 @@ argin-top: 200px; /* Sesuaikan dengan tinggi header Anda */
 		  hotfixes: ['px_scaling']
 		},
 		};
-      opt.jsPDF.letterhead = { 
-        src: letterheadUrl,
-        width: 100, // Sesuaikan dengan lebar letterhead
-        height: 100 // Sesuaikan dengan tinggi letterhead
-    };
 		html2pdf(element, opt).from(element).set({
 		margin: [0, 0, 0, 0],
 		filename: fileName
