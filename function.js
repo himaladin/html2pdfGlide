@@ -81,20 +81,29 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 			`Break before: ${breakBefore}\n` +
 			`Break after: ${breakAfter}\n` +
 			`Break avoid: ${breakAvoid}\n` +
-			`Quality: ${quality}`
+			`Quality: ${quality}` +
+        		`Letterhead URL: ${letterheadUrl}`
 	);
 
 	const customCSS = `
 	body {
 	  margin: 0!important
 	}
-  @page {
-    margin-top: 100px; /* Adjust top margin to accommodate the letterhead */
-    background-image: url(${letterheadUrl});
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: top center;
-  }
+.main {
+    position: relative;
+}
+
+.header {
+    position: relative;
+}
+
+.letterhead {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: -1;
+}
 	button#download {
 	  position: fixed;
 	  border-radius: 0.5rem;
@@ -161,12 +170,13 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	const originalHTML = `
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
   <style>${customCSS}</style>
-  <div class="main">
+<div class="main">
     <div class="header">
-      <button class="button" id="download">Download</button>
+        <img src="${letterheadUrl}" class="letterhead" />
+        <button class="button" id="download">Download</button>
     </div>
     <div id="content">${html}</div>
-  </div>
+</div>
 	  <script>
 	  document.getElementById('download').addEventListener('click', function() {
 		var element = document.getElementById('content');
