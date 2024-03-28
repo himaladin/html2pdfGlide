@@ -89,10 +89,12 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	body {
 	    margin: 0 !important;
 	}
-    .header {
-        position: relative;
-        width: 100%;
-    }
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
     .letterhead {
         position: fixed;
         top: 0;
@@ -100,9 +102,9 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
         width: auto;
         z-index: -1;
     }
-    #content {
-        margin-top: 100px;
-    }
+#content {
+    margin-top: 200px; /* Sesuaikan dengan tinggi header Anda */
+}
 	button#download {
 	  position: fixed;
 	  border-radius: 0.5rem;
@@ -181,6 +183,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	  <script>
 	  document.getElementById('download').addEventListener('click', function() {
 		var element = document.getElementById('content');
+  		var letterheadUrl = "${letterheadUrl}";
 		var button = this;
 		button.innerText = 'Downloading...';
 		button.className = 'downloading';
@@ -200,6 +203,11 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 		  hotfixes: ['px_scaling']
 		},
 		};
+      opt.jsPDF.letterhead = { 
+        src: letterheadUrl,
+        width: 100, // Sesuaikan dengan lebar letterhead
+        height: 100 // Sesuaikan dengan tinggi letterhead
+    };
 		html2pdf(element, opt).from(element).set({
 		margin: [0, 0, 0, 0],
 		filename: fileName
