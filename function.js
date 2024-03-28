@@ -169,16 +169,15 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	const originalHTML = `
 	  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 	  <style>${customCSS}</style>
-		<div class="main">
-		    <div class="header">
-		        <img src="${letterheadUrl}" class="letterhead" />
-		        <button class="button" id="download">Download</button>
-		    </div>
-		    <div id="content">
-		        <img src="${letterheadUrl}" class="letterhead" style="display: none;" /> 
-		        ${html}
-		    </div>
-		</div>
+	  <div class="main">
+	      <div class="header">
+	          <img src="${letterheadUrl}" class="letterhead" />
+	          <button class="button" id="download">Download</button>
+	      </div>
+	      <div id="content">
+	          ${html}
+	      </div>
+	  </div>
 	  <script>
 	  document.getElementById('download').addEventListener('click', function() {
 		var element = document.getElementById('content');
