@@ -88,10 +88,15 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 
 	const customCSS = `
 	body {
-	  margin: 0!important
+	  margin: 0 !important
 	}
-	#content {
-	margin-top: 120px;
+	.letterhead {
+	  position: fixed;
+	  top: 0;
+	  left: 50%;
+	  transform: translateX(-50%);
+	  width: auto;
+	  z-index: 1;
 	}
 	button#download {
 	  position: fixed;
