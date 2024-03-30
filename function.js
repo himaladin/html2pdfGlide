@@ -89,10 +89,6 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	body {
 	  margin: 0!important
 	}
-	.header {
-	  position: relative;
-	  text-align: center;
-	}	
 	.letterhead {
 	  position: fixed;
 	  top: 0;
