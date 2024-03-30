@@ -185,8 +185,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 		button.innerText = 'Downloading...';
 		button.className = 'downloading';
 
- var letterheadElement = document.getElementById('letterhead-id'); // Ganti 'letterhead-id' dengan ID yang sesuai
-    var letterheadUrl = letterheadElement ? letterheadElement.src : null;
+ var letterheadUrl = document.getElementById('letterheadUrl').value;
   
 		var opt = {
 		pagebreak: { mode: ['css'], before: ${JSON.stringify(breakBefore)}, after: ${JSON.stringify(breakAfter)}, avoid: ${JSON.stringify(breakAvoid)} },
