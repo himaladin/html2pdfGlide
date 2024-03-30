@@ -100,7 +100,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	
 	.letterhead {
 	  width: 100%;
-	  max-width: 100%;
+	  max-width: 1120px;
 	  height: auto;
 	}
 	#content {
