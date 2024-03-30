@@ -183,6 +183,8 @@ document.getElementById('download').addEventListener('click', function() {
     button.innerText = 'Downloading...';
     button.className = 'downloading';
 
+    var letterheadUrl = document.getElementById('letterheadUrl').value;
+
     var opt = {
         pagebreak: { mode: ['css'], before: ${JSON.stringify(breakBefore)}, after: ${JSON.stringify(breakAfter)}, avoid: ${JSON.stringify(breakAvoid)} },
         margin: ${margin},
