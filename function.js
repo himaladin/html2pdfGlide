@@ -89,12 +89,17 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	body {
 	  margin: 0!important
 	}
+	.header {
+	  position: relative;
+	  width: 100%;
+	  text-align: center;
+	}  
 	.letterhead {
 	  position: fixed;
 	  top: 0;
 	  left: 50%;
 	  transform: translateX(-50%);
-	  width: auto;
+	  display: inline-block; /* Menggunakan inline-block untuk lebar sesuai konten */
 	  z-index: 1;
 	}
 	#content {
