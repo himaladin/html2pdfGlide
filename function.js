@@ -103,9 +103,6 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	  max-width: 1120px;
 	  height: auto;
 	}
-	#content {
-	margin-top: 100px;
-	}
 	button#download {
 	  position: fixed;
 	  border-radius: 0.5rem;
