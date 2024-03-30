@@ -173,7 +173,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	  <style>${customCSS}</style>
 		<div class="main">
 		    <div class="header">
-		        <img src="${letterheadUrl}" class="letterhead" style="width: ${finalDimensions[0]}px; height: ${finalDimensions[1]}px;" />
+		        <img src="${letterheadUrl}" class="letterhead" />
 		        <button class="button" id="download">Download</button>
 		    </div>
 		    <div id="content">${html}</div>
