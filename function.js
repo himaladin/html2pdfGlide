@@ -218,17 +218,15 @@ document.getElementById('download').addEventListener('click', function() {
             pdf.text('Page ' + eventData.pageNumber + ' of ' + pageCount, 10, pdf.internal.pageSize.height - 10);
         });
         pdf.save();
-    });
-    html2pdf().set(opt).from(element).toPdf().get('pdf').then(function(pdf) {
+        // Remove the letterhead image after PDF is created
+        letterheadImg.remove();
         button.innerText = 'Done';
         button.className = 'done';
         setTimeout(function() {
             button.innerText = 'Download';
             button.className = '';
-            // Remove the letterhead image after PDF is created
-            letterheadImg.remove();
         }, 2000);
-    }).save();
+    });
 });
 	  </script>
 	  `;
