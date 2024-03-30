@@ -183,26 +183,27 @@ document.getElementById('download').addEventListener('click', function() {
     button.innerText = 'Downloading...';
     button.className = 'downloading';
 
+    var opt = {
+        pagebreak: { mode: ['css'], before: ${JSON.stringify(breakBefore)}, after: ${JSON.stringify(breakAfter)}, avoid: ${JSON.stringify(breakAvoid)} },
+        margin: ${margin},
+        filename: '${fileName}',
+        html2canvas: {
+            useCORS: true,
+            scale: ${quality}
+        },
+        jsPDF: {
+            unit: 'px',
+            orientation: '${orientation}',
+            format: [${finalDimensions}],
+            hotfixes: ['px_scaling']
+        },
+    };
+
     // Membuat image element
     var img = new Image();
     img.src = letterheadUrl;
     img.onload = function() {
         // Gambar sudah dimuat, membuat PDF
-        var opt = {
-            pagebreak: { mode: ['css'], before: ${JSON.stringify(breakBefore)}, after: ${JSON.stringify(breakAfter)}, avoid: ${JSON.stringify(breakAvoid)} },
-            margin: ${margin},
-            filename: '${fileName}',
-            html2canvas: {
-                useCORS: true,
-                scale: ${quality}
-            },
-            jsPDF: {
-                unit: 'px',
-                orientation: '${orientation}',
-                format: [${finalDimensions}],
-                hotfixes: ['px_scaling']
-            },
-        };
         html2pdf().set(opt).from(element).toPdf().get('pdf').then(function(pdf) {
             button.innerText = 'Done';
             button.className = 'done';
@@ -212,8 +213,13 @@ document.getElementById('download').addEventListener('click', function() {
             }, 2000);
         }).save();
     };
-});
 
+    img.onerror = function() {
+        console.error('Error loading letterhead image');
+        button.innerText = 'Error';
+        button.className = 'error';
+    };
+});
 	  </script>
 	  `;
 	var encodedHtml = encodeURIComponent(originalHTML);
