@@ -99,9 +99,9 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	}
 	
 	.letterhead {
-	  width: auto;
+	  width: 100%;
 	  max-width: 100%;
-	  max-height: 100%;
+	  height: auto;
 	}
 	#content {
 	margin-top: 100px;
