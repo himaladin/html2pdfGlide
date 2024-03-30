@@ -88,12 +88,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	const customCSS = `
 	body {
 	  margin: 0!important
-	}
-	.header {
-	  position: relative;
-	  width: 100%;
-	  text-align: center;
-	}  
+	} 
 	.letterhead {
 	  position: fixed;
 	  top: 0;
