@@ -89,17 +89,6 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	body {
 	  margin: 0!important
 	}	
-	.letterhead {
-	  position: fixed;
-	  top: 0;
-	  left: 50%;
-	  transform: translateX(-50%);
-	  width: auto;
-	  z-index: 1;
-	}
-	#content {
-	margin-top: 120px;
-	}
 	button#download {
 	  position: fixed;
 	  border-radius: 0.5rem;
