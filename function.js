@@ -185,6 +185,12 @@ document.getElementById('download').addEventListener('click', function() {
     button.innerText = 'Downloading...';
     button.className = 'downloading';
 
+    // Create an image element for the letterhead
+    var letterheadImg = document.createElement('img');
+    letterheadImg.src = letterheadUrl;
+    letterheadImg.classList.add('letterhead');
+    element.prepend(letterheadImg); // Add the letterhead image to the beginning of the content
+
     var opt = {
         pagebreak: { mode: ['css'], before: ${JSON.stringify(breakBefore)}, after: ${JSON.stringify(breakAfter)}, avoid: ${JSON.stringify(breakAvoid)} },
         margin: ${margin},
@@ -200,16 +206,6 @@ document.getElementById('download').addEventListener('click', function() {
             hotfixes: ['px_scaling']
         },
     };
-
-    // Menambahkan elemen img ke dalam elemen HTML yang akan dikonversi ke PDF
-    var header = document.createElement('div');
-    header.className = 'header';
-    header.innerHTML = `
-        <img src="${letterheadUrl}" class="letterhead" />
-        <button class="button" id="download">Download</button>
-    `;
-    element.insertBefore(header, element.firstChild);
-
     html2pdf(element, opt).from(element).set({
         margin: [0, 0, 0, 0],
         filename: fileName
@@ -223,15 +219,17 @@ document.getElementById('download').addEventListener('click', function() {
         });
         pdf.save();
     });
-		html2pdf().set(opt).from(element).toPdf().get('pdf').then(function(pdf) {
-		button.innerText = 'Done';
-		button.className = 'done';
-		setTimeout(function() { 
-		  button.innerText = 'Download';
-		  button.className = ''; 
-		}, 2000);
-		}).save();
-	  });
+    html2pdf().set(opt).from(element).toPdf().get('pdf').then(function(pdf) {
+        button.innerText = 'Done';
+        button.className = 'done';
+        setTimeout(function() {
+            button.innerText = 'Download';
+            button.className = '';
+            // Remove the letterhead image after PDF is created
+            letterheadImg.remove();
+        }, 2000);
+    }).save();
+});
 	  </script>
 	  `;
 	var encodedHtml = encodeURIComponent(originalHTML);
