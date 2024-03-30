@@ -89,11 +89,6 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	const customCSS = `
 	body {
 	  margin: 0!important
-	}
-	.header {
-	  position: relative;
-	  width: 100%;
-	  text-align: center;
 	}	
 	.letterhead {
 	  position: fixed;
@@ -104,7 +99,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	  z-index: 1;
 	}
 	#content {
-	margin-top: 100px;
+	margin-top: 120px;
 	}
 	button#download {
 	  position: fixed;
