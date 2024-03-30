@@ -173,7 +173,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	  <style>${customCSS}</style>
 		<div class="main">
 		    <div class="header">
-		        <img src="${letterheadUrl}" class="letterhead" style="width: ${finalDimensions[0]}px;" />
+		        <img src="${letterheadUrl}" id="letterhead-id" class="letterhead" style="width: ${finalDimensions[0]}px;" />
 		        <button class="button" id="download">Download</button>
 		    </div>
 		    <div id="content">${html}</div>
@@ -185,7 +185,9 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 		button.innerText = 'Downloading...';
 		button.className = 'downloading';
 
- var letterheadUrl = document.getElementById('letterheadUrl').value;
+var letterheadElement = document.getElementById('letterhead-id');
+var letterheadUrl = letterheadElement ? letterheadElement.src : null;
+
   
 		var opt = {
 		pagebreak: { mode: ['css'], before: ${JSON.stringify(breakBefore)}, after: ${JSON.stringify(breakAfter)}, avoid: ${JSON.stringify(breakAvoid)} },
