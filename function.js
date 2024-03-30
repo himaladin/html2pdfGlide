@@ -1,4 +1,3 @@
-er
 window.function = function (html, fileName, format, zoom, orientation, margin, breakBefore, breakAfter, breakAvoid, fidelity, customDimensions, letterheadUrl) {
 	// FIDELITY MAPPING
 	const fidelityMap = {
