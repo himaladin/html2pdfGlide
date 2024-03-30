@@ -164,59 +164,45 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 
 	// HTML THAT IS RETURNED AS A RENDERABLE URL
 	const originalHTML = `
-	 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
-	  <style>${customCSS}</style>
-		<div class="main">
-		    <div class="header">
-		        <img src="${letterheadUrl}" class="letterhead" />
-		        <button class="button" id="download">Download</button>
-		    </div>
-		    <div id="content">${html}</div>
-		</div>
-	  <script>
-	  document.getElementById('download').addEventListener('click', function() {
-		var element = document.getElementById('content');
-		var button = this;
-		button.innerText = 'Downloading...';
-		button.className = 'downloading';
-  
-		var opt = {
-		pagebreak: { mode: ['css'], before: ${JSON.stringify(breakBefore)}, after: ${JSON.stringify(breakAfter)}, avoid: ${JSON.stringify(breakAvoid)} },
-		margin: ${margin},
-		filename: '${fileName}',
-		html2canvas: {
-		  useCORS: true,
-		  scale: ${quality}
-		},
-		jsPDF: {
-		  unit: 'px',
-		  orientation: '${orientation}',
-		  format: [${finalDimensions}],
-		  hotfixes: ['px_scaling']
-		},
-		};
-		html2pdf(element, opt).from(element).set({
-		margin: [0, 0, 0, 0],
-		filename: fileName
-		}).toPdf().get('pdf').then(function (pdf) {
-		pdf.autoTable({ html: element });
-		pdf.internal.events.addEventType('onBeforePaging');
-		pdf.internal.events.subscribe('onBeforePaging', function (eventData) {
-		    var pageCount = pdf.internal.getNumberOfPages();
-		    pdf.setFontSize(10);
-		    pdf.text('Page ' + eventData.pageNumber + ' of ' + pageCount, 10, pdf.internal.pageSize.height - 10);
-		});
-		pdf.save();
-		});
-		html2pdf().set(opt).from(element).toPdf().get('pdf').then(function(pdf) {
-		button.innerText = 'Done';
-		button.className = 'done';
-		setTimeout(function() { 
-		  button.innerText = 'Download';
-		  button.className = ''; 
-		}, 2000);
-		}).save();
-	  });
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+<style>${customCSS}</style>
+<div class="main">
+    <div class="header">
+        <img src="${letterheadUrl}" class="letterhead" />
+        <button class="button" id="download">Download</button>
+    </div>
+    <div id="content">${html}</div>
+</div>
+<script>
+document.getElementById('download').addEventListener('click', function() {
+    var element = document.getElementById('content');
+    var letterhead = document.querySelector('.letterhead');
+
+    var opt = {
+        margin: ${margin},
+        filename: '${fileName}',
+        html2canvas: {
+            useCORS: true,
+            scale: ${quality}
+        },
+        jsPDF: {
+            unit: 'px',
+            orientation: '${orientation}',
+            format: [${finalDimensions}],
+            hotfixes: ['px_scaling']
+        },
+    };
+    html2pdf().set(opt).from(letterhead).from(element).toPdf().get('pdf').then(function(pdf) {
+        pdf.autoTable({ html: element });
+        pdf.internal.events.addEventType('onBeforePaging');
+        pdf.internal.events.subscribe('onBeforePaging', function(eventData) {
+            var pageCount = pdf.internal.getNumberOfPages();
+            pdf.setFontSize(10);
+            pdf.text('Page ' + eventData.pageNumber + ' of ' + pageCount, 10, pdf.internal.pageSize.height - 10);
+        });
+        pdf.save();
+    });
+});
 	  </script>
 	  `;
 	var encodedHtml = encodeURIComponent(originalHTML);
