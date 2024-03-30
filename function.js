@@ -91,7 +91,6 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	}
 	.header {
 	  position: relative;
-	  width: 100%;
 	  text-align: center;
 	}	
 	.letterhead {
@@ -103,7 +102,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	  z-index: 1;
 	}
 	#content {
-	margin-top: 100px;
+	margin-top: 120px;
 	}
 	button#download {
 	  position: fixed;
