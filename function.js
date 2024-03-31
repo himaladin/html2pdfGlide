@@ -170,10 +170,12 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 <style>${customCSS}</style>
 <div class="main">
+<div class="main">
     <div class="header">
-        <img src="${letterheadUrl}" class="letterhead" />
         <button class="button" id="download">Download</button>
     </div>
+    <div id="content">${html}</div>
+</div>
     <div id="content">${html}</div>
 </div>
 <script>
@@ -199,44 +201,30 @@ document.getElementById('download').addEventListener('click', function() {
         },
     };
 
-    // Tambahkan pengecekan untuk letterheadUrl kosong
     var letterheadUrl = '${letterheadUrl}';
     if (letterheadUrl.trim() !== '') {
         var letterhead = document.createElement('img');
         letterhead.src = letterheadUrl;
         letterhead.classList.add('letterhead');
-        element.insertBefore(letterhead, element.firstChild);
-
-        html2pdf(element, opt).from(element).set({
-            margin: [0, 0, 0, 0],
-            filename: fileName
-        }).toPdf().get('pdf').then(function(pdf) {
-            pdf.autoTable({ html: element });
-            pdf.internal.events.addEventType('onBeforePaging');
-            pdf.internal.events.subscribe('onBeforePaging', function(eventData) {
-                var pageCount = pdf.internal.getNumberOfPages();
-                pdf.setFontSize(10);
-                pdf.text('Page ' + eventData.pageNumber + ' of ' + pageCount, 10, pdf.internal.pageSize.height - 10);
-            });
-            pdf.save();
-            element.removeChild(letterhead); // Hapus elemen letterhead setelah selesai
-        });
-    } else {
-        // Jika letterheadUrl kosong, langsung buat PDF tanpa letterhead
-        html2pdf(element, opt).from(element).set({
-            margin: [0, 0, 0, 0],
-            filename: fileName
-        }).toPdf().get('pdf').then(function(pdf) {
-            pdf.autoTable({ html: element });
-            pdf.internal.events.addEventType('onBeforePaging');
-            pdf.internal.events.subscribe('onBeforePaging', function(eventData) {
-                var pageCount = pdf.internal.getNumberOfPages();
-                pdf.setFontSize(10);
-                pdf.text('Page ' + eventData.pageNumber + ' of ' + pageCount, 10, pdf.internal.pageSize.height - 10);
-            });
-            pdf.save();
-        });
+        document.querySelector('.header').insertBefore(letterhead, button);
     }
+
+    html2pdf(element, opt).from(element).set({
+        margin: [0, 0, 0, 0],
+        filename: fileName
+    }).toPdf().get('pdf').then(function(pdf) {
+        pdf.autoTable({ html: element });
+        pdf.internal.events.addEventType('onBeforePaging');
+        pdf.internal.events.subscribe('onBeforePaging', function(eventData) {
+            var pageCount = pdf.internal.getNumberOfPages();
+            pdf.setFontSize(10);
+            pdf.text('Page ' + eventData.pageNumber + ' of ' + pageCount, 10, pdf.internal.pageSize.height - 10);
+        });
+        pdf.save();
+        if (letterheadUrl.trim() !== '') {
+            document.querySelector('.header').removeChild(letterhead);
+        }
+    });
 
     html2pdf().set(opt).from(element).toPdf().get('pdf').then(function(pdf) {
         button.innerText = 'Done';
