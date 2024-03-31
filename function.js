@@ -125,11 +125,12 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
   }
 
   .button .svg {
-    display: none;
     transform: translateY(-20px) rotate(30deg);
     opacity: 0;
     width: 2rem;
-    transition: 0.4s ease-in-out;
+    transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
+    display: inline-block; /* Tambahkan untuk menampilkan svg */
+    vertical-align: middle; /* Sesuaikan dengan posisi teks */
   }
 
   .button:hover {
@@ -137,7 +138,6 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
   }
 
   .button:hover .svg {
-    display: inline-block;
     transform: translateY(0px) rotate(0deg);
     opacity: 1;
   }
