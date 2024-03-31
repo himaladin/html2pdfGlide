@@ -178,11 +178,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 </div>
 <script>
 document.getElementById('download').addEventListener('click', function() {
-    var element = document.getElementById('content');
     var button = this;
-    button.innerText = 'Downloading...';
-    button.className = 'downloading';
-
     var opt = {
         pagebreak: { mode: ['css'], before: ${JSON.stringify(breakBefore)}, after: ${JSON.stringify(breakAfter)}, avoid: ${JSON.stringify(breakAvoid)} },
         margin: ${margin},
@@ -198,14 +194,20 @@ document.getElementById('download').addEventListener('click', function() {
             hotfixes: ['px_scaling']
         },
     };
-    html2pdf().set(opt).from(element).toPdf().get('pdf').then(function(pdf) {
-        button.innerText = 'Done';
-        button.className = 'done';
-        setTimeout(function() { 
-            button.innerText = 'Download';
-            button.className = ''; 
-        }, 2000);
-    }).save();
+    button.innerText = 'Downloading...';
+    button.className = 'downloading';
+
+    setTimeout(function() {
+        var element = document.getElementById('content');
+        html2pdf().set(opt).from(element).toPdf().get('pdf').then(function(pdf) {
+            button.innerText = 'Done';
+            button.className = 'done';
+            setTimeout(function() {
+                button.innerText = 'Download';
+                button.className = '';
+            }, 2000);
+        }).save();
+    }, 1000); // Delay 1 second before converting to PDF
 });
 	  </script>
 	  `;
