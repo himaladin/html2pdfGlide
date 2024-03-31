@@ -211,6 +211,14 @@ document.getElementById('download').addEventListener('click', function() {
 
     setTimeout(function() {
         html2pdf().set(opt).from(content).toPdf().get('pdf').then(function(pdf) {
+            // Tambahkan nomor halaman
+            pdf.autoTable({
+                html: '#content',
+                addPageContent: function(data) {
+                    pdf.text('Page ' + data.pageNumber, data.settings.margin.left, pdf.internal.pageSize.height - 10);
+                }
+            });
+            
             pdf.save('${fileName}.pdf');
             button.innerText = 'Downloaded';
             button.className = 'downloaded';
