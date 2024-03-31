@@ -171,7 +171,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	  <style>${customCSS}</style>
 		<div class="main">
 		    <div class="header">
-		        <img src="https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/k7usFpDJXTEySup8gjGr/pub/idEBnkVsSm6pNgdNdaFQ.png" class="letterhead" />
+		        <img src="https://t4.ftcdn.net/jpg/02/76/08/07/360_F_276080724_hltnCyDjcqAyRtLzDYo3T2jXbBtCD7fl.jpg" class="letterhead" />
 		        <button class="button" id="download">Download</button>
 		    </div>
 		    <div id="content">${html}</div>
