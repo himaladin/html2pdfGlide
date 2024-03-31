@@ -167,65 +167,64 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 
 	// HTML THAT IS RETURNED AS A RENDERABLE URL
 	const originalHTML = `
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
-        <style>${customCSS}</style>
-        <div class="main">
-            <div class="header">
-                <img src="${letterheadUrl}" class="letterhead"/>
-                <button class="button" id="download">Download</button>
-            </div>
-            <div id="content">${html}</div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+    <style>${customCSS}</style>
+    <div class="main">
+        <div class="header">
+            ${letterheadUrl ? `<img src="${letterheadUrl}" class="letterhead"/>` : `<img src="empty-image.png" class="letterhead empty"/>`}
+            <button class="button" id="download">Download</button>
         </div>
-        <script>
-document.getElementById('download').addEventListener('click', function() {
-    var button = this;
-    var opt = {
-        pagebreak: { mode: ['css'], before: ${JSON.stringify(breakBefore)}, after: ${JSON.stringify(breakAfter)}, avoid: ${JSON.stringify(breakAvoid)} },
-        margin: ${margin},
-        filename: '${fileName}',
-        html2canvas: {
-            useCORS: true,
-            scale: ${quality}
-        },
-        jsPDF: {
-            unit: 'px',
-            orientation: '${orientation}',
-            format: [${finalDimensions}],
-            hotfixes: ['px_scaling']
-        },
-    };
-    button.innerText = 'Downloading...';
-    button.className = 'downloading';
+        <div id="content">${html}</div>
+    </div>
+    <script>
+        document.getElementById('download').addEventListener('click', function() {
+            var button = this;
+            var opt = {
+                pagebreak: { mode: ['css'], before: ${JSON.stringify(breakBefore)}, after: ${JSON.stringify(breakAfter)}, avoid: ${JSON.stringify(breakAvoid)} },
+                margin: ${margin},
+                filename: '${fileName}',
+                html2canvas: {
+                    useCORS: true,
+                    scale: ${quality}
+                },
+                jsPDF: {
+                    unit: 'px',
+                    orientation: '${orientation}',
+                    format: [${finalDimensions}],
+                    hotfixes: ['px_scaling']
+                },
+            };
+            button.innerText = 'Downloading...';
+            button.className = 'downloading';
 
-    var content = document.getElementById('content');
-    var letterheadUrl = '${letterheadUrl}';
-    var letterhead = document.createElement('img');
-    if (letterheadUrl) { // Jika letterheadUrl memiliki nilai
-        letterhead.src = letterheadUrl;
-        letterhead.classList.add('letterhead');
-    }
-    content.insertBefore(letterhead, content.firstChild);
+            var content = document.getElementById('content');
+            var letterheadUrl = '${letterheadUrl}';
+            var letterhead = document.createElement('img');
+            if (letterheadUrl) { // Jika letterheadUrl memiliki nilai
+                letterhead.src = letterheadUrl;
+                letterhead.classList.add('letterhead');
+            } else {
+                // Jika letterheadUrl tidak memiliki nilai, tambahkan icon empty image
+                letterhead.src = 'empty-image.png';
+                letterhead.classList.add('empty-image');
+            }
+            content.insertBefore(letterhead, content.firstChild);
 
-    // Tambahkan kode berikut untuk mengatur tampilan letterhead
-    if (!letterheadUrl) { // Jika letterheadUrl tidak memiliki nilai
-        letterhead.style.display = 'none'; // Sembunyikan elemen jika letterheadUrl tidak memiliki nilai
-    }
-
-    setTimeout(function() {
-        html2pdf().set(opt).from(content).toPdf().get('pdf').then(function(pdf) {
-            pdf.save('${fileName}.pdf'); // Menggunakan nilai fileName dari variabel di luar fungsi
-            button.innerText = 'Downloaded';
-            button.className = 'downloaded';
             setTimeout(function() {
-                button.innerText = 'Download PDF';
-                button.className = '';
-                if (!letterheadUrl) { // Jika letterheadUrl tidak memiliki nilai
-                    content.removeChild(letterhead); // Hapus elemen letterhead jika letterheadUrl tidak memiliki nilai
-                }
-            }, 2000);
-        });
-    }, 1000); // Delay 1 second before downloading PDF
-}, false);
+                html2pdf().set(opt).from(content).toPdf().get('pdf').then(function(pdf) {
+                    pdf.save('${fileName}.pdf'); // Menggunakan nilai fileName dari variabel di luar fungsi
+                    button.innerText = 'Downloaded';
+                    button.className = 'downloaded';
+                    setTimeout(function() {
+                        button.innerText = 'Download PDF';
+                        button.className = '';
+                        if (!letterheadUrl) { // Jika letterheadUrl tidak memiliki nilai
+                            content.removeChild(letterhead); // Hapus elemen letterhead jika letterheadUrl tidak memiliki nilai
+                        }
+                    }, 2000);
+                });
+            }, 1000); // Delay 1 second before downloading PDF
+        }, false);
 	  </script>
 	  `;
 	var encodedHtml = encodeURIComponent(originalHTML);
