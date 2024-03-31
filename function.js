@@ -216,11 +216,9 @@ document.getElementById('download').addEventListener('click', function() {
                 html: '#content',
                 addPageContent: function(data) {
                     pdf.text('Page ' + data.pageNumber, data.settings.margin.left, pdf.internal.pageSize.height - 10);
-                },
-                margin: { top: 60 } // Sesuaikan margin jika diperlukan
+                }
             });
             
-            // Simpan PDF setelah nomor halaman ditambahkan
             pdf.save('${fileName}.pdf');
             button.innerText = 'Downloaded';
             button.className = 'downloaded';
