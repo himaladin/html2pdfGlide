@@ -179,6 +179,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 <script>
 document.getElementById('download').addEventListener('click', function() {
     var button = this;
+    var letterheadUrl = document.querySelector('.letterhead img') ? '${letterheadUrl}' : "";
     var opt = {
         pagebreak: { mode: ['css'], before: ${JSON.stringify(breakBefore)}, after: ${JSON.stringify(breakAfter)}, avoid: ${JSON.stringify(breakAvoid)} },
         margin: ${margin},
@@ -200,12 +201,12 @@ document.getElementById('download').addEventListener('click', function() {
     setTimeout(function() {
         var content = document.getElementById('content');
         var letterhead = document.createElement('img');
-        letterhead.src = '${letterheadUrl}';
+        letterhead.src = letterheadUrl;
         letterhead.classList.add('letterhead');
         content.insertBefore(letterhead, content.firstChild);
 
         html2pdf().set(opt).from(content).toPdf().get('pdf').then(function(pdf) {
-            pdf.save('${fileName}.pdf'); // Menggunakan nilai fileName dari variabel di luar fungsi
+            pdf.save('${fileName}.pdf');
             button.innerText = 'Downloaded';
             button.className = 'downloaded';
             setTimeout(function() {
