@@ -112,11 +112,10 @@ button#download {
   vertical-align: middle;
   text-decoration: none;
   background: transparent;
-  padding: 0;
   font-size: inherit;
   font-family: inherit;
-  width: 12rem; /* Lebar tetap */
-  height: auto; /* Tinggi menyesuaikan isi */
+  padding: 0px 16px;
+  height: 32px;
 }
 
 button#download .circle {
@@ -124,8 +123,8 @@ button#download .circle {
   position: relative;
   display: block;
   margin: 0;
-  width: 3rem;
-  height: 3rem;
+  width: 32px;
+  height: 32px;
   background: #282936;
   border-radius: 1.625rem;
 }
@@ -142,8 +141,6 @@ button#download .circle .icon {
 button#download .circle .icon.arrow {
   transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
   left: 0.625rem;
-  width: 1.125rem;
-  height: 0.125rem;
   background: none;
 }
 
@@ -152,8 +149,6 @@ button#download .circle .icon.arrow::before {
   content: "";
   top: -0.29rem;
   right: 0.0625rem;
-  width: 0.625rem;
-  height: 0.625rem;
   border-top: 0.125rem solid #fff;
   border-right: 0.125rem solid #fff;
   transform: rotate(45deg);
