@@ -167,78 +167,78 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 
 	// HTML THAT IS RETURNED AS A RENDERABLE URL
 	const originalHTML = `
-	 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
-	  <style>${customCSS}</style>
-		<div class="main">
-		    <div class="header">
-		        <img src="${letterheadUrl}" class="letterhead" />
-		        <button class="button" id="download">Download</button>
-		    </div>
-		    <div id="content">${html}</div>
-		</div>
-	  <script>
-document.getElementById('download').addEventListener('click', function() {
-    var element = document.getElementById('content');
-    var button = this;
-    button.innerText = 'Downloading...';
-    button.className = 'downloading';
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+        <style>${customCSS}</style>
+        <div class="main">
+            <div class="header">
+                <img src="${letterheadUrl}" class="letterhead" />
+                <button class="button" id="download">Download</button>
+            </div>
+            <div id="content">${html}</div>
+        </div>
+        <script>
+        document.getElementById('download').addEventListener('click', function() {
+            var element = document.getElementById('content');
+            var button = this;
+            button.innerText = 'Downloading...';
+            button.className = 'downloading';
 
-    var opt = {
-        pagebreak: { mode: ['css'], before: ${JSON.stringify(breakBefore)}, after: ${JSON.stringify(breakAfter)}, avoid: ${JSON.stringify(breakAvoid)} },
-        margin: ${margin},
-        filename: '${fileName}',
-        html2canvas: {
-            useCORS: true,
-            scale: ${quality}
-        },
-        jsPDF: {
-            unit: 'px',
-            orientation: '${orientation}',
-            format: [${finalDimensions}],
-            hotfixes: ['px_scaling']
-        },
-    };
+            var opt = {
+                pagebreak: { mode: ['css'], before: ${JSON.stringify(breakBefore)}, after: ${JSON.stringify(breakAfter)}, avoid: ${JSON.stringify(breakAvoid)} },
+                margin: ${margin},
+                filename: '${fileName}',
+                html2canvas: {
+                    useCORS: true,
+                    scale: ${quality}
+                },
+                jsPDF: {
+                    unit: 'px',
+                    orientation: '${orientation}',
+                    format: [${finalDimensions}],
+                    hotfixes: ['px_scaling']
+                },
+            };
 
-    var letterheadUrl = '${letterheadUrl}';
-    var header = document.createElement('div');
-    header.classList.add('header');
+            var letterheadUrl = '${letterheadUrl}';
+            var header = document.createElement('div');
+            header.classList.add('header');
 
-    if (letterheadUrl.trim() !== '') {
-        var letterhead = document.createElement('img');
-        letterhead.src = letterheadUrl;
-        letterhead.classList.add('letterhead');
-        header.appendChild(letterhead);
-    }
+            if (letterheadUrl.trim() !== '') {
+                var letterhead = document.createElement('img');
+                letterhead.src = letterheadUrl;
+                letterhead.classList.add('letterhead');
+                header.appendChild(letterhead);
+            }
 
-    header.appendChild(button);
-    element.insertBefore(header, element.firstChild);
+            header.appendChild(button);
+            element.insertBefore(header, element.firstChild);
 
-    html2pdf(element, opt).from(element).set({
-        margin: [0, 0, 0, 0],
-        filename: fileName
-    }).toPdf().get('pdf').then(function(pdf) {
-        pdf.autoTable({ html: element });
-        pdf.internal.events.addEventType('onBeforePaging');
-        pdf.internal.events.subscribe('onBeforePaging', function(eventData) {
-            var pageCount = pdf.internal.getNumberOfPages();
-            pdf.setFontSize(10);
-            pdf.text('Page ' + eventData.pageNumber + ' of ' + pageCount, 10, pdf.internal.pageSize.height - 10);
+            html2pdf(element, opt).from(element).set({
+                margin: [0, 0, 0, 0],
+                filename: fileName
+            }).toPdf().get('pdf').then(function(pdf) {
+                pdf.autoTable({ html: element });
+                pdf.internal.events.addEventType('onBeforePaging');
+                pdf.internal.events.subscribe('onBeforePaging', function(eventData) {
+                    var pageCount = pdf.internal.getNumberOfPages();
+                    pdf.setFontSize(10);
+                    pdf.text('Page ' + eventData.pageNumber + ' of ' + pageCount, 10, pdf.internal.pageSize.height - 10);
+                });
+                pdf.save();
+                if (letterheadUrl.trim() !== '') {
+                    element.removeChild(header);
+                }
+            });
+
+            html2pdf().set(opt).from(element).toPdf().get('pdf').then(function(pdf) {
+                button.innerText = 'Done';
+                button.className = 'done';
+                setTimeout(function() {
+                    button.innerText = 'Download';
+                    button.className = '';
+                }, 2000);
+            }).save();
         });
-        pdf.save();
-        if (letterheadUrl.trim() !== '') {
-            element.removeChild(header);
-        }
-    });
-
-    html2pdf().set(opt).from(element).toPdf().get('pdf').then(function(pdf) {
-        button.innerText = 'Done';
-        button.className = 'done';
-        setTimeout(function() {
-            button.innerText = 'Download';
-            button.className = '';
-        }, 2000);
-    }).save();
-});
 	  </script>
 	  `;
 	var encodedHtml = encodeURIComponent(originalHTML);
