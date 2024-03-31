@@ -103,57 +103,56 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	  max-width: 1120px;
 	  height: auto;
 	}
-	button#download {
-	  position: fixed;
-	  border-radius: 0.5rem;
-	  font-size: 14px;
-	  font-weight: 600;
-	  line-height: 1.5rem;
-	  color: #212121;
-	  border: none;
-	  font-family: Arial;
-	  padding: 0px 16px;
-	  height: 32px;
-	  background: #e8e8e8;
-	  top: 8px;
-	  right: 8px;
-	  box-shadow: 2px 4px 10px -3px rgba(0,0,0,0.27);
-	  transition: all 250ms;
-	  overflow: hidden;
-	  cursor: pointer;
-	}
- 
-	button#download::before {
-	    content: "";
-	    position: absolute;
-	    top: 0;
-	    left: 0;
-	    height: 100%;
-	    width: 0;
-	    border-radius: 0.5rem;
-	    background-color: #4B5D67;
-	    z-index: -1;
-	    box-shadow: 2px 4px 10px -3px rgba(0,0,0,0.27);
-	    transition: all 250ms;
-	}
-	
-	button#download:hover {
-	    color: #e8e8e8;
-	}
-	
-	button#download:hover::before {
-	    width: 100%;
-	}
-  
-	button#download.downloading {
-	  color: #404040;
-   	  pointer-events: none;
-	}
-  
-	button#download.done {
-	  color: #16a34a;
-	}
-  
+button#download {
+  position: fixed;
+  border-radius: 0.5rem;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5rem;
+  color: #212121;
+  border: none;
+  font-family: Arial;
+  padding: 0px 16px;
+  height: 32px;
+  background: #e8e8e8;
+  top: 8px;
+  right: 8px;
+  box-shadow: 2px 4px 10px -3px rgba(0,0,0,0.27);
+  transition: all 250ms;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+button#download::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0;
+  border-radius: 0.5rem;
+  background-color: #4B5D67;
+  z-index: -1;
+  box-shadow: 2px 4px 10px -3px rgba(0,0,0,0.27);
+  transition: all 250ms;
+}
+
+button#download:hover {
+  color: #e8e8e8;
+}
+
+button#download:hover::before {
+  width: 100%;
+}
+
+button#download.downloading {
+  color: #404040;
+  pointer-events: none;
+}
+
+button#download.done {
+  color: #16a34a;
+}  
 	::-webkit-scrollbar {
 	  width: 5px;
 	  background-color: rgb(0 0 0 / 8%);
@@ -169,13 +168,18 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	const originalHTML = `
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
     <style>${customCSS}</style>
-    <div class="main">
-        <div class="header">
-            ${letterheadUrl ? `<img src="${letterheadUrl}" class="letterhead"/>` : `<img src="empty-image.png" class="letterhead empty"/>`}
-            <button class="button" id="download">Download</button>
-        </div>
-        <div id="content">${html}</div>
-    </div>
+	<div class="main">
+	    <div class="header">
+	        ${letterheadUrl ? `<img src="${letterheadUrl}" class="letterhead"/>` : `<img src="empty-image.png" class="letterhead empty"/>`}
+	        <button id="download" class="learn-more">
+	            <span class="circle" aria-hidden="true">
+	                <span class="icon arrow"></span>
+	            </span>
+	            <span class="button-text">Download PDF</span>
+	        </button>
+	    </div>
+	    <div id="content">${html}</div>
+	</div>
     <script>
 	document.getElementById('download').addEventListener('click', function() {
 	    var button = this;
