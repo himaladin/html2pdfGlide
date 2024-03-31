@@ -103,61 +103,58 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	  max-width: 1120px;
 	  height: auto;
 	}
-
-.button {
-    padding: 0.8rem 4rem;
-    border: none;
-    outline: none;
-    font-size: 1.3rem;
-    border-radius: 0.3rem;
-    font-weight: 600;
-    background-color: rgba(255, 255, 255, 0.953);
-    box-shadow: 2px 4px 10px -3px rgba(0,0,0,0.27);
-    position: fixed;
-    top: 8px;
-    right: 8px;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    transition: 0.4s ease-in-out;
-}
-
-.button .download-text {
-    position: absolute;
-    left: 1.8rem;
-    top: 1.3rem;
-    transition: 0.4s ease-in-out;
-    color: rgb(50, 50, 50);
-}
-
-.button .svg {
-    transform: translateY(-20px) rotate(30deg);
-    opacity: 0;
-    width: 2rem;
-    transition: 0.4s ease-in-out;
-}
-
-.button:hover {
-    background-color: rgb(50, 50, 50);
-}
-.button:disabled, .button.disabled .svg {
-  cursor: not-allowed;
-  pointer-events: none; 
-}
-
-.button:hover .svg {
-    display: inline-block;
-    transform: translateY(0px) rotate(0deg);
-    opacity: 1;
-}
-
-.button:hover .download-text {
-    opacity: 0;
-}
-
- 	::-webkit-scrollbar {
+	button#download {
+	  position: fixed;
+	  border-radius: 0.5rem;
+	  font-size: 14px;
+	  font-weight: 600;
+	  line-height: 1.5rem;
+	  color: #212121;
+	  border: none;
+	  font-family: Arial;
+	  padding: 0px 16px;
+	  height: 32px;
+	  background: #e8e8e8;
+	  top: 8px;
+	  right: 8px;
+	  box-shadow: 2px 4px 10px -3px rgba(0,0,0,0.27);
+	  transition: all 250ms;
+	  overflow: hidden;
+	  cursor: pointer;
+	}
+ 
+	button#download::before {
+	    content: "";
+	    position: absolute;
+	    top: 0;
+	    left: 0;
+	    height: 100%;
+	    width: 0;
+	    border-radius: 0.5rem;
+	    background-color: #4B5D67;
+	    z-index: -1;
+	    box-shadow: 2px 4px 10px -3px rgba(0,0,0,0.27);
+	    transition: all 250ms;
+	}
+	
+	button#download:hover {
+	    color: #e8e8e8;
+	}
+	
+	button#download:hover::before {
+	    width: 100%;
+	}
+  
+	button#download.downloading {
+	  color: #404040;
+   	  pointer-events: none;
+	}
+  
+	button#download.done {
+	  color: #16a34a;
+	}
+  
+	::-webkit-scrollbar {
 	  width: 5px;
 	  background-color: rgb(0 0 0 / 8%);
 	}
@@ -175,23 +172,13 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
     <div class="main">
         <div class="header">
             ${letterheadUrl ? `<img src="${letterheadUrl}" class="letterhead"/>` : `<img src="empty-image.png" class="letterhead empty"/>`}
-	       <button id="download" class="button">
-		  <span class="download-text">Download</span>
-		  <div class="svg">
-		    <svg xmlns="http://www.w3.org/2000/svg" fill="white" class="bi bi-download" viewBox="0 0 16 16">
-		      <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"></path>
-		      <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"></path>
-		    </svg>
-		  </div>
-		</button>
-	    </div>
+            <button class="button" id="download">Download</button>
         </div>
         <div id="content">${html}</div>
     </div>
     <script>
 	document.getElementById('download').addEventListener('click', function() {
 	    var button = this;
-	    var buttonTextSpan = button.querySelector('.download-text');
 	    var opt = {
 	        pagebreak: { mode: ['css'], before: ${JSON.stringify(breakBefore)}, after: ${JSON.stringify(breakAfter)}, avoid: ${JSON.stringify(breakAvoid)} },
 	        margin: ${margin},
@@ -207,9 +194,8 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	            hotfixes: ['px_scaling']
 	        },
 	    };
-	    buttonTextSpan.innerText = 'Downloading...';
-	    buttonTextSpan.className = 'downloading';
-     	    button.disabled = true;
+	    button.innerText = 'Downloading...';
+	    button.className = 'downloading';
 	
 	    var content = document.getElementById('content');
 	    var letterheadUrl = '${letterheadUrl}';
@@ -226,12 +212,11 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	    setTimeout(function() {
 	        html2pdf().set(opt).from(content).toPdf().get('pdf').then(function(pdf) {
 	            pdf.save('${fileName}.pdf');
-	            buttonTextSpan.innerText = 'Downloaded';
-	            buttonTextSpan.className = 'downloaded';
+	            button.innerText = 'Downloaded';
+	            button.className = 'downloaded';
 	            setTimeout(function() {
-	                buttonTextSpan.innerText = 'Download';
-	                buttonTextSpan.className = '';
-		 	button.disabled = false;
+	                button.innerText = 'Download PDF';
+	                button.className = '';
 	                if (letterheadAdded) {
 	                    content.removeChild(content.querySelector('.letterhead'));
 	                }
