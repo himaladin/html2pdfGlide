@@ -105,7 +105,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	}
  
 .button {
-  position: relative;
+  position: fixed;
   border-radius: 0.5rem;
   font-size: 14px;
   font-weight: 600;
@@ -122,16 +122,16 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
   transition: all 250ms;
   overflow: hidden;
   cursor: pointer;
+  display: flex; /* Menjadikan tombol flex container */
+  align-items: center; /* Posisikan isi tombol secara vertikal tengah */
+  justify-content: center; /* Posisikan isi tombol secara horizontal tengah */
 }
 
 .button .svg {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) rotate(30deg);
+  transform: translateY(-20px) rotate(30deg);
   opacity: 0;
   width: 2rem;
-  transition: 0.4s ease-in-out;
+  transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
 }
 
 .button:hover {
@@ -139,20 +139,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 }
 
 .button:hover .svg {
-  opacity: 1;
-}
-
-.button:active {
-  scale: 0.97;
-}
-
-.button .text {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  transition: 0.4s ease-in-out;
-  color: rgb(50, 50, 50);
+  transform: translateY(0px) rotate(0deg);
   opacity: 1;
 }
 
@@ -160,14 +147,19 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
   opacity: 0;
 }
 
-.button.downloading {
+.button:active {
+  scale: 0.97;
+}
+
+button#download.downloading {
   color: #404040;
   pointer-events: none;
 }
 
-.button.done {
+button#download.done {
   color: #16a34a;
 }
+
 
 	::-webkit-scrollbar {
 	  width: 5px;
