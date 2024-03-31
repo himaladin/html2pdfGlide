@@ -112,10 +112,11 @@ button#download {
   vertical-align: middle;
   text-decoration: none;
   background: transparent;
+  padding: 0;
   font-size: inherit;
   font-family: inherit;
-  padding: 0px 16px;
-  height: 32px;
+  width: auto; /* Lebar tetap */
+  height: 32px; /* Tinggi tetap */
 }
 
 button#download .circle {
@@ -123,8 +124,8 @@ button#download .circle {
   position: relative;
   display: block;
   margin: 0;
-  width: 32px;
-  height: 32px;
+  width: 3rem;
+  height: 3rem;
   background: #282936;
   border-radius: 1.625rem;
 }
@@ -141,6 +142,8 @@ button#download .circle .icon {
 button#download .circle .icon.arrow {
   transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
   left: 0.625rem;
+  width: 1.125rem;
+  height: 0.125rem;
   background: none;
 }
 
@@ -149,6 +152,8 @@ button#download .circle .icon.arrow::before {
   content: "";
   top: -0.29rem;
   right: 0.0625rem;
+  width: 0.625rem;
+  height: 0.625rem;
   border-top: 0.125rem solid #fff;
   border-right: 0.125rem solid #fff;
   transform: rotate(45deg);
@@ -170,6 +175,10 @@ button#download .button-text {
   text-transform: uppercase;
 }
 
+button#download.downloading {
+  background: #000; /* Warna background hitam saat tombol sedang didownload */
+}
+
 button#download:hover .circle {
   width: 100%;
 }
@@ -182,7 +191,7 @@ button#download:hover .circle .icon.arrow {
 button#download:hover .button-text {
   color: #fff;
 }
-  
+
 	::-webkit-scrollbar {
 	  width: 5px;
 	  background-color: rgb(0 0 0 / 8%);
