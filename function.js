@@ -202,6 +202,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	    };
 	    buttonTextSpan.innerText = 'Downloading...';
 	    buttonTextSpan.className = 'downloading';
+     	    button.disabled = true;
 	
 	    var content = document.getElementById('content');
 	    var letterheadUrl = '${letterheadUrl}';
@@ -223,6 +224,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	            setTimeout(function() {
 	                buttonTextSpan.innerText = 'Download';
 	                buttonTextSpan.className = '';
+		 	button.disabled = false;
 	                if (letterheadAdded) {
 	                    content.removeChild(content.querySelector('.letterhead'));
 	                }
