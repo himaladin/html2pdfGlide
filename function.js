@@ -177,68 +177,50 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
             <div id="content">${html}</div>
         </div>
         <script>
-        document.getElementById('download').addEventListener('click', function() {
-            var element = document.getElementById('content');
-            var button = this;
-            button.innerText = 'Downloading...';
-            button.className = 'downloading';
+document.getElementById('download').addEventListener('click', function() {
+    var button = this;
+    var opt = {
+        pagebreak: { mode: ['css'], before: ${JSON.stringify(breakBefore)}, after: ${JSON.stringify(breakAfter)}, avoid: ${JSON.stringify(breakAvoid)} },
+        margin: ${margin},
+        filename: '${fileName}',
+        html2canvas: {
+            useCORS: true,
+            scale: ${quality}
+        },
+        jsPDF: {
+            unit: 'px',
+            orientation: '${orientation}',
+            format: [${finalDimensions}],
+            hotfixes: ['px_scaling']
+        },
+    };
+    button.innerText = 'Downloading...';
+    button.className = 'downloading';
 
-            var opt = {
-                pagebreak: { mode: ['css'], before: ${JSON.stringify(breakBefore)}, after: ${JSON.stringify(breakAfter)}, avoid: ${JSON.stringify(breakAvoid)} },
-                margin: ${margin},
-                filename: '${fileName}',
-                html2canvas: {
-                    useCORS: true,
-                    scale: ${quality}
-                },
-                jsPDF: {
-                    unit: 'px',
-                    orientation: '${orientation}',
-                    format: [${finalDimensions}],
-                    hotfixes: ['px_scaling']
-                },
-            };
+    setTimeout(function() {
+        var content = document.getElementById('content');
+        var letterheadUrl = '${letterheadUrl}';
+        if (letterheadUrl.trim() !== '') { // Memeriksa apakah letterheadUrl tidak kosong atau hanya berisi spasi
+            var letterhead = document.createElement('img');
+            letterhead.src = letterheadUrl;
+            letterhead.classList.add('letterhead');
+            content.insertBefore(letterhead, content.firstChild);
+        }
 
-            var letterheadUrl = '${letterheadUrl}';
-            var header = document.createElement('div');
-            header.classList.add('header');
-
-            if (letterheadUrl.trim() !== '') {
-                var letterhead = document.createElement('img');
-                letterhead.src = letterheadUrl;
-                letterhead.classList.add('letterhead');
-                header.appendChild(letterhead);
-            }
-
-            header.appendChild(button);
-            element.insertBefore(header, element.firstChild);
-
-            html2pdf(element, opt).from(element).set({
-                margin: [0, 0, 0, 0],
-                filename: fileName
-            }).toPdf().get('pdf').then(function(pdf) {
-                pdf.autoTable({ html: element });
-                pdf.internal.events.addEventType('onBeforePaging');
-                pdf.internal.events.subscribe('onBeforePaging', function(eventData) {
-                    var pageCount = pdf.internal.getNumberOfPages();
-                    pdf.setFontSize(10);
-                    pdf.text('Page ' + eventData.pageNumber + ' of ' + pageCount, 10, pdf.internal.pageSize.height - 10);
-                });
-                pdf.save();
-                if (letterheadUrl.trim() !== '') {
-                    element.removeChild(header);
+        html2pdf().set(opt).from(content).toPdf().get('pdf').then(function(pdf) {
+            pdf.save('${fileName}.pdf'); // Menggunakan nilai fileName dari variabel di luar fungsi
+            button.innerText = 'Downloaded';
+            button.className = 'downloaded';
+            setTimeout(function() {
+                button.innerText = 'Download PDF';
+                button.className = '';
+                if (letterheadUrl.trim() !== '') { // Hapus elemen letterhead jika letterheadUrl tidak kosong
+                    content.removeChild(letterhead);
                 }
-            });
-
-            html2pdf().set(opt).from(element).toPdf().get('pdf').then(function(pdf) {
-                button.innerText = 'Done';
-                button.className = 'done';
-                setTimeout(function() {
-                    button.innerText = 'Download';
-                    button.className = '';
-                }, 2000);
-            }).save();
+            }, 2000);
         });
+    }, 1000); // Delay 1 second before downloading PDF
+}, false);
 	  </script>
 	  `;
 	var encodedHtml = encodeURIComponent(originalHTML);
