@@ -105,7 +105,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	}
 
 .button {
-    padding: 0.6rem 4rem;
+    padding: 0.8rem 4rem;
     border: none;
     outline: none;
     font-size: 1.3rem;
@@ -197,8 +197,9 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	            hotfixes: ['px_scaling']
 	        },
 	    };
-	button.disabled = true; // Menonaktifkan tombol selama proses download
-	    button.innerText = 'Downloading...';
+	
+	    button.disabled = true; // Disable button during download
+	    button.querySelector('.download-text').innerText = 'Downloading...'; // Change button text
 	
 	    var content = document.getElementById('content');
 	    var letterheadUrl = '${letterheadUrl}';
@@ -215,12 +216,11 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	    setTimeout(function() {
 	        html2pdf().set(opt).from(content).toPdf().get('pdf').then(function(pdf) {
 	            pdf.save('${fileName}.pdf');
-	            button.innerText = 'Downloaded';
-	            button.className = 'downloaded';
+	            button.querySelector('.download-text').innerText = 'Downloaded'; // Change button text
+	            button.disabled = false; // Enable button after download
 	            setTimeout(function() {
-                button.innerText = 'Download PDF';
-                button.disabled = false;
-                button.className = '';
+	                button.querySelector('.download-text').innerText = 'Download PDF'; // Change button text
+	                button.className = '';
 	                if (letterheadAdded) {
 	                    content.removeChild(content.querySelector('.letterhead'));
 	                }
