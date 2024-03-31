@@ -103,54 +103,56 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	  max-width: 1120px;
 	  height: auto;
 	}
-
-button.download {
-  position: fixed;
-  top: 8px;
-  right: 8px;
-  z-index: 9999; /* Pastikan tombol selalu muncul di atas konten lain */
-  background-color: #4B5D67;
-  color: white;
-  border: none;
-  border-radius: 0.5rem;
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
-  cursor: pointer;
-  outline: none;
-  box-shadow: 2px 4px 10px -3px rgba(0,0,0,0.27);
-  transition: background-color 0.3s;
-}
-
-button.download:hover {
-  background-color: #384551;
-}
-
-button.download .circle {
-  display: inline-block;
-  width: 24px;
-  height: 24px;
-  margin-right: 8px;
-  position: relative;
-  top: 6px; /* Menyesuaikan vertikal centering dengan teks */
-}
-
-button.download .icon.arrow {
-  width: 0;
-  height: 0;
-  border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
-  border-top: 6px solid white;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  transition: transform 0.3s;
-}
-
-button.download:hover .icon.arrow {
-  transform: translate(-50%, -50%) rotate(180deg);
-}
-
+	button#download {
+	  position: fixed;
+	  border-radius: 0.5rem;
+	  font-size: 14px;
+	  font-weight: 600;
+	  line-height: 1.5rem;
+	  color: #212121;
+	  border: none;
+	  font-family: Arial;
+	  padding: 0px 16px;
+	  height: 32px;
+	  background: #e8e8e8;
+	  top: 8px;
+	  right: 8px;
+	  box-shadow: 2px 4px 10px -3px rgba(0,0,0,0.27);
+	  transition: all 250ms;
+	  overflow: hidden;
+	  cursor: pointer;
+	}
+ 
+	button#download::before {
+	    content: "";
+	    position: absolute;
+	    top: 0;
+	    left: 0;
+	    height: 100%;
+	    width: 0;
+	    border-radius: 0.5rem;
+	    background-color: #4B5D67;
+	    z-index: -1;
+	    box-shadow: 2px 4px 10px -3px rgba(0,0,0,0.27);
+	    transition: all 250ms;
+	}
+	
+	button#download:hover {
+	    color: #e8e8e8;
+	}
+	
+	button#download:hover::before {
+	    width: 100%;
+	}
+  
+	button#download.downloading {
+	  color: #404040;
+   	  pointer-events: none;
+	}
+  
+	button#download.done {
+	  color: #16a34a;
+	}
   
 	::-webkit-scrollbar {
 	  width: 5px;
@@ -170,12 +172,7 @@ button.download:hover .icon.arrow {
     <div class="main">
         <div class="header">
             ${letterheadUrl ? `<img src="${letterheadUrl}" class="letterhead"/>` : `<img src="empty-image.png" class="letterhead empty"/>`}
-            <button class="download" id="download">
-		  <span class="circle" aria-hidden="true">
-		  <span class="icon arrow"></span>
-		  </span>
-		  <span class="button-text">Download</span>
-		</button>
+            <button class="button" id="download">Download</button>
         </div>
         <div id="content">${html}</div>
     </div>
