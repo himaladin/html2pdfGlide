@@ -182,6 +182,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
     <script>
 	document.getElementById('download').addEventListener('click', function() {
 	    var button = this;
+	    var buttonTextSpan = button.querySelector('.download-text');
 	    var opt = {
 	        pagebreak: { mode: ['css'], before: ${JSON.stringify(breakBefore)}, after: ${JSON.stringify(breakAfter)}, avoid: ${JSON.stringify(breakAvoid)} },
 	        margin: ${margin},
@@ -197,12 +198,9 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	            hotfixes: ['px_scaling']
 	        },
 	    };
-	    
-	    // Mengubah teks dan kelas pada elemen span di dalam tombol
-	    var buttonTextSpan = button.querySelector('.download-text');
 	    buttonTextSpan.innerText = 'Downloading...';
 	    buttonTextSpan.className = 'downloading';
-	    
+	
 	    var content = document.getElementById('content');
 	    var letterheadUrl = '${letterheadUrl}';
 	    var letterheadAdded = false;
@@ -218,7 +216,6 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	    setTimeout(function() {
 	        html2pdf().set(opt).from(content).toPdf().get('pdf').then(function(pdf) {
 	            pdf.save('${fileName}.pdf');
-	            // Mengubah teks dan kelas pada elemen span di dalam tombol setelah selesai
 	            buttonTextSpan.innerText = 'Downloaded';
 	            buttonTextSpan.className = 'downloaded';
 	            setTimeout(function() {
@@ -231,6 +228,11 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	        });
 	    }, 1000);
 	}, false);
+	  </script>
+	  `;
+	var encodedHtml = encodeURIComponent(originalHTML);
+	return "data:text/html;charset=utf-8," + encodedHtml;
+};
 	  </script>
 	  `;
 	var encodedHtml = encodeURIComponent(originalHTML);
