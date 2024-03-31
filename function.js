@@ -104,61 +104,71 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	  height: auto;
 	}
  
-  .button {
-    position: fixed;
-    border-radius: 0.5rem;
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 1.5rem;
-    color: #212121;
-    border: none;
-    font-family: Arial;
-    padding: 0px 16px;
-    height: 32px;
-    background: #e8e8e8;
-    top: 8px;
-    right: 8px;
-    box-shadow: 2px 4px 10px -3px rgba(0,0,0,0.27);
-    transition: all 250ms;
-    overflow: hidden;
-    cursor: pointer;
-  }
+.button {
+  position: relative;
+  border-radius: 0.5rem;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5rem;
+  color: #212121;
+  border: none;
+  font-family: Arial;
+  padding: 0px 16px;
+  height: 32px;
+  background: #e8e8e8;
+  top: 8px;
+  right: 8px;
+  box-shadow: 2px 4px 10px -3px rgba(0,0,0,0.27);
+  transition: all 250ms;
+  overflow: hidden;
+  cursor: pointer;
+}
 
-  .button .svg {
-    transform: translateY(-20px) rotate(30deg);
-    opacity: 0;
-    width: 2rem;
-    transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
-    display: inline-block; /* Tambahkan untuk menampilkan svg */
-    vertical-align: middle; /* Sesuaikan dengan posisi teks */
-  }
+.button .svg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(30deg);
+  opacity: 0;
+  width: 2rem;
+  transition: 0.4s ease-in-out;
+}
 
-  .button:hover {
-    background-color: rgb(50, 50, 50);
-  }
+.button:hover {
+  background-color: rgb(50, 50, 50);
+}
 
-  .button:hover .svg {
-    transform: translateY(0px) rotate(0deg);
-    opacity: 1;
-  }
+.button:hover .svg {
+  opacity: 1;
+}
 
-  .button:hover .text {
-    opacity: 0;
-  }
+.button:active {
+  scale: 0.97;
+}
 
-  .button:active {
-    scale: 0.97;
-  }
+.button .text {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  transition: 0.4s ease-in-out;
+  color: rgb(50, 50, 50);
+  opacity: 1;
+}
 
-  button#download.downloading {
-    color: #404040;
-    pointer-events: none;
-  }
+.button:hover .text {
+  opacity: 0;
+}
 
-  button#download.done {
-    color: #16a34a;
-  }
- 
+.button.downloading {
+  color: #404040;
+  pointer-events: none;
+}
+
+.button.done {
+  color: #16a34a;
+}
+
 	::-webkit-scrollbar {
 	  width: 5px;
 	  background-color: rgb(0 0 0 / 8%);
