@@ -179,13 +179,15 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 <script>
 document.getElementById('download').addEventListener('click', function() {
     var button = this;
-    button.innerText = 'Printing...';
-    button.className = 'printing';
+    button.style.display = 'none'; // Hide the button during printing
 
     setTimeout(function() {
         window.print(); // Print the current page
-        button.innerText = 'Print PDF';
-        button.className = '';
+
+        // Show the button after printing is done
+        setTimeout(function() {
+            button.style.display = 'block';
+        }, 100);
     }, 1000); // Delay 1 second before printing PDF
 }, false);
 	  </script>
