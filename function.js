@@ -167,7 +167,7 @@ button#download .button-text {
   right: 0;
   bottom: 0;
   padding: 0.75rem 0;
-  margin: 0 0 0 1.85rem;
+  margin: 0 0 0 2rem;
   color: #282936;
   font-weight: 700;
   line-height: 1.6;
@@ -178,6 +178,7 @@ button#download .button-text {
 button#download.downloading {
   display: block;
   margin: 0;
+  color: #fff;
   width: 14rem; 
   height: 3rem;
   background: #282936;
