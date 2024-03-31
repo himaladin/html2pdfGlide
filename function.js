@@ -220,15 +220,11 @@ document.getElementById('download').addEventListener('click', function() {
             });
             
             pdf.save('${fileName}.pdf');
-            button.innerText = 'Downloaded';
-            button.className = 'downloaded';
-            setTimeout(function() {
-                button.innerText = 'Download PDF';
-                button.className = '';
-                if (letterheadAdded) {
-                    content.removeChild(content.querySelector('.letterhead'));
-                }
-            }, 2000);
+            button.innerText = 'Download PDF';
+            button.className = '';
+            if (letterheadAdded) {
+                content.removeChild(content.querySelector('.letterhead'));
+            }
         });
     }, 1000);
 }, false);
