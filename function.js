@@ -104,103 +104,63 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	  height: auto;
 	}
  
-	button#download {
-	  position: relative;
-	  display: inline-block;
-	  cursor: pointer;
+	.button {
+	  padding: 0.8rem 4rem;
+	  border: none;
 	  outline: none;
-	  border: 0;
-	  vertical-align: middle;
-	  text-decoration: none;
-	  background: transparent;
-	  padding: 0;
-	  font-size: inherit;
-	  font-family: Arial; 
-	  width: 14rem; 
-	  height: 3rem; 
-	}
-	
-	button#download .circle {
-	  transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+	  font-size: 1.3rem;
+	  border-radius: 0.3rem;
+	  font-weight: 600;
+	  background-color: rgba(255, 255, 255, 0.953);
 	  position: relative;
-	  display: block;
-	  margin: 0;
-	  width: 3rem;
-	  height: 3rem;
-	  background: #282936;
-	  border-radius: 1.625rem;
+	  overflow: hidden;
+	  cursor: pointer;
+	  transition: 0.4s ease-in-out;
 	}
 	
-	button#download .circle .icon {
-	  transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+	.button .text {
 	  position: absolute;
-	  top: 0;
-	  bottom: 0;
-	  margin: auto;
-	  background: #fff;
+	  left: 1.8rem;
+	  top: 1.3rem;
+	  transition: 0.4s ease-in-out;
+	  color: rgb(50, 50, 50);
 	}
 	
-	button#download .circle .icon.arrow {
-	  transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
-	  left: 0.625rem;
-	  width: 1.125rem;
-	  height: 0.125rem;
-	  background: none;
+	.svg {
+	  transform: translateY(-20px) rotate(30deg);
+	  opacity: 0;
+	  width: 2rem;
+	  transition: 0.4s ease-in-out;
 	}
 	
-	button#download .circle .icon.arrow::before {
-	  position: absolute;
-	  content: "";
-	  top: -0.29rem;
-	  right: 0.0625rem;
-	  width: 0.625rem;
-	  height: 0.625rem;
-	  border-top: 0.125rem solid #fff;
-	  border-right: 0.125rem solid #fff;
-	  transform: rotate(45deg);
+	.button.downloading {
+	  background-color: rgb(50, 50, 50);
 	}
 	
-	button#download .button-text {
-	  transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
-	  position: absolute;
-	  top: 0;
-	  left: 0;
-	  right: 0;
-	  bottom: 0;
-	  padding: 0.75rem 0;
-	  margin: 0 0 0 2rem;
-	  color: #282936;
-	  font-weight: 700;
-	  line-height: 1.6;
-	  text-align: center;
-	  text-transform: uppercase;
+	.button.downloading .text {
+	  opacity: 0;
 	}
 	
-	button#download.downloading {
-	  display: block;
-	  margin: 0;
-	  color: #fff;
-	  width: 14rem; 
-	  height: 3rem;
-	  background: #282936;
-	  border-radius: 1.625rem;
+	.button.downloading .svg {
+	  transform: translateY(0) rotate(0);
+	  opacity: 1;
 	}
 	
-	button#download.downloading .button-text {
-	  color: #fff;
+	.button.downloaded {
+	  background-color: #282936;
 	}
 	
-	button#download.downloading:hover .circle {
-	  width: 100%;
+	.button.downloaded .text {
+	  opacity: 1;
 	}
 	
-	button#download.downloading:hover .circle .icon.arrow {
-	  background: #fff;
-	  transform: translate(1rem, 0);
+	.button.downloaded .svg {
+	  transform: translateY(0) rotate(0);
+	  opacity: 0;
 	}
 	
-	button#download.downloading:hover .button-text {
-	  color: #fff;
+	.button:active {
+	  scale: 0.97;
 	}
 
 	::-webkit-scrollbar {
@@ -221,11 +181,13 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
     <div class="main">
         <div class="header">
             ${letterheadUrl ? `<img src="${letterheadUrl}" class="letterhead"/>` : `<img src="empty-image.png" class="letterhead empty"/>`}
-            <button id="download">
-		  <span class="circle" aria-hidden="true">
-		  <span class="icon arrow"></span>
-		  </span>
-		  <span class="button-text">Download</span>
+		<button id="download" class="button">
+		  <p class="text">
+		    Download
+		  </p>
+		  <div class="svg">
+		    <svg xmlns="http://www.w3.org/2000/svg" fill="white" class="bi bi-download" viewBox="0 0 16 16"> <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"></path> <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"></path> </svg>
+		  </div>
 		</button>
         </div>
         <div id="content">${html}</div>
