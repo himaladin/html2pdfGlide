@@ -117,6 +117,9 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
     top: 8px;
     right: 8px;
     overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     cursor: pointer;
     transition: 0.4s ease-in-out;
 }
@@ -138,6 +141,10 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 
 .button:hover {
     background-color: rgb(50, 50, 50);
+}
+.button:disabled {
+  cursor: not-allowed;
+  pointer-events: none; 
 }
 
 .button:hover .svg {
