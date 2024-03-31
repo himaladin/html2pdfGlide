@@ -194,21 +194,23 @@ document.getElementById('download').addEventListener('click', function() {
             hotfixes: ['px_scaling']
         },
     };
-    button.innerText = 'Downloading...';
-    button.className = 'downloading';
+    button.innerText = 'Printing...';
+    button.className = 'printing';
 
     setTimeout(function() {
         var element = document.getElementById('content');
         html2pdf().set(opt).from(element).toPdf().get('pdf').then(function(pdf) {
-            button.innerText = 'Done';
-            button.className = 'done';
+            pdf.autoPrint(); // Set the PDF to automatically print when opened
+            pdf.save(); // Save the PDF
+            button.innerText = 'Printed';
+            button.className = 'printed';
             setTimeout(function() {
-                button.innerText = 'Download';
+                button.innerText = 'Print PDF';
                 button.className = '';
             }, 2000);
-        }).save();
-    }, 1000); // Delay 1 second before converting to PDF
-});
+        });
+    }, 1000); // Delay 1 second before printing PDF
+}, false);
 	  </script>
 	  `;
 	var encodedHtml = encodeURIComponent(originalHTML);
