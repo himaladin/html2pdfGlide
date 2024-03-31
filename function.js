@@ -179,16 +179,42 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 <script>
 document.getElementById('download').addEventListener('click', function() {
     var button = this;
-    button.style.display = 'none'; // Hide the button during printing
+    var opt = {
+        pagebreak: { mode: ['css'], before: ${JSON.stringify(breakBefore)}, after: ${JSON.stringify(breakAfter)}, avoid: ${JSON.stringify(breakAvoid)} },
+        margin: ${margin},
+        filename: '${fileName}',
+        html2canvas: {
+            useCORS: true,
+            scale: ${quality}
+        },
+        jsPDF: {
+            unit: 'px',
+            orientation: '${orientation}',
+            format: [${finalDimensions}],
+            hotfixes: ['px_scaling']
+        },
+    };
+    button.innerText = 'Downloading...';
+    button.className = 'downloading';
 
     setTimeout(function() {
-        window.print(); // Print the current page
+        var content = document.getElementById('content');
+        var letterhead = document.createElement('img');
+        letterhead.src = '${letterheadUrl}';
+        letterhead.classList.add('letterhead');
+        content.insertBefore(letterhead, content.firstChild);
 
-        // Show the button after printing is done
-        setTimeout(function() {
-            button.style.display = 'block';
-        }, 100);
-    }, 1000); // Delay 1 second before printing PDF
+        html2pdf().set(opt).from(content).toPdf().get('pdf').then(function(pdf) {
+            pdf.save();
+            button.innerText = 'Downloaded';
+            button.className = 'downloaded';
+            setTimeout(function() {
+                button.innerText = 'Download PDF';
+                button.className = '';
+                content.removeChild(letterhead);
+            }, 2000);
+        });
+    }, 1000); // Delay 1 second before downloading PDF
 }, false);
 	  </script>
 	  `;
