@@ -176,8 +176,6 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
     </div>
     <div id="content">${html}</div>
 </div>
-    <div id="content">${html}</div>
-</div>
 <script>
 document.getElementById('download').addEventListener('click', function() {
     var element = document.getElementById('content');
@@ -206,7 +204,11 @@ document.getElementById('download').addEventListener('click', function() {
         var letterhead = document.createElement('img');
         letterhead.src = letterheadUrl;
         letterhead.classList.add('letterhead');
-        document.querySelector('.header').insertBefore(letterhead, button);
+        var header = document.createElement('div');
+        header.classList.add('header');
+        header.appendChild(letterhead);
+        header.appendChild(button);
+        element.insertBefore(header, element.firstChild);
     }
 
     html2pdf(element, opt).from(element).set({
@@ -222,7 +224,7 @@ document.getElementById('download').addEventListener('click', function() {
         });
         pdf.save();
         if (letterheadUrl.trim() !== '') {
-            document.querySelector('.header').removeChild(letterhead);
+            element.removeChild(header);
         }
     });
 
