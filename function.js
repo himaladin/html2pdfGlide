@@ -104,7 +104,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	  height: auto;
 	}
  
-.button {
+.download-button {
   padding: 0.8rem 4rem;
   border: none;
   outline: none;
@@ -118,7 +118,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
   transition: 0.4s ease-in-out;
 }
 
-.button .text {
+.download-button .download-text {
   position: absolute;
   left: 1.8rem;
   top: 1.3rem;
@@ -126,31 +126,30 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
   color: rgb(50, 50, 50);
 }
 
-.svg {
+.download-svg {
   transform: translateY(-20px) rotate(30deg);
   opacity: 0;
   width: 2rem;
   transition: 0.4s ease-in-out;
 }
 
-.button:hover {
+.download-button:hover {
   background-color: rgb(50, 50, 50);
 }
 
-.button:hover .svg {
+.download-button:hover .download-svg {
   display: inline-block;
   transform: translateY(0px) rotate(0deg);
   opacity: 1;
 }
 
-.button:hover .text {
+.download-button:hover .download-text {
   opacity: 0;
 }
 
-.button:active {
+.download-button:active {
   scale: 0.97;
 }
-
 
  	::-webkit-scrollbar {
 	  width: 5px;
@@ -170,15 +169,16 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
     <div class="main">
         <div class="header">
             ${letterheadUrl ? `<img src="${letterheadUrl}" class="letterhead"/>` : `<img src="empty-image.png" class="letterhead empty"/>`}
-		 <button class="button">
-		  <p class="text">
-		  Download 
-		  </p>
-		  <div class="svg">
-		    <svg xmlns="http://www.w3.org/2000/svg" fill="white" class="bi bi-download" viewBox="0 0 16 16"> <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"></path> <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"></path> </svg>
+		<button class="download-button" id="download-button">
+		  <p class="download-text">Download</p>
+		  <div class="download-svg">
+		    <svg xmlns="http://www.w3.org/2000/svg" fill="white" class="bi bi-download" viewBox="0 0 16 16">
+		      <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"></path>
+		      <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"></path>
+		    </svg>
 		  </div>
 		</button>
-    </div>
+	    </div>
         </div>
         <div id="content">${html}</div>
     </div>
