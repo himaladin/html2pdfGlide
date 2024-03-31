@@ -122,9 +122,8 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
   transition: all 250ms;
   overflow: hidden;
   cursor: pointer;
-  display: flex; /* Menjadikan tombol flex container */
-  align-items: center; /* Posisikan isi tombol secara vertikal tengah */
-  justify-content: center; /* Posisikan isi tombol secara horizontal tengah */
+  text-align: center; /* Tambahkan untuk memusatkan teks */
+  white-space: nowrap; /* Hindari teks melingkar */
 }
 
 .button .svg {
@@ -132,6 +131,8 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
   opacity: 0;
   width: 2rem;
   transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
+  display: inline-block; /* Tambahkan untuk menampilkan svg */
+  vertical-align: middle; /* Sesuaikan dengan posisi teks */
 }
 
 .button:hover {
@@ -160,6 +161,13 @@ button#download.done {
   color: #16a34a;
 }
 
+.button:hover .text {
+  opacity: 0;
+}
+
+.button:hover .svg {
+  opacity: 1;
+}
 
 	::-webkit-scrollbar {
 	  width: 5px;
