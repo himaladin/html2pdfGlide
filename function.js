@@ -104,7 +104,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	  height: auto;
 	}
  
-.button {
+  .button {
     position: fixed;
     border-radius: 0.5rem;
     font-size: 14px;
@@ -118,49 +118,46 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
     background: #e8e8e8;
     top: 8px;
     right: 8px;
-    box-shadow: 2px 4px 10px -3px rgba(0, 0, 0, 0.27);
+    box-shadow: 2px 4px 10px -3px rgba(0,0,0,0.27);
     transition: all 250ms;
     overflow: hidden;
     cursor: pointer;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-}
+  }
 
-.button .svg {
-    position: relative;
-    top: 0.1rem;
+  .button .svg {
+    transform: translateY(-20px) rotate(30deg);
     opacity: 0;
     width: 2rem;
-    transition: opacity 0.4s ease-in-out;
-    display: inline-block;
-    vertical-align: middle;
-}
+    transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
+    display: inline-block; /* Tambahkan untuk menampilkan svg */
+    vertical-align: middle; /* Sesuaikan dengan posisi teks */
+  }
 
-.button:hover {
+  .button:hover {
     background-color: rgb(50, 50, 50);
-}
+  }
 
-.button:hover .svg {
+  .button:hover .svg {
+    transform: translateY(0px) rotate(0deg);
     opacity: 1;
-}
+  }
 
-.button:hover .text {
-    opacity: 0.2;
-}
+  .button:hover .text {
+    opacity: 0;
+  }
 
-.button:active {
+  .button:active {
     scale: 0.97;
-}
+  }
 
-button#download.downloading {
+  button#download.downloading {
     color: #404040;
     pointer-events: none;
-}
+  }
 
-button#download.done {
+  button#download.done {
     color: #16a34a;
-}
+  }
 
  	::-webkit-scrollbar {
 	  width: 5px;
