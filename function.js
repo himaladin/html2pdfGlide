@@ -104,64 +104,81 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	  height: auto;
 	}
  
-	.button {
-	  padding: 0.8rem 4rem;
-	  border: none;
-	  outline: none;
-	  font-size: 1.3rem;
-	  border-radius: 0.3rem;
-	  font-weight: 600;
-	  background-color: rgba(255, 255, 255, 0.953);
-	  position: relative;
-	  overflow: hidden;
-	  cursor: pointer;
-	  transition: 0.4s ease-in-out;
-	}
-	
-	.button .text {
-	  position: absolute;
-	  left: 1.8rem;
-	  top: 1.3rem;
-	  transition: 0.4s ease-in-out;
-	  color: rgb(50, 50, 50);
-	}
-	
-	.svg {
-	  transform: translateY(-20px) rotate(30deg);
-	  opacity: 0;
-	  width: 2rem;
-	  transition: 0.4s ease-in-out;
-	}
-	
-	.button.downloading {
-	  background-color: rgb(50, 50, 50);
-	}
-	
-	.button.downloading .text {
-	  opacity: 0;
-	}
-	
-	.button.downloading .svg {
-	  transform: translateY(0) rotate(0);
-	  opacity: 1;
-	}
-	
-	.button.downloaded {
-	  background-color: #282936;
-	}
-	
-	.button.downloaded .text {
-	  opacity: 1;
-	}
-	
-	.button.downloaded .svg {
-	  transform: translateY(0) rotate(0);
-	  opacity: 0;
-	}
-	
-	.button:active {
-	  scale: 0.97;
-	}
+.button {
+  padding: 0.8rem 4rem;
+  border: none;
+  outline: none;
+  font-size: 1.3rem;
+  border-radius: 0.3rem;
+  font-weight: 600;
+  background-color: rgba(255, 255, 255, 0.953);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: 0.4s ease-in-out;
+}
+
+.button .text {
+  position: absolute;
+  left: 1.8rem;
+  top: 1.3rem;
+  transition: 0.4s ease-in-out;
+  color: rgb(50, 50, 50);
+}
+
+.svg {
+  transform: translateY(-20px) rotate(30deg);
+  opacity: 0;
+  width: 2rem;
+  transition: 0.4s ease-in-out;
+}
+
+.button.downloading {
+  background-color: rgb(50, 50, 50);
+}
+
+.button.downloading .text {
+  opacity: 0;
+}
+
+.button.downloading .svg {
+  transform: translateY(0) rotate(0);
+  opacity: 1;
+}
+
+.button.downloaded {
+  background-color: #282936;
+}
+
+.button.downloaded .text {
+  opacity: 1;
+}
+
+.button.downloaded .svg {
+  transform: translateY(0) rotate(0);
+  opacity: 0;
+}
+
+.button:active {
+  scale: 0.97;
+}
+
+button#download.downloading .button-text {
+  color: #fff;
+}
+
+button#download.downloading:hover .circle {
+  width: 100%;
+}
+
+button#download.downloading:hover .circle .icon.arrow {
+  background: #fff;
+  transform: translate(1rem, 0);
+}
+
+button#download.downloading:hover .button-text {
+  color: #fff;
+}
 
 	::-webkit-scrollbar {
 	  width: 5px;
