@@ -161,6 +161,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
   top: 1.3rem;
   transition: 0.4s ease-in-out;
   color: rgb(50, 50, 50);
+  opacity: 1;
 }
 
 #download .svg {
