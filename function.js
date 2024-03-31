@@ -115,7 +115,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	  padding: 0;
 	  font-size: inherit;
 	  font-family: inherit;
-	  width: auto; /* Lebar tetap */
+	  width: 12rem; /* Lebar tetap */
 	  height: 32px; /* Tinggi tetap */
 	}
 	
