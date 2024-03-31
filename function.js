@@ -200,12 +200,11 @@ document.getElementById('download').addEventListener('click', function() {
     setTimeout(function() {
         var content = document.getElementById('content');
         var letterheadUrl = '${letterheadUrl}';
-        if (letterheadUrl.trim() !== '') { // Memeriksa apakah letterheadUrl tidak kosong atau hanya berisi spasi
-            var letterhead = document.createElement('img');
-            letterhead.src = letterheadUrl;
-            letterhead.classList.add('letterhead');
-            content.insertBefore(letterhead, content.firstChild);
-        }
+        var letterhead = document.createElement('img');
+        letterhead.src = letterheadUrl;
+        letterhead.classList.add('letterhead');
+        letterhead.style.display = letterheadUrl ? 'block' : 'none'; // Menyembunyikan atau menampilkan letterhead berdasarkan letterheadUrl
+        content.insertBefore(letterhead, content.firstChild);
 
         html2pdf().set(opt).from(content).toPdf().get('pdf').then(function(pdf) {
             pdf.save('${fileName}.pdf'); // Menggunakan nilai fileName dari variabel di luar fungsi
@@ -214,9 +213,7 @@ document.getElementById('download').addEventListener('click', function() {
             setTimeout(function() {
                 button.innerText = 'Download PDF';
                 button.className = '';
-                if (letterheadUrl.trim() !== '') { // Hapus elemen letterhead jika letterheadUrl tidak kosong
-                    content.removeChild(letterhead);
-                }
+                content.removeChild(letterhead);
             }, 2000);
         });
     }, 1000); // Delay 1 second before downloading PDF
