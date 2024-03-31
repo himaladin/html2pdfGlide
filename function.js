@@ -113,7 +113,9 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
     font-weight: 600;
     background-color: rgba(255, 255, 255, 0.953);
     box-shadow: 2px 4px 10px -3px rgba(0,0,0,0.27);
-    position: relative;
+    position: fixed;
+    top: 8px;
+    right: 8px;
     overflow: hidden;
     cursor: pointer;
     transition: 0.4s ease-in-out;
@@ -219,7 +221,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	            buttonTextSpan.innerText = 'Downloaded';
 	            buttonTextSpan.className = 'downloaded';
 	            setTimeout(function() {
-	                buttonTextSpan.innerText = 'Download PDF';
+	                buttonTextSpan.innerText = 'Download';
 	                buttonTextSpan.className = '';
 	                if (letterheadAdded) {
 	                    content.removeChild(content.querySelector('.letterhead'));
