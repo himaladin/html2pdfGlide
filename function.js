@@ -199,28 +199,24 @@ document.getElementById('download').addEventListener('click', function() {
 
     setTimeout(function() {
         var content = document.getElementById('content');
-
-        // Check if letterheadUrl is not empty
-        if (${letterheadUrl} !== "") {
+        var letterheadUrl = '${letterheadUrl}';
+        if (letterheadUrl) {
             var letterhead = document.createElement('img');
-            letterhead.src = '${letterheadUrl}';
+            letterhead.src = letterheadUrl;
             letterhead.classList.add('letterhead');
             content.insertBefore(letterhead, content.firstChild);
         }
 
         html2pdf().set(opt).from(content).toPdf().get('pdf').then(function(pdf) {
-            pdf.save('${fileName}.pdf');
+            pdf.save('${fileName}.pdf'); // Menggunakan nilai fileName dari variabel di luar fungsi
             button.innerText = 'Downloaded';
             button.className = 'downloaded';
-            
-            // Remove letterhead if added
-            if (${letterheadUrl} !== "") {
-                content.removeChild(letterhead);
-            }
-            
             setTimeout(function() {
                 button.innerText = 'Download PDF';
                 button.className = '';
+                if (letterheadUrl) {
+                    content.removeChild(letterhead);
+                }
             }, 2000);
         });
     }, 1000); // Delay 1 second before downloading PDF
