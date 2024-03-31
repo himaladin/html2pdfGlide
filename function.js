@@ -103,171 +103,133 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	  max-width: 1120px;
 	  height: auto;
 	}
-button#download {
-  position: relative;
-  display: inline-block;
+
+button.download {
+  position: fixed;
+  top: 8px;
+  right: 8px;
+  z-index: 9999; /* Pastikan tombol selalu muncul di atas konten lain */
+  background-color: #4B5D67;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
   cursor: pointer;
   outline: none;
-  border: 0;
-  vertical-align: middle;
-  text-decoration: none;
-  background: transparent;
-  padding: 0;
-  font-size: inherit;
-  font-family: inherit;
-  width: 12rem;
-  height: auto;
+  box-shadow: 2px 4px 10px -3px rgba(0,0,0,0.27);
+  transition: background-color 0.3s;
 }
 
-button#download .circle {
-  transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+button.download:hover {
+  background-color: #384551;
+}
+
+button.download .circle {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
   position: relative;
-  display: block;
-  margin: 0;
-  width: 3rem;
-  height: 3rem;
-  background: #282936;
-  border-radius: 1.625rem;
+  top: 6px; /* Menyesuaikan vertikal centering dengan teks */
 }
 
-button#download .circle .icon {
-  transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+button.download .icon.arrow {
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid white;
   position: absolute;
-  top: 0;
-  bottom: 0;
-  margin: auto;
-  background: #fff;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: transform 0.3s;
 }
 
-button#download .circle .icon.arrow {
-  transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
-  left: 0.625rem;
-  width: 1.125rem;
-  height: 0.125rem;
-  background: none;
+button.download:hover .icon.arrow {
+  transform: translate(-50%, -50%) rotate(180deg);
 }
 
-button#download .circle .icon.arrow::before {
-  position: absolute;
-  content: "";
-  top: -0.29rem;
-  right: 0.0625rem;
-  width: 0.625rem;
-  height: 0.625rem;
-  border-top: 0.125rem solid #fff;
-  border-right: 0.125rem solid #fff;
-  transform: rotate(45deg);
-}
-
-button#download .button-text {
-  transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  padding: 0.75rem 0;
-  margin: 0 0 0 1.85rem;
-  color: #282936;
-  font-weight: 700;
-  line-height: 1.6;
-  text-align: center;
-  text-transform: uppercase;
-}
-
-button#download:hover .circle {
-  width: 100%;
-}
-
-button#download:hover .circle .icon.arrow {
-  background: #fff;
-  transform: translate(1rem, 0);
-}
-
-button#download:hover .button-text {
-  color: #fff;
-}
-
-/* Scrollbar styles */
-::-webkit-scrollbar {
-  width: 5px;
-  background-color: rgb(0 0 0 / 8%);
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: rgb(0 0 0 / 32%);
-  border-radius: 4px;
-}
+  
+	::-webkit-scrollbar {
+	  width: 5px;
+	  background-color: rgb(0 0 0 / 8%);
+	}
+  
+	::-webkit-scrollbar-thumb {
+	  background-color: rgb(0 0 0 / 32%);
+	  border-radius: 4px;
+	}
 	`;
 
 	// HTML THAT IS RETURNED AS A RENDERABLE URL
 	const originalHTML = `
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
     <style>${customCSS}</style>
-<div class="main">
-    <div class="header">
-        ${letterheadUrl ? `<img src="${letterheadUrl}" class="letterhead"/>` : `<img src="empty-image.png" class="letterhead empty"/>`}
-<button class="learn-more" id="download">
-  <span class="circle" aria-hidden="true">
-    <span class="icon arrow"></span>
-  </span>
-  <span class="button-text">Download PDF</span>
-</button>
+    <div class="main">
+        <div class="header">
+            ${letterheadUrl ? `<img src="${letterheadUrl}" class="letterhead"/>` : `<img src="empty-image.png" class="letterhead empty"/>`}
+            <button class="download" id="download">
+		  <span class="circle" aria-hidden="true">
+		  <span class="icon arrow"></span>
+		  </span>
+		  <span class="button-text">Download</span>
+		</button>
+        </div>
+        <div id="content">${html}</div>
     </div>
-    <div id="content">${html}</div>
-</div>
     <script>
-document.querySelectorAll('.download').forEach(function(button) {
-    button.addEventListener('click', function() {
-        var button = this;
-        var opt = {
-            pagebreak: { mode: ['css'], before: ${JSON.stringify(breakBefore)}, after: ${JSON.stringify(breakAfter)}, avoid: ${JSON.stringify(breakAvoid)} },
-            margin: ${margin},
-            filename: '${fileName}',
-            html2canvas: {
-                useCORS: true,
-                scale: ${quality}
-            },
-            jsPDF: {
-                unit: 'px',
-                orientation: '${orientation}',
-                format: [${finalDimensions}],
-                hotfixes: ['px_scaling']
-            },
-        };
-        button.innerText = 'Downloading...';
-        button.className = 'downloading';
-
-        var content = document.getElementById('content');
-        var letterheadUrl = '${letterheadUrl}';
-        var letterheadAdded = false;
-
-        if (letterheadUrl && !content.querySelector('.letterhead')) {
-            var letterhead = document.createElement('img');
-            letterhead.src = letterheadUrl;
-            letterhead.classList.add('letterhead');
-            content.insertBefore(letterhead, content.firstChild);
-            letterheadAdded = true;
-        }
-
-        setTimeout(function() {
-            html2pdf().set(opt).from(content).toPdf().get('pdf').then(function(pdf) {
-                pdf.save('${fileName}.pdf');
-                button.innerText = 'Downloaded';
-                button.className = 'downloaded';
-                setTimeout(function() {
-                    button.innerText = 'Download PDF';
-                    button.className = '';
-                    if (letterheadAdded) {
-                        content.removeChild(content.querySelector('.letterhead'));
-                    }
-                }, 2000);
-            });
-        }, 1000);
-    }, false);
-});
+	document.getElementById('download').addEventListener('click', function() {
+	    var button = this;
+	    var opt = {
+	        pagebreak: { mode: ['css'], before: ${JSON.stringify(breakBefore)}, after: ${JSON.stringify(breakAfter)}, avoid: ${JSON.stringify(breakAvoid)} },
+	        margin: ${margin},
+	        filename: '${fileName}',
+	        html2canvas: {
+	            useCORS: true,
+	            scale: ${quality}
+	        },
+	        jsPDF: {
+	            unit: 'px',
+	            orientation: '${orientation}',
+	            format: [${finalDimensions}],
+	            hotfixes: ['px_scaling']
+	        },
+	    };
+	    button.innerText = 'Downloading...';
+	    button.className = 'downloading';
+	
+	    var content = document.getElementById('content');
+	    var letterheadUrl = '${letterheadUrl}';
+	    var letterheadAdded = false;
+	
+	    if (letterheadUrl && !content.querySelector('.letterhead')) {
+	        var letterhead = document.createElement('img');
+	        letterhead.src = letterheadUrl;
+	        letterhead.classList.add('letterhead');
+	        content.insertBefore(letterhead, content.firstChild);
+	        letterheadAdded = true;
+	    }
+	
+	    setTimeout(function() {
+	        html2pdf().set(opt).from(content).toPdf().get('pdf').then(function(pdf) {
+	            pdf.save('${fileName}.pdf');
+	            button.innerText = 'Downloaded';
+	            button.className = 'downloaded';
+	            setTimeout(function() {
+	                button.innerText = 'Download PDF';
+	                button.className = '';
+	                if (letterheadAdded) {
+	                    content.removeChild(content.querySelector('.letterhead'));
+	                }
+	            }, 2000);
+	        });
+	    }, 1000);
+	}, false);
 	  </script>
 	  `;
 	var encodedHtml = encodeURIComponent(originalHTML);
 	return "data:text/html;charset=utf-8," + encodedHtml;
 };
+}
