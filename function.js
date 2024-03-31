@@ -203,8 +203,6 @@ document.getElementById('download').addEventListener('click', function() {
     var letterheadUrl = '${letterheadUrl}';
     var header = document.createElement('div');
     header.classList.add('header');
-    var mainDiv = document.createElement('div');
-    mainDiv.classList.add('main');
 
     if (letterheadUrl.trim() !== '') {
         var letterhead = document.createElement('img');
@@ -213,39 +211,34 @@ document.getElementById('download').addEventListener('click', function() {
         header.appendChild(letterhead);
     }
 
-    var downloadButton = document.createElement('button');
-    downloadButton.innerText = 'Download';
-    downloadButton.id = 'download';
-    header.appendChild(downloadButton);
+    header.appendChild(button);
+    element.insertBefore(header, element.firstChild);
 
-    mainDiv.appendChild(header);
-    mainDiv.innerHTML += `<div id="content">${html}</div>`;
-    document.body.appendChild(mainDiv);
-
-    downloadButton.addEventListener('click', function() {
-        html2pdf(mainDiv, opt).from(mainDiv).set({
-            margin: [0, 0, 0, 0],
-            filename: '${fileName}'
-        }).toPdf().get('pdf').then(function(pdf) {
-            pdf.autoTable({ html: element });
-            pdf.internal.events.addEventType('onBeforePaging');
-            pdf.internal.events.subscribe('onBeforePaging', function(eventData) {
-                var pageCount = pdf.internal.getNumberOfPages();
-                pdf.setFontSize(10);
-                pdf.text('Page ' + eventData.pageNumber + ' of ' + pageCount, 10, pdf.internal.pageSize.height - 10);
-            });
-            pdf.save();
+    html2pdf(element, opt).from(element).set({
+        margin: [0, 0, 0, 0],
+        filename: fileName
+    }).toPdf().get('pdf').then(function(pdf) {
+        pdf.autoTable({ html: element });
+        pdf.internal.events.addEventType('onBeforePaging');
+        pdf.internal.events.subscribe('onBeforePaging', function(eventData) {
+            var pageCount = pdf.internal.getNumberOfPages();
+            pdf.setFontSize(10);
+            pdf.text('Page ' + eventData.pageNumber + ' of ' + pageCount, 10, pdf.internal.pageSize.height - 10);
         });
-
-        html2pdf().set(opt).from(mainDiv).toPdf().get('pdf').then(function(pdf) {
-            downloadButton.innerText = 'Done';
-            downloadButton.className = 'done';
-            setTimeout(function() {
-                downloadButton.innerText = 'Download';
-                downloadButton.className = '';
-            }, 2000);
-        }).save();
+        pdf.save();
+        if (letterheadUrl.trim() !== '') {
+            element.removeChild(header);
+        }
     });
+
+    html2pdf().set(opt).from(element).toPdf().get('pdf').then(function(pdf) {
+        button.innerText = 'Done';
+        button.className = 'done';
+        setTimeout(function() {
+            button.innerText = 'Download';
+            button.className = '';
+        }, 2000);
+    }).save();
 });
 	  </script>
 	  `;
