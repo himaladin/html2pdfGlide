@@ -177,38 +177,27 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
         <div id="content">${html}</div>
     </div>
     <script>
-document.getElementById('download').addEventListener('click', function() {
-    var button = this;
-    var opt = {
-        pagebreak: { mode: ['css'], before: ${JSON.stringify(breakBefore)}, after: ${JSON.stringify(breakAfter)}, avoid: ${JSON.stringify(breakAvoid)} },
-        margin: ${margin},
-        filename: '${fileName}',
-        html2canvas: {
-            useCORS: true,
-            scale: ${quality}
-        },
-        jsPDF: {
-            unit: 'px',
-            orientation: '${orientation}',
-            format: [${finalDimensions}],
-            hotfixes: ['px_scaling']
-        },
-    };
-    button.innerText = 'Downloading...';
-    button.className = 'downloading';
-
-    var content = document.getElementById('content');
-    var letterheadUrl = '${letterheadUrl}';
-    var letterheadAdded = false;
-
-    if (!content.querySelector('.letterhead')) {
-        var letterhead = document.createElement('img');
-        letterhead.src = letterheadUrl || 'empty-image.png';
-        letterhead.classList.add('letterhead');
-        content.insertBefore(letterhead, content.firstChild);
-        letterheadAdded = true;
-    }
-
+	  document.getElementById('download').addEventListener('click', function() {
+		var element = document.getElementById('content');
+		var button = this;
+		button.innerText = 'Downloading...';
+		button.className = 'downloading';
+  
+		var opt = {
+		pagebreak: { mode: ['css'], before: ${JSON.stringify(breakBefore)}, after: ${JSON.stringify(breakAfter)}, avoid: ${JSON.stringify(breakAvoid)} },
+		margin: ${margin},
+		filename: '${fileName}',
+		html2canvas: {
+		  useCORS: true,
+		  scale: ${quality}
+		},
+		jsPDF: {
+		  unit: 'px',
+		  orientation: '${orientation}',
+		  format: [${finalDimensions}],
+		  hotfixes: ['px_scaling']
+		}
+		};
     setTimeout(function() {
         html2pdf().set(opt).from(content).toPdf().get('pdf').then(function(pdf) {
             pdf.save('${fileName}.pdf');
