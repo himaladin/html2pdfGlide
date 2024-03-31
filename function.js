@@ -177,61 +177,53 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
         <div id="content">${html}</div>
     </div>
     <script>
-    document.getElementById('download').addEventListener('click', function() {
-        var button = this;
-        var opt = {
-            pagebreak: { mode: ['css'], before: ${JSON.stringify(breakBefore)}, after: ${JSON.stringify(breakAfter)}, avoid: ${JSON.stringify(breakAvoid)} },
-            margin: ${margin},
-            filename: '${fileName}',
-            html2canvas: {
-                useCORS: true,
-                scale: ${quality}
-            },
-            jsPDF: {
-                unit: 'px',
-                orientation: '${orientation}',
-                format: [${finalDimensions}],
-                hotfixes: ['px_scaling']
-            },
-        };
-        button.innerText = 'Downloading...';
-        button.className = 'downloading';
-
-        var content = document.getElementById('content');
-        var letterheadUrl = '${letterheadUrl}';
-        var letterheadAdded = false;
-
-        if (letterheadUrl && !content.querySelector('.letterhead')) {
-            var letterhead = document.createElement('img');
-            letterhead.src = letterheadUrl;
-            letterhead.classList.add('letterhead');
-            content.insertBefore(letterhead, content.firstChild);
-            letterheadAdded = true;
-        }
-
-        var pageCount = 1;
-
-        setTimeout(function() {
-            html2pdf().set(opt).from(content).toPdf().get('pdf').then(function(pdf) {
-                pdf.internal.events.addEventType('onBeforePaging');
-                pdf.internal.events.subscribe('onBeforePaging', function (eventData) {
-                    pdf.setFontSize(10);
-                    pdf.text('Page ' + pageCount++ + ' of ' + pdf.internal.getNumberOfPages(), 10, pdf.internal.pageSize.height - 10);
-                });
-
-                pdf.save('${fileName}.pdf');
-                button.innerText = 'Downloaded';
-                button.className = 'downloaded';
-                setTimeout(function() {
-                    button.innerText = 'Download PDF';
-                    button.className = '';
-                    if (letterheadAdded) {
-                        content.removeChild(content.querySelector('.letterhead'));
-                    }
-                }, 2000);
-            });
-        }, 1000);
-    }, false);
+	document.getElementById('download').addEventListener('click', function() {
+	    var button = this;
+	    var opt = {
+	        pagebreak: { mode: ['css'], before: ${JSON.stringify(breakBefore)}, after: ${JSON.stringify(breakAfter)}, avoid: ${JSON.stringify(breakAvoid)} },
+	        margin: ${margin},
+	        filename: '${fileName}',
+	        html2canvas: {
+	            useCORS: true,
+	            scale: ${quality}
+	        },
+	        jsPDF: {
+	            unit: 'px',
+	            orientation: '${orientation}',
+	            format: [${finalDimensions}],
+	            hotfixes: ['px_scaling']
+	        },
+	    };
+	    button.innerText = 'Downloading...';
+	    button.className = 'downloading';
+	
+	    var content = document.getElementById('content');
+	    var letterheadUrl = '${letterheadUrl}';
+	    var letterheadAdded = false;
+	
+	    if (letterheadUrl && !content.querySelector('.letterhead')) {
+	        var letterhead = document.createElement('img');
+	        letterhead.src = letterheadUrl;
+	        letterhead.classList.add('letterhead');
+	        content.insertBefore(letterhead, content.firstChild);
+	        letterheadAdded = true;
+	    }
+	
+	    setTimeout(function() {
+	        html2pdf().set(opt).from(content).toPdf().get('pdf').then(function(pdf) {
+	            pdf.save('${fileName}.pdf');
+	            button.innerText = 'Downloaded';
+	            button.className = 'downloaded';
+	            setTimeout(function() {
+	                button.innerText = 'Download PDF';
+	                button.className = '';
+	                if (letterheadAdded) {
+	                    content.removeChild(content.querySelector('.letterhead'));
+	                }
+	            }, 2000);
+	        });
+	    }, 1000);
+	}, false);
 	  </script>
 	  `;
 	var encodedHtml = encodeURIComponent(originalHTML);
