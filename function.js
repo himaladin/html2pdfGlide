@@ -204,18 +204,8 @@ document.getElementById('download').addEventListener('click', function() {
         letterhead.classList.add('letterhead');
         content.insertBefore(letterhead, content.firstChild);
 
-        html2pdf(element, opt).from(content).set({
-            margin: [0, 0, 0, 0],
-            filename: fileName // Menggunakan nilai fileName dari variabel di luar fungsi
-        }).toPdf().get('pdf').then(function(pdf) {
-            pdf.autoTable({ html: content });
-            pdf.internal.events.addEventType('onBeforePaging');
-            pdf.internal.events.subscribe('onBeforePaging', function(eventData) {
-                var pageCount = pdf.internal.getNumberOfPages();
-                pdf.setFontSize(10);
-                pdf.text('Page ' + eventData.pageNumber + ' of ' + pageCount, 10, pdf.internal.pageSize.height - 10);
-            });
-            pdf.save();
+        html2pdf().set(opt).from(content).toPdf().get('pdf').then(function(pdf) {
+            pdf.save('${fileName}.pdf'); // Menggunakan nilai fileName dari variabel di luar fungsi
             button.innerText = 'Downloaded';
             button.className = 'downloaded';
             setTimeout(function() {
