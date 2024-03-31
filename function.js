@@ -124,51 +124,39 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
     cursor: pointer;
   }
 
-  .button::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 0;
-    border-radius: 0.5rem;
-    background-color: #4B5D67;
-    z-index: -1;
-    box-shadow: 2px 4px 10px -3px rgba(0,0,0,0.27);
-    transition: all 250ms;
-  }
-
-  .button:hover {
-    color: #e8e8e8;
-  }
-
-  .button:hover::before {
-    width: 100%;
-  }
-
-  .button.downloading {
-    color: #404040;
-    pointer-events: none;
-  }
-
-  .button.done {
-    color: #16a34a;
-  }
-
-  .svg {
+  .button .svg {
     display: none;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) rotate(30deg);
+    transform: translateY(-20px) rotate(30deg);
     opacity: 0;
     width: 2rem;
     transition: 0.4s ease-in-out;
   }
 
+  .button:hover {
+    background-color: rgb(50, 50, 50);
+  }
+
   .button:hover .svg {
-    display: block;
+    display: inline-block;
+    transform: translateY(0px) rotate(0deg);
     opacity: 1;
+  }
+
+  .button:hover .text {
+    opacity: 0;
+  }
+
+  .button:active {
+    scale: 0.97;
+  }
+
+  button#download.downloading {
+    color: #404040;
+    pointer-events: none;
+  }
+
+  button#download.done {
+    color: #16a34a;
   }
  
 	::-webkit-scrollbar {
