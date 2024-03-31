@@ -104,53 +104,61 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	  height: auto;
 	}
  
-.button {
-  padding: 0.8rem 4rem;
-  border: none;
-  outline: none;
-  font-size: 1.3rem;
-  border-radius: 0.3rem;
-  font-weight: 600;
-  background-color: rgba(255, 255, 255, 0.953);
-  position: relative;
-  overflow: hidden;
-  cursor: pointer;
-  transition: 0.4s ease-in-out;
-}
-
-.button .download-text {
-  position: absolute;
-  left: 1.8rem;
-  top: 1.3rem;
-  transition: 0.4s ease-in-out;
-  color: rgb(50, 50, 50);
-}
-
-.button .svg {
-  transform: translateY(-20px) rotate(30deg);
-  opacity: 0;
-  width: 2rem;
-  transition: 0.4s ease-in-out;
-}
-
-.button:hover {
-  background-color: rgb(50, 50, 50);
-}
-
-.button:hover .svg {
-  display: inline-block;
-  transform: translateY(0px) rotate(0deg);
-  opacity: 1;
-}
-
-.button:hover .download-text {
-  opacity: 0;
-}
-
-.button:active {
-  scale: 0.97;
-}
-
+	.button {
+	    padding: 0.8rem 4rem;
+	    border: none;
+	    outline: none;
+	    font-size: 1.3rem;
+	    border-radius: 0.3rem;
+	    font-weight: 600;
+	    background-color: rgba(255, 255, 255, 0.953);
+	    position: relative;
+	    overflow: hidden;
+	    cursor: pointer;
+	    transition: 0.4s ease-in-out;
+	}
+	
+	.button.downloading {
+	    cursor: progress; /* Ubah kursor saat proses download */
+	}
+	
+	.button.downloaded {
+	    background-color: #16a34a; /* Ubah warna background saat selesai download */
+	    color: #fff; /* Ubah warna teks saat selesai download */
+	}
+	
+	.button .text {
+	    position: absolute;
+	    left: 1.8rem;
+	    top: 1.3rem;
+	    transition: 0.4s ease-in-out;
+	    color: rgb(50, 50, 50);
+	}
+	
+	.button .svg {
+	    transform: translateY(-20px) rotate(30deg);
+	    opacity: 0;
+	    width: 2rem;
+	    transition: 0.4s ease-in-out;
+	}
+	
+	.button:hover {
+	    background-color: rgb(50, 50, 50);
+	}
+	
+	.button:hover .svg {
+	    display: inline-block;
+	    transform: translateY(0px) rotate(0deg);
+	    opacity: 1;
+	}
+	
+	.button:hover .text {
+	    opacity: 0;
+	}
+	
+	.button:active {
+	    scale: 0.97;
+	}
 
  	::-webkit-scrollbar {
 	  width: 5px;
