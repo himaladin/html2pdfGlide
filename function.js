@@ -133,10 +133,6 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
   transition: 0.4s ease-in-out;
 }
 
-.button.downloading {
-  background-color: rgb(50, 50, 50);
-}
-
 .button.downloading .text {
   opacity: 0;
 }
@@ -161,23 +157,6 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 
 .button:active {
   scale: 0.97;
-}
-
-button#download.downloading .button-text {
-  color: #fff;
-}
-
-button#download.downloading:hover .circle {
-  width: 100%;
-}
-
-button#download.downloading:hover .circle .icon.arrow {
-  background: #fff;
-  transform: translate(1rem, 0);
-}
-
-button#download.downloading:hover .button-text {
-  color: #fff;
 }
 
 	::-webkit-scrollbar {
