@@ -168,66 +168,68 @@ button#download.done {
 	const originalHTML = `
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
     <style>${customCSS}</style>
-	<div class="main">
-	    <div class="header">
-	        ${letterheadUrl ? `<img src="${letterheadUrl}" class="letterhead"/>` : `<img src="empty-image.png" class="letterhead empty"/>`}
-	        <button id="download" class="learn-more">
-	            <span class="circle" aria-hidden="true">
-	                <span class="icon arrow"></span>
-	            </span>
-	            <span class="button-text">Download PDF</span>
-	        </button>
-	    </div>
-	    <div id="content">${html}</div>
-	</div>
+<div class="main">
+    <div class="header">
+        ${letterheadUrl ? `<img src="${letterheadUrl}" class="letterhead"/>` : `<img src="empty-image.png" class="letterhead empty"/>`}
+        <button class="learn-more download">
+            <span class="circle" aria-hidden="true">
+                <span class="icon arrow"></span>
+            </span>
+            <span class="button-text">Download PDF</span>
+        </button>
+    </div>
+    <div id="content">${html}</div>
+</div>
     <script>
-	document.getElementById('download').addEventListener('click', function() {
-	    var button = this;
-	    var opt = {
-	        pagebreak: { mode: ['css'], before: ${JSON.stringify(breakBefore)}, after: ${JSON.stringify(breakAfter)}, avoid: ${JSON.stringify(breakAvoid)} },
-	        margin: ${margin},
-	        filename: '${fileName}',
-	        html2canvas: {
-	            useCORS: true,
-	            scale: ${quality}
-	        },
-	        jsPDF: {
-	            unit: 'px',
-	            orientation: '${orientation}',
-	            format: [${finalDimensions}],
-	            hotfixes: ['px_scaling']
-	        },
-	    };
-	    button.innerText = 'Downloading...';
-	    button.className = 'downloading';
-	
-	    var content = document.getElementById('content');
-	    var letterheadUrl = '${letterheadUrl}';
-	    var letterheadAdded = false;
-	
-	    if (letterheadUrl && !content.querySelector('.letterhead')) {
-	        var letterhead = document.createElement('img');
-	        letterhead.src = letterheadUrl;
-	        letterhead.classList.add('letterhead');
-	        content.insertBefore(letterhead, content.firstChild);
-	        letterheadAdded = true;
-	    }
-	
-	    setTimeout(function() {
-	        html2pdf().set(opt).from(content).toPdf().get('pdf').then(function(pdf) {
-	            pdf.save('${fileName}.pdf');
-	            button.innerText = 'Downloaded';
-	            button.className = 'downloaded';
-	            setTimeout(function() {
-	                button.innerText = 'Download PDF';
-	                button.className = '';
-	                if (letterheadAdded) {
-	                    content.removeChild(content.querySelector('.letterhead'));
-	                }
-	            }, 2000);
-	        });
-	    }, 1000);
-	}, false);
+document.querySelectorAll('.download').forEach(function(button) {
+    button.addEventListener('click', function() {
+        var button = this;
+        var opt = {
+            pagebreak: { mode: ['css'], before: ${JSON.stringify(breakBefore)}, after: ${JSON.stringify(breakAfter)}, avoid: ${JSON.stringify(breakAvoid)} },
+            margin: ${margin},
+            filename: '${fileName}',
+            html2canvas: {
+                useCORS: true,
+                scale: ${quality}
+            },
+            jsPDF: {
+                unit: 'px',
+                orientation: '${orientation}',
+                format: [${finalDimensions}],
+                hotfixes: ['px_scaling']
+            },
+        };
+        button.innerText = 'Downloading...';
+        button.className = 'downloading';
+
+        var content = document.getElementById('content');
+        var letterheadUrl = '${letterheadUrl}';
+        var letterheadAdded = false;
+
+        if (letterheadUrl && !content.querySelector('.letterhead')) {
+            var letterhead = document.createElement('img');
+            letterhead.src = letterheadUrl;
+            letterhead.classList.add('letterhead');
+            content.insertBefore(letterhead, content.firstChild);
+            letterheadAdded = true;
+        }
+
+        setTimeout(function() {
+            html2pdf().set(opt).from(content).toPdf().get('pdf').then(function(pdf) {
+                pdf.save('${fileName}.pdf');
+                button.innerText = 'Downloaded';
+                button.className = 'downloaded';
+                setTimeout(function() {
+                    button.innerText = 'Download PDF';
+                    button.className = '';
+                    if (letterheadAdded) {
+                        content.removeChild(content.querySelector('.letterhead'));
+                    }
+                }, 2000);
+            });
+        }, 1000);
+    }, false);
+});
 	  </script>
 	  `;
 	var encodedHtml = encodeURIComponent(originalHTML);
