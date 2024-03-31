@@ -142,7 +142,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 .button:hover {
     background-color: rgb(50, 50, 50);
 }
-.button:disabled {
+.button:disabled, .button.disabled .svg {
   cursor: not-allowed;
   pointer-events: none; 
 }
