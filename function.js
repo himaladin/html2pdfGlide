@@ -178,7 +178,11 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 </div>
 <script>
 document.getElementById('download').addEventListener('click', function() {
+    var element = document.getElementById('content');
     var button = this;
+    button.innerText = 'Downloading...';
+    button.className = 'downloading';
+
     var opt = {
         pagebreak: { mode: ['css'], before: ${JSON.stringify(breakBefore)}, after: ${JSON.stringify(breakAfter)}, avoid: ${JSON.stringify(breakAvoid)} },
         margin: ${margin},
@@ -194,33 +198,40 @@ document.getElementById('download').addEventListener('click', function() {
             hotfixes: ['px_scaling']
         },
     };
-    button.innerText = 'Downloading...';
-    button.className = 'downloading';
 
-    setTimeout(function() {
-        var content = document.getElementById('content');
-        var letterheadUrl = '${letterheadUrl}';
-        if (letterheadUrl) {
-            var letterhead = document.createElement('img');
-            letterhead.src = letterheadUrl;
-            letterhead.classList.add('letterhead');
-            content.insertBefore(letterhead, content.firstChild);
+    // Logika untuk menampilkan atau menyembunyikan elemen letterhead
+    var letterheadUrl = '${letterheadUrl}';
+    var letterhead = null;
+    if (letterheadUrl) {
+        letterhead = document.createElement('img');
+        letterhead.src = letterheadUrl;
+        letterhead.classList.add('letterhead');
+        element.insertBefore(letterhead, element.firstChild);
+    }
+
+    html2pdf().set(opt).from(element).toPdf().get('pdf').then(function(pdf) {
+        // Hapus elemen letterhead setelah pengambilan PDF selesai
+        if (letterhead) {
+            element.removeChild(letterhead);
         }
 
-        html2pdf().set(opt).from(content).toPdf().get('pdf').then(function(pdf) {
-            pdf.save('${fileName}.pdf'); // Menggunakan nilai fileName dari variabel di luar fungsi
-            button.innerText = 'Downloaded';
-            button.className = 'downloaded';
-            setTimeout(function() {
-                button.innerText = 'Download PDF';
-                button.className = '';
-                if (letterheadUrl) {
-                    content.removeChild(letterhead);
-                }
-            }, 2000);
+        pdf.autoTable({ html: element });
+        pdf.internal.events.addEventType('onBeforePaging');
+        pdf.internal.events.subscribe('onBeforePaging', function(eventData) {
+            var pageCount = pdf.internal.getNumberOfPages();
+            pdf.setFontSize(10);
+            pdf.text('Page ' + eventData.pageNumber + ' of ' + pageCount, 10, pdf.internal.pageSize.height - 10);
         });
-    }, 1000); // Delay 1 second before downloading PDF
-}, false);
+        pdf.save();
+        
+        button.innerText = 'Done';
+        button.className = 'done';
+        setTimeout(function() { 
+            button.innerText = 'Download';
+            button.className = ''; 
+        }, 2000);
+    });
+});
 	  </script>
 	  `;
 	var encodedHtml = encodeURIComponent(originalHTML);
