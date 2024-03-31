@@ -199,35 +199,30 @@ document.getElementById('download').addEventListener('click', function() {
 
     var content = document.getElementById('content');
     var letterheadUrl = '${letterheadUrl}';
-    var letterhead = content.querySelector('.letterhead'); // Cari elemen letterhead yang sudah ada
+    var letterheadAdded = false;
 
-    if (!letterhead) { // Jika elemen letterhead belum ada, tambahkan
-        letterhead = document.createElement('img');
-        if (letterheadUrl) { // Jika letterheadUrl memiliki nilai
-            letterhead.src = letterheadUrl;
-            letterhead.classList.add('letterhead');
-        } else {
-            // Jika letterheadUrl tidak memiliki nilai, tambahkan icon empty image
-            letterhead.src = 'empty-image.png';
-            letterhead.classList.add('empty-image');
-        }
+    if (!content.querySelector('.letterhead')) {
+        var letterhead = document.createElement('img');
+        letterhead.src = letterheadUrl || 'empty-image.png';
+        letterhead.classList.add('letterhead');
         content.insertBefore(letterhead, content.firstChild);
+        letterheadAdded = true;
     }
 
     setTimeout(function() {
         html2pdf().set(opt).from(content).toPdf().get('pdf').then(function(pdf) {
-            pdf.save('${fileName}.pdf'); // Menggunakan nilai fileName dari variabel di luar fungsi
+            pdf.save('${fileName}.pdf');
             button.innerText = 'Downloaded';
             button.className = 'downloaded';
             setTimeout(function() {
                 button.innerText = 'Download PDF';
                 button.className = '';
-                if (!letterheadUrl) { // Jika letterheadUrl tidak memiliki nilai
-                    content.removeChild(letterhead); // Hapus elemen letterhead jika letterheadUrl tidak memiliki nilai
+                if (letterheadAdded) {
+                    content.removeChild(content.querySelector('.letterhead'));
                 }
             }, 2000);
         });
-    }, 1000); // Delay 1 second before downloading PDF
+    }, 1000);
 }, false);
 	  </script>
 	  `;
