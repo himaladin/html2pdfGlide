@@ -229,4 +229,3 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	var encodedHtml = encodeURIComponent(originalHTML);
 	return "data:text/html;charset=utf-8," + encodedHtml;
 };
-}
