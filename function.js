@@ -171,7 +171,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
         <style>${customCSS}</style>
         <div class="main">
             <div class="header">
-                <img src="${letterheadUrl}" class="letterhead" />
+                <img src="${letterheadUrl}" class="letterhead" style="display:none;">
                 <button class="button" id="download">Download</button>
             </div>
             <div id="content">${html}</div>
@@ -197,17 +197,16 @@ document.getElementById('download').addEventListener('click', function() {
     button.innerText = 'Downloading...';
     button.className = 'downloading';
 
+
     setTimeout(function() {
         var content = document.getElementById('content');
         var letterheadUrl = '${letterheadUrl}';
-        var letterhead = document.createElement('img');
+        var letterhead = document.querySelector('.letterhead');
+
         if (letterheadUrl) { // Jika letterheadUrl memiliki nilai
+            letterhead.style.display = 'block'; // Tampilkan elemen letterhead
             letterhead.src = letterheadUrl;
-            letterhead.classList.add('letterhead');
-        } else {
-            letterhead.style.display = 'none'; // Sembunyikan elemen jika letterheadUrl tidak memiliki nilai
         }
-        content.insertBefore(letterhead, content.firstChild);
 
         html2pdf().set(opt).from(content).toPdf().get('pdf').then(function(pdf) {
             pdf.save('${fileName}.pdf'); // Menggunakan nilai fileName dari variabel di luar fungsi
