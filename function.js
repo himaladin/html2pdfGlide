@@ -171,7 +171,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
         <style>${customCSS}</style>
         <div class="main">
             <div class="header">
-                <img src="${letterheadUrl}" class="letterhead" style="display:none;">
+                <img src="${letterheadUrl}" class="letterhead"/>
                 <button class="button" id="download">Download</button>
             </div>
             <div id="content">${html}</div>
@@ -197,21 +197,21 @@ document.getElementById('download').addEventListener('click', function() {
     button.innerText = 'Downloading...';
     button.className = 'downloading';
 
+    var content = document.getElementById('content');
+    var letterheadUrl = '${letterheadUrl}';
+    var letterhead = document.createElement('img');
+    if (letterheadUrl) { // Jika letterheadUrl memiliki nilai
+        letterhead.src = letterheadUrl;
+        letterhead.classList.add('letterhead');
+    }
+    content.insertBefore(letterhead, content.firstChild);
+
+    // Tambahkan kode berikut untuk mengatur tampilan letterhead
+    if (!letterheadUrl) { // Jika letterheadUrl tidak memiliki nilai
+        letterhead.style.display = 'none'; // Sembunyikan elemen jika letterheadUrl tidak memiliki nilai
+    }
+
     setTimeout(function() {
-        var content = document.getElementById('content');
-        var letterheadUrl = '${letterheadUrl}';
-        var letterhead = document.createElement('img');
-        if (letterheadUrl) { // Jika letterheadUrl memiliki nilai
-            letterhead.src = letterheadUrl;
-            letterhead.classList.add('letterhead');
-        }
-        content.insertBefore(letterhead, content.firstChild);
-
-        // Tambahkan kode berikut untuk mengatur tampilan letterhead
-        if (!letterheadUrl) { // Jika letterheadUrl tidak memiliki nilai
-            letterhead.style.display = 'none'; // Sembunyikan elemen jika letterheadUrl tidak memiliki nilai
-        }
-
         html2pdf().set(opt).from(content).toPdf().get('pdf').then(function(pdf) {
             pdf.save('${fileName}.pdf'); // Menggunakan nilai fileName dari variabel di luar fungsi
             button.innerText = 'Downloaded';
