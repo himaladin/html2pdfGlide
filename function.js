@@ -114,9 +114,9 @@ button#download {
   background: transparent;
   padding: 0;
   font-size: inherit;
-  font-family: inherit;
-  width: 14rem; /* Lebar tetap */
-  height: 32px; /* Tinggi tetap */
+  font-family: Arial; 
+  width: 14rem; 
+  height: 32px; 
 }
 
 button#download .circle {
@@ -176,25 +176,32 @@ button#download .button-text {
 }
 
 button#download.downloading {
-  background: #000; /* Warna background hitam saat tombol sedang didownload */
+  transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+  position: relative;
+  display: block;
+  margin: 0;
+  height: 32px;
+  background: #282936;
+  border-radius: 1.625rem;
 }
 
 button#download.downloading .button-text {
-  color: #fff; /* Warna teks putih saat tombol sedang didownload */
+  color: #fff;
 }
 
-button#download:hover .circle {
+button#download.downloading:hover .circle {
   width: 100%;
 }
 
-button#download:hover .circle .icon.arrow {
+button#download.downloading:hover .circle .icon.arrow {
   background: #fff;
   transform: translate(1rem, 0);
 }
 
-button#download:hover .button-text {
+button#download.downloading:hover .button-text {
   color: #fff;
 }
+
 
 	::-webkit-scrollbar {
 	  width: 5px;
