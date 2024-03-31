@@ -199,22 +199,19 @@ document.getElementById('download').addEventListener('click', function() {
         },
     };
 
-    // Logika untuk menampilkan atau menyembunyikan elemen letterhead
+    // Tambahkan pengecekan untuk letterheadUrl kosong
     var letterheadUrl = '${letterheadUrl}';
-    var letterhead = null;
-    if (letterheadUrl) {
-        letterhead = document.createElement('img');
+    if (letterheadUrl.trim() !== '') {
+        var letterhead = document.createElement('img');
         letterhead.src = letterheadUrl;
         letterhead.classList.add('letterhead');
         element.insertBefore(letterhead, element.firstChild);
     }
 
-    html2pdf().set(opt).from(element).toPdf().get('pdf').then(function(pdf) {
-        // Hapus elemen letterhead setelah pengambilan PDF selesai
-        if (letterhead) {
-            element.removeChild(letterhead);
-        }
-
+    html2pdf(element, opt).from(element).set({
+        margin: [0, 0, 0, 0],
+        filename: fileName
+    }).toPdf().get('pdf').then(function(pdf) {
         pdf.autoTable({ html: element });
         pdf.internal.events.addEventType('onBeforePaging');
         pdf.internal.events.subscribe('onBeforePaging', function(eventData) {
@@ -223,14 +220,19 @@ document.getElementById('download').addEventListener('click', function() {
             pdf.text('Page ' + eventData.pageNumber + ' of ' + pageCount, 10, pdf.internal.pageSize.height - 10);
         });
         pdf.save();
-        
+        if (letterheadUrl.trim() !== '') {
+            element.removeChild(letterhead); // Hapus elemen letterhead setelah selesai
+        }
+    });
+
+    html2pdf().set(opt).from(element).toPdf().get('pdf').then(function(pdf) {
         button.innerText = 'Done';
         button.className = 'done';
-        setTimeout(function() { 
+        setTimeout(function() {
             button.innerText = 'Download';
-            button.className = ''; 
+            button.className = '';
         }, 2000);
-    });
+    }).save();
 });
 	  </script>
 	  `;
