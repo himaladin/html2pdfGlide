@@ -104,86 +104,52 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	  height: auto;
 	}
  
-#download {
-  position: fixed;
-  border-radius: 0.5rem;
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 1.5rem;
-  color: #212121;
-  border: none;
-  font-family: Arial;
-  padding: 0px 16px;
-  height: 32px;
-  background: #e8e8e8;
-  top: 8px;
-  right: 8px;
-  box-shadow: 2px 4px 10px -3px rgba(0,0,0,0.27);
-  transition: all 250ms;
-  overflow: hidden;
-  cursor: pointer;
-}
+.button {
+    padding: 0.8rem 4rem;
+    border: none;
+    outline: none;
+    font-size: 1.3rem;
+    border-radius: 0.3rem;
+    font-weight: 600;
+    background-color: rgba(255, 255, 255, 0.953);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: 0.4s ease-in-out;
+  }
 
-#download::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 0;
-  border-radius: 0.5rem;
-  background-color: #4B5D67;
-  z-index: -1;
-  box-shadow: 2px 4px 10px -3px rgba(0,0,0,0.27);
-  transition: all 250ms;
-}
+  .button .text {
+    position: absolute;
+    left: 1.8rem;
+    top: 1.3rem;
+    transition: 0.4s ease-in-out;
+    color: rgb(50, 50, 50);
+  }
 
-#download:hover {
-  color: #e8e8e8;
-}
+  .svg {
+    transform: translateY(-20px) rotate(30deg);
+    opacity: 0;
+    width: 2rem;
+    transition: 0.4s ease-in-out;
+  }
 
-#download:hover::before {
-  width: 100%;
-}
+  .button:hover {
+    background-color: rgb(50, 50, 50);
+  }
 
-#download.downloading {
-  color: #404040;
-  pointer-events: none;
-}
+  .button:hover .svg {
+    display: inline-block;
+    transform: translateY(0px) rotate(0deg);
+    opacity: 1;
+  }
 
-#download.done {
-  color: #16a34a;
-}
+  .button:hover .text {
+    opacity: 0;
+  }
 
-#download .text {
-  position: absolute;
-  left: 1.8rem;
-  top: 1.3rem;
-  transition: 0.4s ease-in-out;
-  color: rgb(50, 50, 50);
-  opacity: 1;
-}
-
-#download .svg {
-  transform: translateY(-20px) rotate(30deg);
-  opacity: 0;
-  width: 2rem;
-  transition: 0.4s ease-in-out;
-}
-
-#download:hover .svg {
-  display: inline-block;
-  transform: translateY(0px) rotate(0deg);
-  opacity: 1;
-}
-
-#download:hover .text {
-  opacity: 0;
-}
-
-#download:active {
-  scale: 0.97;
-}
+  .button:active {
+    scale: 0.97;
+  }
 
 	::-webkit-scrollbar {
 	  width: 5px;
@@ -203,7 +169,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
     <div class="main">
         <div class="header">
             ${letterheadUrl ? `<img src="${letterheadUrl}" class="letterhead"/>` : `<img src="empty-image.png" class="letterhead empty"/>`}
-		<button id="download" class="button">
+		<button class="button" id="download">
 		  <p class="text">Download</p>
 		  <div class="svg">
 		    <svg xmlns="http://www.w3.org/2000/svg" fill="white" class="bi bi-download" viewBox="0 0 16 16">
