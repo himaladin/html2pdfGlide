@@ -105,60 +105,61 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	}
  
 .button {
-  position: fixed;
-  border-radius: 0.5rem;
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 1.5rem;
-  color: #212121;
-  border: none;
-  font-family: Arial;
-  padding: 0px 16px;
-  height: 32px;
-  background: #e8e8e8;
-  top: 8px;
-  right: 8px;
-  box-shadow: 2px 4px 10px -3px rgba(0,0,0,0.27);
-  transition: all 250ms;
-  overflow: hidden;
-  cursor: pointer;
-  text-align: center; /* Pusatkan teks */
-  white-space: nowrap; /* Hindari teks melingkar */
+    position: fixed;
+    border-radius: 0.5rem;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.5rem;
+    color: #212121;
+    border: none;
+    font-family: Arial;
+    padding: 0px 16px;
+    height: 32px;
+    background: #e8e8e8;
+    top: 8px;
+    right: 8px;
+    box-shadow: 2px 4px 10px -3px rgba(0, 0, 0, 0.27);
+    transition: all 250ms;
+    overflow: hidden;
+    cursor: pointer;
+    text-align: center;
+    display: flex;
+    justify-content: center;
 }
 
 .button .svg {
-  position: relative;
-  top: 0.1rem; /* Sesuaikan posisi vertikal SVG */
-  opacity: 0;
-  width: 2rem;
-  transition: opacity 0.4s ease-in-out; /* Hanya transisi opacity untuk SVG */
-  display: inline-block;
-  vertical-align: middle;
+    position: relative;
+    top: 0.1rem;
+    opacity: 0;
+    width: 2rem;
+    transition: opacity 0.4s ease-in-out;
+    display: inline-block;
+    vertical-align: middle;
 }
 
 .button:hover {
-  background-color: rgb(50, 50, 50);
+    background-color: rgb(50, 50, 50);
 }
 
 .button:hover .svg {
-  opacity: 1; /* Tampilkan SVG saat tombol dihover */
+    opacity: 1;
 }
 
 .button:hover .text {
-  opacity: 0.2; /* Atur opacity teks Download saat dihover */
+    opacity: 0.2;
 }
 
 .button:active {
-  scale: 0.97;
+    scale: 0.97;
 }
 
 button#download.downloading {
-  color: #404040;
-  pointer-events: none;
+    color: #404040;
+    pointer-events: none;
 }
 
 button#download.done {
-  color: #16a34a;
+    color: #16a34a;
 }
 
  	::-webkit-scrollbar {
@@ -179,14 +180,16 @@ button#download.done {
     <div class="main">
         <div class="header">
             ${letterheadUrl ? `<img src="${letterheadUrl}" class="letterhead"/>` : `<img src="empty-image.png" class="letterhead empty"/>`}
-<button class="button" id="download">Download
-  <div class="svg">
-    <svg xmlns="http://www.w3.org/2000/svg" fill="white" class="bi bi-download" viewBox="0 0 16 16">
-      <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"></path>
-      <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"></path>
-    </svg>
-  </div>
-</button>
+        <button class="button" id="download">
+            <div class="svg">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="white" class="bi bi-download" viewBox="0 0 16 16">
+                    <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"></path>
+                    <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"></path>
+                </svg>
+            </div>
+            <span class="text">Download</span>
+        </button>
+    </div>
         </div>
         <div id="content">${html}</div>
     </div>
