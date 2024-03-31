@@ -179,51 +179,13 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 <script>
 document.getElementById('download').addEventListener('click', function() {
     var button = this;
-    var opt = {
-        pagebreak: { mode: ['css'], before: ${JSON.stringify(breakBefore)}, after: ${JSON.stringify(breakAfter)}, avoid: ${JSON.stringify(breakAvoid)} },
-        margin: ${margin},
-        filename: '${fileName}',
-        html2canvas: {
-            useCORS: true,
-            scale: ${quality}
-        },
-        jsPDF: {
-            unit: 'px',
-            orientation: '${orientation}',
-            format: [${finalDimensions}],
-            hotfixes: ['px_scaling']
-        },
-    };
     button.innerText = 'Printing...';
     button.className = 'printing';
 
     setTimeout(function() {
-        var element = document.getElementById('content');
-        html2pdf().set(opt).from(element).toPdf().get('pdf').then(function(pdf) {
-            var currentMediaQuery = window.matchMedia('print');
-            var isPrinting = currentMediaQuery.matches;
-            
-            if (!isPrinting) {
-                currentMediaQuery.addListener(function listener(mql) {
-                    if (!mql.matches) {
-                        // Reset the styles or parameters after printing
-                        button.innerText = 'Print PDF';
-                        button.className = '';
-                        currentMediaQuery.removeListener(listener);
-                    }
-                });
-                
-                currentMediaQuery.addListener(function(mql) {
-                    if (mql.matches) {
-                        button.innerText = 'Printing...';
-                        button.className = 'printing';
-                    }
-                });
-                
-                pdf.autoPrint(); // Set the PDF to automatically print when opened
-                pdf.save(); // Save the PDF
-            }
-        });
+        window.print(); // Print the current page
+        button.innerText = 'Print PDF';
+        button.className = '';
     }, 1000); // Delay 1 second before printing PDF
 }, false);
 	  </script>
