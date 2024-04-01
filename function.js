@@ -126,7 +126,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
       width: 0;
       top: 0;
       left: 0;
-      background: linear-gradient(135deg, rgba(33,33,33,0) 0%, rgba(33,33,33,0) 50%, rgba(150,4,31,1) 50%, rgba(191,4,38,1) 60%);
+      background: linear-gradient(135deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.8) 50%, rgba(150,4,31,1) 50%, rgba(191,4,38,1) 60%);
       border-radius: 0 0 0.5em 0;
       box-shadow: 0.2em 0.2em 0.2em rgba(0, 0, 0, 0.3);
       transition: 0.3s;
@@ -135,7 +135,6 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
     button:hover::before {
       width: 1.6em;
       height: 1.6em;
-      clip-path: polygon(0 0, 100% 0, 100% 100%, 80% 100%);
     }
     
     button:active {
