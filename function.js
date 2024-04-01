@@ -172,7 +172,7 @@ const originalHTML = `
     <div class="main">
         <div class="header">
             ${letterheadUrl ? `<img src="${letterheadUrl}" class="letterhead"/>` : `<img src="empty-image.png" class="letterhead empty"/>`}
-            <button class="button" id="download">Download</button>
+            <button class="button" id="download"><b>Download</b></button>
         </div>
         <div id="content">${html}</div>
     </div>
@@ -241,5 +241,3 @@ const originalHTML = `
 	var encodedHtml = encodeURIComponent(originalHTML);
 	return "data:text/html;charset=utf-8," + encodedHtml;
 };
-
-
