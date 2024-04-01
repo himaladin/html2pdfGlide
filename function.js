@@ -178,7 +178,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
                 hotfixes: ['px_scaling']
             },
         };
-        button.innerText = 'Downloading';
+        button.innerText = 'Downloading..';
         button.className = 'downloading';
 
         var content = document.getElementById('content');
