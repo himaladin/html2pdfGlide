@@ -208,6 +208,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
             letterheadAdded = true;
         }
 
+        // Check if footer image needs to be added
         if (footerImageUrl && !document.querySelector('.footer')) {
             var footerImage = document.createElement('img');
             footerImage.src = footerImageUrl;
@@ -215,11 +216,10 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
             document.body.appendChild(footerImage);
             footerImageAdded = true;
         }
-
+        
         setTimeout(function() {
             html2pdf().set(opt).from(content).toPdf().get('pdf').then(function(pdf) {
                 var pageCount = pdf.internal.getNumberOfPages();
-                // Loop through each page
                 for (var i = 1; i <= pageCount; i++) {
                     pdf.setPage(i);
                     pdf.setFontStyle("medium");
@@ -227,20 +227,29 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
                     var pageSize = pdf.internal.pageSize;
                     var pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
                     var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
+                    if (footerImageAdded) {
+                        // Calculate position of footer image
+                        var footerImageWidth = footerImage.offsetWidth;
+                        var footerImageHeight = footerImage.offsetHeight;
+                        var footerImageLeft = (pageWidth - footerImageWidth) / 2;
+                        var footerImageBottom = 30; // Adjust as needed
+        
+                        // Add footer image to the page
+                        pdf.addImage(footerImageUrl, 'JPEG', footerImageLeft, pageHeight - footerImageBottom - footerImageHeight, footerImageWidth, footerImageHeight);
+                    }
+        
+                    // Add page number to the page
                     pdf.text(pageWidth - (${margin} + 70), pageHeight - 30, 'Page ' + i + ' of ' + pageCount);
                 }
-
+        
                 pdf.save('${fileName}.pdf');
                 button.innerText = 'Downloaded';
                 button.className = 'downloaded';
                 setTimeout(function() {
                     button.innerText = 'Download PDF';
                     button.className = '';
-                    if (letterheadAdded) {
-                        content.removeChild(content.querySelector('.letterhead'));
-                    }
                     if (footerImageAdded) {
-                        content.removeChild(content.querySelector('.footer'));
+                        document.body.removeChild(footerImage);
                     }
                 }, 2000);
             });
