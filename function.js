@@ -168,8 +168,11 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
             <button class="button" id="download">Download PDF</button>
         </div>
         <div id="content">${html}</div>
+        ${footerImageUrl ? `<img src="${footerImageUrl}" class="footer"/>` : ""}
+        <div class="footer">
+            ${footerImageUrl ? `<img src="${footerImageUrl}" class="footer"/>` : ""}
+        </div>
     </div>
-    ${footerImageUrl ? `<img src="${footerImageUrl}" class="footer"/>` : ""}
     
     <script>
     document.getElementById('download').addEventListener('click', function() {
