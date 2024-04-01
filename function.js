@@ -213,13 +213,16 @@ const originalHTML = `
 	    setTimeout(function() {
 	        html2pdf().set(opt).from(content).toPdf().get('pdf').then(function(pdf) {
 	            var pageCount = pdf.internal.getNumberOfPages();
-	            for (var i = 1; i <= pageCount; i++) {
-	                pdf.setPage(i);
-	                pdf.setFontSize(10);
-	                var pageSize = pdf.internal.pageSize;
-	                var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
-	                pdf.text(pageSize.width + 50, pageHeight - 50, 'Page ' + i + ' of ' + pageCount);
-	            }
+			// Loop through each page
+			for (var i = 1; i <= pageCount; i++) {
+			    pdf.setPage(i);
+			    pdf.setFontSize(10);
+			    var pageSize = pdf.internal.pageSize;
+			    var pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
+			    var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
+			    pdf.text(pageWidth - 50, pageHeight - 20, 'Page ' + i + ' of ' + pageCount);
+			}
+
 	            pdf.save('${fileName}.pdf');
 	            button.innerText = 'Downloaded';
 	            button.className = 'downloaded';
