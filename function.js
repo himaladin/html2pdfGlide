@@ -109,8 +109,8 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
       top: 8px;
       right: 8px;
       font-size: 1.08em;
-      font-weight: medium;
-      padding: 0.5em 1.4em;
+      font-weight: 700;
+      padding: 0.5em 1.2em;
       background-color: #BF0426;
       text-decoration: none;
       border: none;
