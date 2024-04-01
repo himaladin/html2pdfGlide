@@ -217,17 +217,14 @@ document.getElementById('download').addEventListener('click', function() {
                 var pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
                 var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
                 if (footerImageAdded) {
-                    // Calculate position of footer image
                     var footerImageWidth = footerImage.offsetWidth;
                     var footerImageHeight = footerImage.offsetHeight;
                     var footerImageLeft = (pageWidth - footerImageWidth) / 2;
                     var footerImageBottom = 30; // Adjust as needed
 
-                    // Add footer image to the page
                     pdf.addImage(footerImageUrl, 'JPEG', footerImageLeft, pageHeight - footerImageBottom - footerImageHeight, footerImageWidth, footerImageHeight);
                 }
 
-                // Add page number to the page
                 pdf.text(pageWidth - (${margin} + 70), pageHeight - 30, 'Page ' + i + ' of ' + pageCount);
             }
 
@@ -244,6 +241,7 @@ document.getElementById('download').addEventListener('click', function() {
         });
     }, 1000);
 }, false);
+
     </script>
     `;
     var encodedHtml = encodeURIComponent(originalHTML);
