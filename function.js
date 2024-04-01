@@ -239,3 +239,4 @@ const originalHTML = `
 	return "data:text/html;charset=utf-8," + encodedHtml;
 };
 
+
