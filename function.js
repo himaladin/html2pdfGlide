@@ -109,6 +109,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
       top: 8px; /* Jarak dari atas */
       right: 8px; /* Jarak dari kanan */
       font-size: 1.2em;
+      font-weight: bold;
       padding: 0.7em 1.4em;
       background-color: #BF0426;
       text-decoration: none;
@@ -151,7 +152,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
     <div class="main">
         <div class="header">
             ${letterheadUrl ? `<img src="${letterheadUrl}" class="letterhead"/>` : `<img src="empty-image.png" class="letterhead empty"/>`}
-            <button class="button" id="download"><b>Download</b></button>
+            <button class="button" id="download">Download</button>
         </div>
         <div id="content">${html}</div>
     </div>
@@ -206,7 +207,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
                 button.innerText = 'Downloaded';
                 button.className = 'downloaded';
                 setTimeout(function() {
-                    button.innerText = 'Download PDF';
+                    button.innerText = 'Download';
                     button.className = '';
                     if (letterheadAdded) {
                         content.removeChild(content.querySelector('.letterhead'));
