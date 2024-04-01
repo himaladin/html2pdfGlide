@@ -172,89 +172,78 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
     </div>
     
     <script>
-    document.getElementById('download').addEventListener('click', function() {
-        var button = this;
-        var opt = {
-            pagebreak: { mode: ['css'], before: ${JSON.stringify(breakBefore)}, after: ${JSON.stringify(breakAfter)}, avoid: ${JSON.stringify(breakAvoid)} },
-            margin: ${margin},
-            filename: '${fileName}',
-            html2canvas: {
-                useCORS: true,
-                scale: ${quality}
-            },
-            jsPDF: {
-                unit: 'px',
-                orientation: '${orientation}',
-                format: [${finalDimensions}],
-                hotfixes: ['px_scaling']
-            },
-        };
-        button.innerText = 'Downloading...';
-        button.className = 'downloading';
+document.getElementById('download').addEventListener('click', function() {
+    var button = this;
+    var opt = {
+        pagebreak: { mode: ['css'], before: ${JSON.stringify(breakBefore)}, after: ${JSON.stringify(breakAfter)}, avoid: ${JSON.stringify(breakAvoid)} },
+        margin: ${margin},
+        filename: '${fileName}',
+        html2canvas: {
+            useCORS: true,
+            scale: ${quality}
+        },
+        jsPDF: {
+            unit: 'px',
+            orientation: '${orientation}',
+            format: [${finalDimensions}],
+            hotfixes: ['px_scaling']
+        },
+    };
+    button.innerText = 'Downloading..';
+    button.className = 'downloading';
 
-        var content = document.getElementById('content');
+    var content = document.getElementById('content');
 
-        // Check if letterhead and footer image are already added
-        var letterheadUrl = '${letterheadUrl}';
-        var footerImageUrl = '${footerImageUrl}';
-        var letterheadAdded = false;
-        var footerImageAdded = false;
+    // Check if footer image needs to be added
+    var footerImageUrl = '${footerImageUrl}';
+    var footerImageAdded = false;
 
-        if (letterheadUrl && !content.querySelector('.letterhead')) {
-            var letterhead = document.createElement('img');
-            letterhead.src = letterheadUrl;
-            letterhead.classList.add('letterhead');
-            content.insertBefore(letterhead, content.firstChild);
-            letterheadAdded = true;
-        }
+    if (footerImageUrl && !document.querySelector('.footer')) {
+        var footerImage = document.createElement('img');
+        footerImage.src = footerImageUrl;
+        footerImage.classList.add('footer');
+        document.body.appendChild(footerImage);
+        footerImageAdded = true;
+    }
 
-        // Check if footer image needs to be added
-        if (footerImageUrl && !document.querySelector('.footer')) {
-            var footerImage = document.createElement('img');
-            footerImage.src = footerImageUrl;
-            footerImage.classList.add('footer');
-            document.body.appendChild(footerImage);
-            footerImageAdded = true;
-        }
-        
-        setTimeout(function() {
-            html2pdf().set(opt).from(content).toPdf().get('pdf').then(function(pdf) {
-                var pageCount = pdf.internal.getNumberOfPages();
-                for (var i = 1; i <= pageCount; i++) {
-                    pdf.setPage(i);
-                    pdf.setFontStyle("medium");
-                    pdf.setFontSize(12);
-                    var pageSize = pdf.internal.pageSize;
-                    var pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
-                    var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
-                    if (footerImageAdded) {
-                        // Calculate position of footer image
-                        var footerImageWidth = footerImage.offsetWidth;
-                        var footerImageHeight = footerImage.offsetHeight;
-                        var footerImageLeft = (pageWidth - footerImageWidth) / 2;
-                        var footerImageBottom = 30; // Adjust as needed
-        
-                        // Add footer image to the page
-                        pdf.addImage(footerImageUrl, 'JPEG', footerImageLeft, pageHeight - footerImageBottom - footerImageHeight, footerImageWidth, footerImageHeight);
-                    }
-        
-                    // Add page number to the page
-                    pdf.text(pageWidth - (${margin} + 70), pageHeight - 30, 'Page ' + i + ' of ' + pageCount);
+    setTimeout(function() {
+        html2pdf().set(opt).from(content).toPdf().get('pdf').then(function(pdf) {
+            var pageCount = pdf.internal.getNumberOfPages();
+            for (var i = 1; i <= pageCount; i++) {
+                pdf.setPage(i);
+                pdf.setFontStyle("medium");
+                pdf.setFontSize(12);
+                var pageSize = pdf.internal.pageSize;
+                var pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
+                var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
+                if (footerImageAdded) {
+                    // Calculate position of footer image
+                    var footerImageWidth = footerImage.offsetWidth;
+                    var footerImageHeight = footerImage.offsetHeight;
+                    var footerImageLeft = (pageWidth - footerImageWidth) / 2;
+                    var footerImageBottom = 30; // Adjust as needed
+
+                    // Add footer image to the page
+                    pdf.addImage(footerImageUrl, 'JPEG', footerImageLeft, pageHeight - footerImageBottom - footerImageHeight, footerImageWidth, footerImageHeight);
                 }
-        
-                pdf.save('${fileName}.pdf');
-                button.innerText = 'Downloaded';
-                button.className = 'downloaded';
-                setTimeout(function() {
-                    button.innerText = 'Download PDF';
-                    button.className = '';
-                    if (footerImageAdded) {
-                        document.body.removeChild(footerImage);
-                    }
-                }, 2000);
-            });
-        }, 1000);
-    }, false);
+
+                // Add page number to the page
+                pdf.text(pageWidth - (${margin} + 70), pageHeight - 30, 'Page ' + i + ' of ' + pageCount);
+            }
+
+            pdf.save('${fileName}.pdf');
+            button.innerText = 'Downloaded';
+            button.className = 'downloaded';
+            setTimeout(function() {
+                button.innerText = 'Download PDF';
+                button.className = '';
+                if (footerImageAdded) {
+                    document.body.removeChild(footerImage);
+                }
+            }, 2000);
+        });
+    }, 1000);
+}, false);
     </script>
     `;
     var encodedHtml = encodeURIComponent(originalHTML);
