@@ -116,7 +116,8 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
       border-radius: 0.5em;
       color: #DEDEDE;
       box-shadow: 0.5em 0.5em 0.5em rgba(0, 0, 0, 0.3);
-      z-index: 999; /* Mengatur tumpukan (z-index) agar tombol tetap di atas konten */
+      clip-path: polygon(0 0, 100% 0, 100% 80%, 80% 100%, 0 100%);
+      z-index: 999;
     }
     
     button::before {
