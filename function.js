@@ -68,6 +68,9 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
     // GET FINAL DIMESIONS FROM SELECTED FORMAT
     const dimensions = customDimensions || formatDimensions[format];
     const finalDimensions = dimensions.map((dimension) => Math.round(dimension / zoom));
+    const paperWidth = formatDimensions[format][0];
+    const maxLetterheadWidth = Math.min(paperWidth, 1120);
+
 
     // LOG SETTINGS TO CONSOLE
     console.log(
@@ -100,7 +103,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
     
     .letterhead {
       width: 100%;
-      max-width: 1120px;
+      max-width:  ${maxLetterheadWidth}px;
       height: auto;
     }
         
