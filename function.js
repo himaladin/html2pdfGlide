@@ -198,15 +198,7 @@ document.getElementById('download').addEventListener('click', function() {
     var footerImageUrl = '${footerImageUrl}';
     var footerImageAdded = false;
 
-    if (footerImageUrl && !document.querySelector('.footer')) {
-        var footerImage = document.createElement('img');
-        footerImage.src = footerImageUrl;
-        footerImage.classList.add('footer');
-        document.body.appendChild(footerImage);
-        footerImageAdded = true;
-    }
-
-    setTimeout(function() {
+    if (footerImageUrl) {
         html2pdf().set(opt).from(content).toPdf().get('pdf').then(function(pdf) {
             var pageCount = pdf.internal.getNumberOfPages();
             for (var i = 1; i <= pageCount; i++) {
@@ -216,17 +208,16 @@ document.getElementById('download').addEventListener('click', function() {
                 var pageSize = pdf.internal.pageSize;
                 var pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
                 var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
-                if (footerImageAdded) {
-                    // Calculate position of footer image
-                    var footerImageWidth = footerImage.offsetWidth;
-                    var footerImageHeight = footerImage.offsetHeight;
-                    var footerImageLeft = (pageWidth - footerImageWidth) / 2;
-                    var footerImageBottom = 30; // Adjust as needed
-
-                    // Add footer image to the page
-                    pdf.addImage(footerImageUrl, 'JPEG', footerImageLeft, pageHeight - footerImageBottom - footerImageHeight, footerImageWidth, footerImageHeight);
-                }
-
+                
+                // Calculate position of footer image
+                var footerImageWidth = 200; // Set the width of the footer image
+                var footerImageHeight = 50; // Set the height of the footer image
+                var footerImageLeft = (pageWidth - footerImageWidth) / 2;
+                var footerImageBottom = 30; // Adjust as needed
+                
+                // Add footer image to the page
+                pdf.addImage(footerImageUrl, 'JPEG', footerImageLeft, pageHeight - footerImageBottom - footerImageHeight, footerImageWidth, footerImageHeight);
+                
                 // Add page number to the page
                 pdf.text(pageWidth - (${margin} + 70), pageHeight - 30, 'Page ' + i + ' of ' + pageCount);
             }
@@ -234,16 +225,14 @@ document.getElementById('download').addEventListener('click', function() {
             pdf.save('${fileName}.pdf');
             button.innerText = 'Downloaded';
             button.className = 'downloaded';
-            setTimeout(function() {
-                button.innerText = 'Download PDF';
-                button.className = '';
-                if (footerImageAdded) {
-                    document.body.removeChild(footerImage);
-                }
-            }, 2000);
         });
-    }, 1000);
+    } else {
+        console.error('Missing footer image URL');
+        button.innerText = 'Download PDF';
+        button.className = '';
+    }
 }, false);
+
     </script>
     `;
     var encodedHtml = encodeURIComponent(originalHTML);
