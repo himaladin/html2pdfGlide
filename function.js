@@ -105,12 +105,12 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
     }
         
     button {
-      position: fixed; /* Posisi tetap */
-      top: 8px; /* Jarak dari atas */
-      right: 8px; /* Jarak dari kanan */
-      font-size: 1.2em;
+      position: fixed;
+      top: 8px;
+      right: 8px;
+      font-size: 1.08em;
       font-weight: medium;
-      padding: 0.7em 1.4em;
+      padding: 0.5em 1.4em;
       background-color: #BF0426;
       text-decoration: none;
       border: none;
