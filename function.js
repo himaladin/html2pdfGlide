@@ -173,7 +173,6 @@ const originalHTML = `
     <div class="main">
         <div class="header">
             ${letterheadUrl ? `<img src="${letterheadUrl}" class="letterhead"/>` : `<img src="empty-image.png" class="letterhead empty"/>`}
-            <div id="pdfkit_page_current">1</div> of <div id="pdfkit_page_count">1</div>
             <button class="button" id="download">Download</button>
         </div>
         <div id="content">${html}</div>
@@ -213,12 +212,13 @@ const originalHTML = `
 	
 	    setTimeout(function() {
 	        html2pdf().set(opt).from(content).toPdf().get('pdf').then(function(pdf) {
-	            // Add page numbers
 	            var pageCount = pdf.internal.getNumberOfPages();
 	            for (var i = 1; i <= pageCount; i++) {
 	                pdf.setPage(i);
 	                pdf.setFontSize(10);
-	                pdf.text(10, 10, 'Page ' + i + ' of ' + pageCount);
+	                var pageSize = pdf.internal.pageSize;
+	                var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
+	                pdf.text(pageSize.width - 20, pageHeight - 10, 'Page ' + i + ' of ' + pageCount);
 	            }
 	            pdf.save('${fileName}.pdf');
 	            button.innerText = 'Downloaded';
