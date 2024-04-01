@@ -165,7 +165,6 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 	}
 	`;
 
-	// HTML THAT IS RETURNED AS A RENDERABLE URL
 // HTML THAT IS RETURNED AS A RENDERABLE URL
 const originalHTML = `
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
@@ -216,11 +215,12 @@ const originalHTML = `
 			// Loop through each page
 			for (var i = 1; i <= pageCount; i++) {
 			    pdf.setPage(i);
-			    pdf.setFontSize(10);
+       			    pdf.setFontStyle("bold");
+			    pdf.setFontSize(12);
 			    var pageSize = pdf.internal.pageSize;
 			    var pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
 			    var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
-			    pdf.text(pageWidth - (${margin} + 80), pageHeight - 20, 'Page ' + i + ' of ' + pageCount);
+			    pdf.text(pageWidth - (${margin} + 40), pageHeight - 20, 'Page ' + i + ' of ' + pageCount);
 			}
 
 	            pdf.save('${fileName}.pdf');
