@@ -220,7 +220,7 @@ const originalHTML = `
 			    var pageSize = pdf.internal.pageSize;
 			    var pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
 			    var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
-			    pdf.text(pageWidth - (margin + 30), pageHeight - 20, 'Page ' + i + ' of ' + pageCount);
+			    pdf.text(pageWidth - (${margin} + 80), pageHeight - 20, 'Page ' + i + ' of ' + pageCount);
 			}
 
 	            pdf.save('${fileName}.pdf');
