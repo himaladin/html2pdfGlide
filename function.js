@@ -103,8 +103,11 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
       max-width: 1120px;
       height: auto;
     }
+    
     button {
-      position: relative;
+      position: fixed; /* Posisi tetap */
+      top: 8px; /* Jarak dari atas */
+      right: 8px; /* Jarak dari kanan */
       font-size: 1.2em;
       padding: 0.7em 1.4em;
       background-color: #BF0426;
@@ -113,6 +116,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
       border-radius: 0.5em;
       color: #DEDEDE;
       box-shadow: 0.5em 0.5em 0.5em rgba(0, 0, 0, 0.3);
+      z-index: 999; /* Mengatur tumpukan (z-index) agar tombol tetap di atas konten */
     }
     
     button::before {
@@ -122,7 +126,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
       width: 0;
       top: 0;
       left: 0;
-      background: linear-gradient(135deg, rgba(33,33,33,1) 0%, rgba(33,33,33,1) 50%, rgba(150,4,31,1) 50%, rgba(191,4,38,1) 60%);
+      background: linear-gradient(135deg, rgba(33,33,33,0) 0%, rgba(33,33,33,0) 50%, rgba(150,4,31,1) 50%, rgba(191,4,38,1) 60%);
       border-radius: 0 0 0.5em 0;
       box-shadow: 0.2em 0.2em 0.2em rgba(0, 0, 0, 0.3);
       transition: 0.3s;
