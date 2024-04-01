@@ -66,7 +66,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
         credit_card: [319, 508],
     };
 
-    // GET FINAL DIMESIONS FROM SELECTED FORMAT
+    // GET FINAL DIMENSIONS FROM SELECTED FORMAT
     const dimensions = customDimensions || formatDimensions[format];
     const finalDimensions = dimensions.map((dimension) => Math.round(dimension / zoom));
     const paperWidth = formatDimensions[format][0];
@@ -108,6 +108,13 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
       max-width:  ${maxLetterheadWidth}px;
       height: auto;
     }
+    
+    .footer {
+      width: 100%;
+      max-width: 1120px;
+      height: auto;
+      margin-top: 20px; /* Adjust as needed */
+    }
         
     button {
       position: fixed;
@@ -148,13 +155,6 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
       box-shadow: 0.2em 0.2em 0.3em rgba(0, 0, 0, 0.3);
       transform: translate(0.1em, 0.1em);
     }
-    
-    .footer {
-    width: 100%;
-    max-width: 1120px;
-    height: auto;
-    margin-top: 20px; /* Adjust as needed */
-    }
     </style>
     `;
 
@@ -192,8 +192,12 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
         button.className = 'downloading';
 
         var content = document.getElementById('content');
+
+        // Check if letterhead and footer image are already added
         var letterheadUrl = '${letterheadUrl}';
+        var footerImageUrl = '${footerImageUrl}';
         var letterheadAdded = false;
+        var footerImageAdded = false;
 
         if (letterheadUrl && !content.querySelector('.letterhead')) {
             var letterhead = document.createElement('img');
@@ -201,6 +205,14 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
             letterhead.classList.add('letterhead');
             content.insertBefore(letterhead, content.firstChild);
             letterheadAdded = true;
+        }
+
+        if (footerImageUrl && !content.querySelector('.footer')) {
+            var footerImage = document.createElement('img');
+            footerImage.src = footerImageUrl;
+            footerImage.classList.add('footer');
+            content.appendChild(footerImage);
+            footerImageAdded = true;
         }
 
         setTimeout(function() {
@@ -225,6 +237,9 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
                     button.className = '';
                     if (letterheadAdded) {
                         content.removeChild(content.querySelector('.letterhead'));
+                    }
+                    if (footerImageAdded) {
+                        content.removeChild(content.querySelector('.footer'));
                     }
                 }, 2000);
             });
