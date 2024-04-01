@@ -225,6 +225,10 @@ document.getElementById('download').addEventListener('click', function() {
             pdf.save('${fileName}.pdf');
             button.innerText = 'Downloaded';
             button.className = 'downloaded';
+        }).catch(function(error) {
+            console.error('Error generating PDF:', error);
+            button.innerText = 'Download PDF';
+            button.className = '';
         });
     } else {
         console.error('Missing footer image URL');
@@ -232,7 +236,6 @@ document.getElementById('download').addEventListener('click', function() {
         button.className = '';
     }
 }, false);
-
     </script>
     `;
     var encodedHtml = encodeURIComponent(originalHTML);
