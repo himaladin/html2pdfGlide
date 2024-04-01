@@ -169,9 +169,6 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
         </div>
         <div id="content">${html}</div>
         ${footerImageUrl ? `<img src="${footerImageUrl}" class="footer"/>` : ""}
-        <div class="footer">
-            ${footerImageUrl ? `<img src="${footerImageUrl}" class="footer"/>` : ""}
-        </div>
     </div>
     
     <script>
@@ -211,11 +208,11 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
             letterheadAdded = true;
         }
 
-        if (footerImageUrl && !content.querySelector('.footer')) {
+        if (footerImageUrl && !document.querySelector('.footer')) {
             var footerImage = document.createElement('img');
             footerImage.src = footerImageUrl;
             footerImage.classList.add('footer');
-            content.appendChild(footerImage);
+            document.body.appendChild(footerImage);
             footerImageAdded = true;
         }
 
