@@ -1,4 +1,4 @@
-window.function = function (html, fileName, format, zoom, orientation, margin, breakBefore, breakAfter, breakAvoid, fidelity, customDimensions, letterheadUrl) {
+window.function = function (html, fileName, format, zoom, orientation, margin, breakBefore, breakAfter, breakAvoid, fidelity, customDimensions, letterheadUrl, footerImageUrl) {
     // FIDELITY MAPPING
     const fidelityMap = {
         low: 1,
@@ -18,6 +18,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
     breakAvoid = breakAvoid.value ? breakAvoid.value.split(",") : [];
     quality = fidelityMap[fidelity.value] ?? 1.5;
     letterheadUrl = letterheadUrl.value ?? "";
+    footerImageUrl = footerImageUrl.value ?? "";
     customDimensions = customDimensions.value ? customDimensions.value.split(",").map(Number) : null;
 
     // DOCUMENT DIMENSIONS
@@ -85,7 +86,8 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
         `Break after: ${breakAfter}\n` +
         `Break avoid: ${breakAvoid}\n` +
         `Quality: ${quality}` +
-        `Letterhead URL: ${letterheadUrl}`
+        `Letterhead URL: ${letterheadUrl}` +
+        `Footer Image URL: ${footerImageUrl}`
     );
 
     const customCSS = `
@@ -146,6 +148,13 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
       box-shadow: 0.2em 0.2em 0.3em rgba(0, 0, 0, 0.3);
       transform: translate(0.1em, 0.1em);
     }
+    
+    .footer {
+    width: 100%;
+    max-width: 1120px;
+    height: auto;
+    margin-top: 20px; /* Adjust as needed */
+    }
     </style>
     `;
 
@@ -159,6 +168,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
             <button class="button" id="download">Download PDF</button>
         </div>
         <div id="content">${html}</div>
+        ${footerImageUrl ? `<img src="${footerImageUrl}" class="footer"/>` : ""}
     </div>
     <script>
     document.getElementById('download').addEventListener('click', function() {
