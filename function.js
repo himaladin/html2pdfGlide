@@ -168,8 +168,9 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
             <button class="button" id="download">Download PDF</button>
         </div>
         <div id="content">${html}</div>
-        ${footerImageUrl ? `<img src="${footerImageUrl}" class="footer"/>` : ""}
     </div>
+    ${footerImageUrl ? `<img src="${footerImageUrl}" class="footer"/>` : ""}
+    
     <script>
     document.getElementById('download').addEventListener('click', function() {
         var button = this;
@@ -188,7 +189,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
                 hotfixes: ['px_scaling']
             },
         };
-        button.innerText = 'Downloading..';
+        button.innerText = 'Downloading...';
         button.className = 'downloading';
 
         var content = document.getElementById('content');
