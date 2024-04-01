@@ -116,7 +116,6 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
       border-radius: 0.5em;
       color: #DEDEDE;
       box-shadow: 0.5em 0.5em 0.5em rgba(0, 0, 0, 0.3);
-      clip-path: polygon(0 0, 100% 0, 100% 80%, 80% 100%, 0 100%);
       z-index: 999;
     }
     
@@ -130,6 +129,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
       background: linear-gradient(135deg, rgba(33,33,33,0) 0%, rgba(33,33,33,0) 50%, rgba(150,4,31,1) 50%, rgba(191,4,38,1) 60%);
       border-radius: 0 0 0.5em 0;
       box-shadow: 0.2em 0.2em 0.2em rgba(0, 0, 0, 0.3);
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 80%);
       transition: 0.3s;
     }
     
