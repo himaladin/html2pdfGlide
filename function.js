@@ -218,7 +218,7 @@ const originalHTML = `
 	                pdf.setFontSize(10);
 	                var pageSize = pdf.internal.pageSize;
 	                var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
-	                pdf.text(pageSize.width - 50, pageHeight - 20, 'Page ' + i + ' of ' + pageCount);
+	                pdf.text(pageSize.width + 50, pageHeight - 50, 'Page ' + i + ' of ' + pageCount);
 	            }
 	            pdf.save('${fileName}.pdf');
 	            button.innerText = 'Downloaded';
