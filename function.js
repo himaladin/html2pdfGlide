@@ -105,37 +105,33 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
     }
     
     button {
-      position: fixed;
-      top: 8px;
-      right: 8px;
+      position: relative;
       font-size: 1.2em;
       padding: 0.7em 1.4em;
-      background: linear-gradient(135deg, rgba(150,4,31,1) 0%, rgba(191,4,38,1) 100%);
+      background-color: #BF0426;
       text-decoration: none;
       border: none;
       border-radius: 0.5em;
       color: #DEDEDE;
       box-shadow: 0.5em 0.5em 0.5em rgba(0, 0, 0, 0.3);
-      z-index: 999;
-      transition: clip-path 0.5s;
     }
     
     button::before {
       position: absolute;
       content: '';
-      height: 100%;
-      width: 100%;
+      height: 0;
+      width: 0;
       top: 0;
       left: 0;
-      background: linear-gradient(135deg, rgba(33,33,33,1) 0%, rgba(150,4,31,1) 50%, rgba(191,4,38,1) 60%);
+      background: linear-gradient(135deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 50%, rgba(150,4,31,1) 50%, rgba(191,4,38,1) 60%);
       border-radius: 0 0 0.5em 0;
-      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
       box-shadow: 0.2em 0.2em 0.2em rgba(0, 0, 0, 0.3);
       transition: 0.3s;
     }
     
     button:hover::before {
-      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 80%);
+      width: 1.6em;
+      height: 1.6em;
     }
     
     button:active {
