@@ -168,11 +168,13 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
             <button class="button" id="download">Download PDF</button>
         </div>
         <div id="content">${html}</div>
+    </div>
+    <div class="footer">
         ${footerImageUrl ? `<img src="${footerImageUrl}" class="footer"/>` : ""}
     </div>
     
     <script>
-  document.getElementById('download').addEventListener('click', function() {
+    document.getElementById('download').addEventListener('click', function() {
         var button = this;
         var opt = {
             pagebreak: { mode: ['css'], before: ${JSON.stringify(breakBefore)}, after: ${JSON.stringify(breakAfter)}, avoid: ${JSON.stringify(breakAvoid)} },
@@ -228,6 +230,13 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
                     var pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
                     var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
                     pdf.text(pageWidth - (${margin} + 70), pageHeight - 30, 'Page ' + i + ' of ' + pageCount);
+                    if (footerImageUrl && !footerImageAdded) {
+                        var footerImage = document.createElement('img');
+                        footerImage.src = footerImageUrl;
+                        footerImage.classList.add('footer');
+                        footerImageAdded = true;
+                        content.appendChild(footerImage);
+                    }
                 }
 
                 pdf.save('${fileName}.pdf');
@@ -248,6 +257,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
     }, false);
     </script>
     `;
+
     var encodedHtml = encodeURIComponent(originalHTML);
     return "data:text/html;charset=utf-8," + encodedHtml;
 };
