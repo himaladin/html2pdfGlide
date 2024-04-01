@@ -215,12 +215,12 @@ const originalHTML = `
 			// Loop through each page
 			for (var i = 1; i <= pageCount; i++) {
 			    pdf.setPage(i);
-       			    pdf.setFontStyle("bold");
+       			    pdf.setFontStyle("medium");
 			    pdf.setFontSize(12);
 			    var pageSize = pdf.internal.pageSize;
 			    var pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
 			    var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
-			    pdf.text(pageWidth - (${margin} + 40), pageHeight - 20, 'Page ' + i + ' of ' + pageCount);
+			    pdf.text(pageWidth - (${margin} + 70), pageHeight - 30, 'Page ' + i + ' of ' + pageCount);
 			}
 
 	            pdf.save('${fileName}.pdf');
