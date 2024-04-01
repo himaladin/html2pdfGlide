@@ -120,6 +120,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
       border-radius: 0.5em;
       color: #DEDEDE;
       box-shadow: 0.5em 0.5em 0.5em rgba(0, 0, 0, 0.3);
+      cursor: pointer;
       z-index: 999;
     }
     
