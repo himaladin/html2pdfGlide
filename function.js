@@ -105,36 +105,37 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
     }
     
     button {
-      position: fixed; /* Posisi tetap */
-      top: 8px; /* Jarak dari atas */
-      right: 8px; /* Jarak dari kanan */
+      position: fixed;
+      top: 8px;
+      right: 8px;
       font-size: 1.2em;
       padding: 0.7em 1.4em;
-      background-color: #BF0426;
+      background: linear-gradient(135deg, rgba(150,4,31,1) 0%, rgba(191,4,38,1) 100%);
       text-decoration: none;
       border: none;
       border-radius: 0.5em;
       color: #DEDEDE;
       box-shadow: 0.5em 0.5em 0.5em rgba(0, 0, 0, 0.3);
       z-index: 999;
+      transition: clip-path 0.5s;
     }
     
     button::before {
       position: absolute;
       content: '';
-      height: 0;
-      width: 0;
+      height: 100%;
+      width: 100%;
       top: 0;
       left: 0;
-      background: linear-gradient(135deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.8) 50%, rgba(150,4,31,1) 50%, rgba(191,4,38,1) 60%);
+      background: linear-gradient(135deg, rgba(33,33,33,1) 0%, rgba(150,4,31,1) 50%, rgba(191,4,38,1) 60%);
       border-radius: 0 0 0.5em 0;
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
       box-shadow: 0.2em 0.2em 0.2em rgba(0, 0, 0, 0.3);
       transition: 0.3s;
     }
     
     button:hover::before {
-      width: 1.6em;
-      height: 1.6em;
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 80%);
     }
     
     button:active {
