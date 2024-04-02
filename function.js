@@ -118,8 +118,10 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
     left: 50%;
     transform: translateX(-50%);
     z-index: -1; /* Push it to the back */
-    background-image: url('${footerImageUrl}');
-    background-size: cover;
+}
+.footer img {
+    width: 100%;
+    height: auto;
 }
         
     button {
@@ -230,9 +232,10 @@ setTimeout(function() {
             var pageSize = pdf.internal.pageSize;
             var pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
             var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
-            pdf.addImage('${footerImageUrl}', 'PNG', 0, pageHeight - 80, 80, 80);           
             pdf.text(pageWidth - (${margin} + 70), pageHeight - 30, 'Page ' + i + ' of ' + pageCount);
-
+            
+            // Add footer image as background
+            pdf.addImage('${footerImageUrl}', 'JPEG', 0, pageHeight - 80, 80, 80);
         }
 
         pdf.save('${fileName}.pdf');
@@ -241,9 +244,6 @@ setTimeout(function() {
         setTimeout(function() {
             button.innerText = 'Download PDF';
             button.className = '';
-            if (letterheadAdded) {
-                content.removeChild(content.querySelector('.letterhead'));
-            }
         }, 2000);
     });
 }, 1000);
