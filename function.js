@@ -229,15 +229,14 @@ setTimeout(function() {
             var pageSize = pdf.internal.pageSize;
             var pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
             var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
-            
+            pdf.text(pageWidth - (${margin} + 70), pageHeight - 30, 'Page ' + i + ' of ' + pageCount);
+
+            // Add footer image at the bottom of each page
             if (footerImageUrl) {
                 var imgWidth = 100; // Adjust as needed
                 var imgHeight = 50; // Adjust as needed
                 pdf.addImage(footerImageUrl, 'PNG', (pageWidth - imgWidth) / 2, pageHeight - (imgHeight + 10), imgWidth, imgHeight);
             }
-            
-            // Add page number at the bottom of each page
-            pdf.text(pageWidth - (80 + 70), pageHeight - 30, 'Page ' + i + ' of ' + pageCount);
         }
 
         pdf.save('${fileName}.pdf');
