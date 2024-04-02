@@ -109,16 +109,12 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
       height: auto;
     }
 
-   .footer {
-    width: 100%;
-    max-width: 1120px;
-    height: auto;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    margin-top: 20px; /* Sesuaikan jika diperlukan */
-}
+    .footer {
+      width: 100%;
+      max-width: 1120px;
+      height: auto;
+      margin-top: 20px; /* Adjust as needed */
+    }
 
     button {
       position: fixed;
@@ -214,11 +210,10 @@ if (footerImageUrl && !content.querySelector('.footer')) {
     var footerImage = document.createElement('img');
     footerImage.src = footerImageUrl;
     footerImage.classList.add('footer');
-    footerImage.style.position = 'absolute';
+    footerImage.style.width = '100%';
+    footerImage.style.position = 'fixed';
     footerImage.style.bottom = '0';
     footerImage.style.left = '0';
-    footerImage.style.right = '0';
-    footerImage.style.margin = 'auto';
     content.appendChild(footerImage);
     footerImageAdded = true;
 }
