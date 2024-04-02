@@ -211,6 +211,11 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
             var footerImage = document.createElement('img');
             footerImage.src = footerImageUrl;
             footerImage.classList.add('footer');
+            footerImage.style.position = 'absolute';
+            footerImage.style.bottom = '0';
+            footerImage.style.left = '0';
+            footerImage.style.right = '0';
+            footerImage.style.margin = 'auto';
             content.appendChild(footerImage);
             footerImageAdded = true;
         }
@@ -223,10 +228,12 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
                     pdf.setPage(i);
                     pdf.setFontStyle("medium");
                     pdf.setFontSize(12);
+                    pdf.style.bottom(0);
                     var pageSize = pdf.internal.pageSize;
                     var pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
                     var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
                     pdf.text(pageWidth - (${margin} + 70), pageHeight - 30, 'Page ' + i + ' of ' + pageCount);
+                    pdf.addImage(footerImg, 'PNG', 0, dimensions.pageHeight - 50, 50, 50);
                 }
 
                 pdf.save('${fileName}.pdf');
