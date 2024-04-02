@@ -71,7 +71,10 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
     const finalDimensions = dimensions.map((dimension) => Math.round(dimension / zoom));
     const paperWidth = formatDimensions[format][0];
     const maxLetterheadWidth = Math.min(paperWidth, 1120);
-    const paperHeight = (formatDimensions[format][1] / formatDimensions[format][0]) * paperWidth;
+    const contentHeight = content.offsetHeight;
+    // Calculate the remaining space at the bottom of the page
+    const footerHeight = document.querySelector('.footer').offsetHeight;
+    const remainingSpace = Math.max(0, pageSize.height - contentHeight - footerHeight - margin);
 
 
     // LOG SETTINGS TO CONSOLE
@@ -115,7 +118,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
       width: 100%;
       max-width: ${maxLetterheadWidth}px;
       height: auto;
-      bottom: ${paperHeight * zoom}px; /* Adjust as needed */
+      bottom: ${remainingSpace}px;
     }
         
     button {
