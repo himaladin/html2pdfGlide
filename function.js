@@ -218,6 +218,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
         setTimeout(function() {
             html2pdf().set(opt).from(content).toPdf().get('pdf').then(function(pdf) {
                 var pageCount = pdf.internal.getNumberOfPages();
+                var footerImageUrl = '${footerImageUrl}';
                 // Loop through each page
                 for (var i = 1; i <= pageCount; i++) {
                     pdf.setPage(i);
