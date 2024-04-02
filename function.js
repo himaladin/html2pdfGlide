@@ -231,7 +231,15 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
                     }
                 }
 
-                pdf.save('${fileName}.pdf');
+                var blob = pdf.output('blob');
+                var url = URL.createObjectURL(blob);
+                var a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = '${fileName}.pdf';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
                 button.innerText = 'Downloaded';
                 button.className = 'downloaded';
                 setTimeout(function() {
