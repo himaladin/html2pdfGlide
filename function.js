@@ -214,7 +214,11 @@ if (footerImageUrl && !content.querySelector('.footer')) {
     var footerImage = document.createElement('img');
     footerImage.src = footerImageUrl;
     footerImage.classList.add('footer');
-    footerImage.style.width = '100%';
+    footerImage.style.position = 'absolute';
+    footerImage.style.bottom = '0';
+    footerImage.style.left = '0';
+    footerImage.style.right = '0';
+    footerImage.style.margin = 'auto';
     content.appendChild(footerImage);
     footerImageAdded = true;
 }
