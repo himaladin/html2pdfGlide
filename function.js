@@ -199,15 +199,6 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
             letterheadAdded = true;
         }
 
-        if (footerImageUrl && !content.querySelector('.footer')) {
-            var footerImage = document.createElement('img');
-            footerImage.src = footerImageUrl;
-            footerImage.classList.add('footer');
-            footerImage.style.width = '100%';
-            content.appendChild(footerImage);
-            footerImageAdded = true;
-        }
-
         setTimeout(function() {
             html2pdf().set(opt).from(content).toPdf().get('pdf').then(function(pdf) {
                 var pageCount = pdf.internal.getNumberOfPages();
@@ -227,9 +218,6 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
                     button.className = '';
                     if (letterheadAdded) {
                         content.removeChild(content.querySelector('.letterhead'));
-                    }
-                    if (footerImageAdded) {
-                        content.removeChild(content.querySelector('.footer'));
                     }
                 }, 2000);
             });
