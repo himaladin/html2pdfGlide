@@ -110,10 +110,11 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
     }
     
     .footer {
+      position: fixed;
       width: 100%;
-      max-width: 1120px;
+      max-width: ${maxLetterheadWidth}px;
       height: auto;
-      margin-top: 20px; /* Adjust as needed */
+      bottom: 0px;
     }
         
     button {
