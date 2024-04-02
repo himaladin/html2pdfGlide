@@ -110,7 +110,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
     }
     
     .footer {
-      position: fixed;
+      position: absolute;
       width: 100%;
       max-width: ${maxLetterheadWidth}px;
       height: auto;
