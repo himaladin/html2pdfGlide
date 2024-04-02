@@ -108,21 +108,21 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
       height: auto;
     }
     
-.footer {
-    width: 100%;
-    max-width: 1120px;
-    height: auto;
-    margin-top: 20px; /* Adjust as needed */
-    position: fixed;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: -1; /* Push it to the back */
-}
-.footer img {
-    width: 100%;
-    height: auto;
-}
+    .footer {
+      width: 100%;
+      max-width: 1120px;
+      height: auto;
+      margin-top: 20px; /* Adjust as needed */
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: -1; /* Push it to the back */
+    }
+    .footer img {
+      width: 100%;
+      height: auto;
+    }
         
     button {
       position: fixed;
@@ -167,7 +167,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
     `;
 
     // HTML THAT IS RETURNED AS A RENDERABLE URL
-const originalHTML = `
+    const originalHTML = `
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
     <style>${customCSS}</style>
     <div class="main">
