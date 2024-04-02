@@ -159,6 +159,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
     `;
 
     // HTML THAT IS RETURNED AS A RENDERABLE URL
+    // HTML THAT IS RETURNED AS A RENDERABLE URL
     const originalHTML = `
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
     <style>${customCSS}</style>
@@ -216,30 +217,16 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 
         setTimeout(function() {
             html2pdf().set(opt).from(content).toPdf().get('pdf').then(function(pdf) {
-                var pageCount = pdf.internal.getNumberOfPages();
-                // Loop through each page
-                for (var i = 1; i <= pageCount; i++) {
+                var totalPages = pdf.internal.getNumberOfPages();
+                for (var i = 1; i <= totalPages; i++) {
                     pdf.setPage(i);
-                    pdf.setFontStyle("medium");
-                    pdf.setFontSize(12);
-                    var pageSize = pdf.internal.pageSize;
-                    var pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
-                    var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
-                    pdf.text(pageWidth - (${margin} + 70), pageHeight - 30, 'Page ' + i + ' of ' + pageCount);
-                    if (footerImageUrl) {
-                        pdf.addImage(footerImageUrl, 'JPEG', 0, pageHeight - 20, 100, 20);
-                    }
+                    pdf.setFontSize(5);
+                    pdf.setTextColor(0);
+                    pdf.text(pdf.internal.pageSize.getWidth() - 5, pdf.internal.pageSize.getHeight() - 0.1, "YOUR_TEXT");
+                    pdf.addImage('${footerImageUrl}', 'JPEG', pdf.internal.pageSize.getWidth() - 1.1, pdf.internal.pageSize.getHeight() - 0.25, 1, 0.2);
                 }
 
-                var blob = pdf.output('blob');
-                var url = URL.createObjectURL(blob);
-                var a = document.createElement('a');
-                a.style.display = 'none';
-                a.href = url;
-                a.download = '${fileName}.pdf';
-                document.body.appendChild(a);
-                a.click();
-                window.URL.revokeObjectURL(url);
+                pdf.save('${fileName}.pdf');
                 button.innerText = 'Downloaded';
                 button.className = 'downloaded';
                 setTimeout(function() {
