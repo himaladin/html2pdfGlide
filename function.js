@@ -214,6 +214,7 @@ if (footerImageUrl && !content.querySelector('.footer')) {
     var footerImage = document.createElement('img');
     footerImage.src = footerImageUrl;
     footerImage.classList.add('footer');
+    footerImage.style.width = '100%';
     content.appendChild(footerImage);
     footerImageAdded = true;
 }
