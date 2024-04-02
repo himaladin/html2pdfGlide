@@ -167,8 +167,8 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
             ${letterheadUrl ? `<img src="${letterheadUrl}" class="letterhead"/>` : `<img src="empty-image.png" class="letterhead empty"/>`}
             <button class="button" id="download">Download PDF</button>
         </div>
-        <div id="content">${html}
-        ${footerImageUrl ? `<img src="${footerImageUrl}" class="footer"/>` : ""}</div>
+        <div id="content">${html}</div>
+        ${footerImageUrl ? `<img src="${footerImageUrl}" class="footer"/>` : ""}
     </div>
     <script>
     document.getElementById('download').addEventListener('click', function() {
@@ -227,13 +227,6 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
                     var pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
                     var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
                     pdf.text(pageWidth - (${margin} + 70), pageHeight - 30, 'Page ' + i + ' of ' + pageCount);
-
-                    // Add footer image at the bottom of each page
-                    if (footerImageUrl) {
-                        var imgWidth = 100; // Adjust as needed
-                        var imgHeight = 50; // Adjust as needed
-                        pdf.addImage(footerImageUrl, 'PNG', (pageWidth - imgWidth) / 2, pageHeight - (imgHeight + 10), imgWidth, imgHeight);
-                    }
                 }
 
                 pdf.save('${fileName}.pdf');
