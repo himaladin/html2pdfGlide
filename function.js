@@ -169,72 +169,74 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
         <div id="content">${html}</div>
     </div>
     <script>
-    document.getElementById('download').addEventListener('click', function() {
-        var button = this;
-        var opt = {
-            pagebreak: { mode: ['css'], before: ${JSON.stringify(breakBefore)}, after: ${JSON.stringify(breakAfter)}, avoid: ${JSON.stringify(breakAvoid)} },
-            margin: ${margin},
-            filename: '${fileName}',
-            html2canvas: {
-                useCORS: true,
-                scale: ${quality}
-            },
-            jsPDF: {
-                unit: 'px',
-                orientation: '${orientation}',
-                format: [${finalDimensions}],
-                hotfixes: ['px_scaling']
-            },
-        };
-        button.innerText = 'Downloading...';
-        button.className = 'downloading';
+document.getElementById('download').addEventListener('click', function(event) {
+    event.preventDefault(); // Prevent default button behavior
 
-        var content = document.getElementById('content');
+    var button = this;
+    var opt = {
+        pagebreak: { mode: ['css'], before: ${JSON.stringify(breakBefore)}, after: ${JSON.stringify(breakAfter)}, avoid: ${JSON.stringify(breakAvoid)} },
+        margin: ${margin},
+        filename: '${fileName}',
+        html2canvas: {
+            useCORS: true,
+            scale: ${quality}
+        },
+        jsPDF: {
+            unit: 'px',
+            orientation: '${orientation}',
+            format: [${finalDimensions}],
+            hotfixes: ['px_scaling']
+        },
+    };
+    button.innerText = 'Downloading...';
+    button.className = 'downloading';
 
-        // Check if letterhead is already added
-        var letterheadUrl = '${letterheadUrl}';
-        var letterheadAdded = false;
+    var content = document.getElementById('content');
 
-        if (letterheadUrl && !content.querySelector('.letterhead')) {
-            var letterhead = document.createElement('img');
-            letterhead.src = letterheadUrl;
-            letterhead.classList.add('letterhead');
-            content.insertBefore(letterhead, content.firstChild);
-            letterheadAdded = true;
-        }
+    // Check if letterhead is already added
+    var letterheadUrl = '${letterheadUrl}';
+    var letterheadAdded = false;
 
-        setTimeout(function() {
-            var footerImage = new Image();
-            footerImage.src = '${footerImageUrl}';
+    if (letterheadUrl && !content.querySelector('.letterhead')) {
+        var letterhead = document.createElement('img');
+        letterhead.src = letterheadUrl;
+        letterhead.classList.add('letterhead');
+        content.insertBefore(letterhead, content.firstChild);
+        letterheadAdded = true;
+    }
 
-            html2pdf().set(opt).from(content).toPdf().get('pdf').then(function(pdf) {
-                var pageCount = pdf.internal.getNumberOfPages();
-                // Loop through each page
-                for (var i = 1; i <= pageCount; i++) {
-                    pdf.setPage(i);
-                    pdf.setFontStyle("medium");
-                    pdf.setFontSize(12);
-                    var pageSize = pdf.internal.pageSize;
-                    var pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
-                    var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
-                    pdf.text(pageWidth - (${margin} + 70), pageHeight - 30, 'Page ' + i + ' of ' + pageCount);
+    setTimeout(function() {
+        var footerImage = new Image();
+        footerImage.src = '${footerImageUrl}';
 
-                    pdf.addImage(footerImage, 'png', 0, pageHeight - 53, 52, 23); // Adjust the coordinates and dimensions as needed
+        html2pdf().set(opt).from(content).toPdf().get('pdf').then(function(pdf) {
+            var pageCount = pdf.internal.getNumberOfPages();
+            // Loop through each page
+            for (var i = 1; i <= pageCount; i++) {
+                pdf.setPage(i);
+                pdf.setFontStyle("medium");
+                pdf.setFontSize(12);
+                var pageSize = pdf.internal.pageSize;
+                var pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
+                var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
+                pdf.text(pageWidth - (${margin} + 70), pageHeight - 30, 'Page ' + i + ' of ' + pageCount);
+
+                pdf.addImage(footerImage, 'png', 0, pageHeight - 53, 52, 23); // Adjust the coordinates and dimensions as needed
+            }
+
+            pdf.save('${fileName}.pdf');
+            button.innerText = 'Downloaded';
+            button.className = 'downloaded';
+            setTimeout(function() {
+                button.innerText = 'Download PDF';
+                button.className = '';
+                if (letterheadAdded) {
+                    content.removeChild(content.querySelector('.letterhead'));
                 }
-
-                pdf.save('${fileName}.pdf');
-                button.innerText = 'Downloaded';
-                button.className = 'downloaded';
-                setTimeout(function() {
-                    button.innerText = 'Download PDF';
-                    button.className = '';
-                    if (letterheadAdded) {
-                        content.removeChild(content.querySelector('.letterhead'));
-                    }
-                }, 2000);
-            });
-        }, 1000);
-    }, false);
+            }, 2000);
+        });
+    }, 1000);
+});
     </script>
     `;
     var encodedHtml = encodeURIComponent(originalHTML);
