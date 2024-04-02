@@ -195,14 +195,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 
         setTimeout(function() {
             html2pdf().set(opt).from(content).toPdf().get('pdf').then(function(pdf) {
-                var totalPages = pdf.internal.getNumberOfPages();
-                for (var i = 1; i <= totalPages; i++) {
-                    pdf.setPage(i);
-                    pdf.setFontSize(5);
-                    pdf.setTextColor(0);
-                    pdf.addImage('${footerImageUrl}', 'JPEG', pdf.internal.pageSize.getWidth() - 50, pdf.internal.pageSize.getHeight() - 15, 40, 10);
-                }
-
+                pdf.addImage('${footerImageUrl}', 'JPEG', pdf.internal.pageSize.getWidth() - 50, pdf.internal.pageSize.getHeight() - 15, 40, 10);
                 pdf.save('${fileName}.pdf');
                 button.innerText = 'Downloaded';
                 button.className = 'downloaded';
