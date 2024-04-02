@@ -168,7 +168,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
             <button class="button" id="download">Download PDF</button>
         </div>
         <div id="content">${html}</div>
-        <img src="${footerImageUrl}" class="footer"/>
+        ${footerImageUrl ? `<img src="${footerImageUrl}" class="footer"/>` : ""}
     </div>
     <script>
     document.getElementById('download').addEventListener('click', function() {
@@ -193,12 +193,55 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 
         var content = document.getElementById('content');
 
+        // Check if letterhead and footer image are already added
+        var letterheadUrl = '${letterheadUrl}';
+        var footerImageUrl = '${footerImageUrl}';
+        var letterheadAdded = false;
+        var footerImageAdded = false;
+
+        if (letterheadUrl && !content.querySelector('.letterhead')) {
+            var letterhead = document.createElement('img');
+            letterhead.src = letterheadUrl;
+            letterhead.classList.add('letterhead');
+            content.insertBefore(letterhead, content.firstChild);
+            letterheadAdded = true;
+        }
+
+        if (footerImageUrl && !content.querySelector('.footer')) {
+            var footerImage = document.createElement('img');
+            footerImage.src = footerImageUrl;
+            footerImage.classList.add('footer');
+            content.appendChild(footerImage);
+            footerImageAdded = true;
+        }
+
         setTimeout(function() {
             html2pdf().set(opt).from(content).toPdf().get('pdf').then(function(pdf) {
-                pdf.addImage('${footerImageUrl}', 'JPEG', pdf.internal.pageSize.getWidth() - 50, pdf.internal.pageSize.getHeight() - 15, 40, 10);
+                var pageCount = pdf.internal.getNumberOfPages();
+                // Loop through each page
+                for (var i = 1; i <= pageCount; i++) {
+                    pdf.setPage(i);
+                    pdf.setFontStyle("medium");
+                    pdf.setFontSize(12);
+                    var pageSize = pdf.internal.pageSize;
+                    var pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
+                    var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
+                    pdf.text(pageWidth - (${margin} + 70), pageHeight - 30, 'Page ' + i + ' of ' + pageCount);
+                }
+
                 pdf.save('${fileName}.pdf');
                 button.innerText = 'Downloaded';
                 button.className = 'downloaded';
+                setTimeout(function() {
+                    button.innerText = 'Download PDF';
+                    button.className = '';
+                    if (letterheadAdded) {
+                        content.removeChild(content.querySelector('.letterhead'));
+                    }
+                    if (footerImageAdded) {
+                        content.removeChild(content.querySelector('.footer'));
+                    }
+                }, 2000);
             });
         }, 1000);
     }, false);
