@@ -191,7 +191,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
         button.innerText = 'Downloading..';
         button.className = 'downloading';
 
-        var content = document.getElementById('content');
+        var content = document.getElementById('main');
 
         // Check if letterhead and footer image are already added
         var letterheadUrl = '${letterheadUrl}';
