@@ -72,7 +72,6 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
     const paperWidth = formatDimensions[format][0];
     const maxLetterheadWidth = Math.min(paperWidth, 1120);
 
-
     // LOG SETTINGS TO CONSOLE
     console.log(
         `Filename: ${fileName}\n` +
@@ -168,15 +167,13 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
             <button class="button" id="download">Download PDF</button>
         </div>
         <div id="content">${html}</div>
-    </div>
-    <div class="footer">
         ${footerImageUrl ? `<img src="${footerImageUrl}" class="footer"/>` : ""}
     </div>
-    
     <script>
-   document.getElementById('download').addEventListener('click', function() {
+    document.getElementById('download').addEventListener('click', function() {
         var button = this;
         var opt = {
+            pagebreak: { mode: ['css'], before: ${JSON.stringify(breakBefore)}, after: ${JSON.stringify(breakAfter)}, avoid: ${JSON.stringify(breakAvoid)} },
             margin: ${margin},
             filename: '${fileName}',
             html2canvas: {
@@ -190,13 +187,24 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
                 hotfixes: ['px_scaling']
             },
         };
-        button.innerText = 'Downloading...';
+        button.innerText = 'Downloading..';
         button.className = 'downloading';
 
         var content = document.getElementById('content');
 
-        // Check if footer image is already added
+        // Check if letterhead and footer image are already added
+        var letterheadUrl = '${letterheadUrl}';
+        var footerImageUrl = '${footerImageUrl}';
+        var letterheadAdded = false;
         var footerImageAdded = false;
+
+        if (letterheadUrl && !content.querySelector('.letterhead')) {
+            var letterhead = document.createElement('img');
+            letterhead.src = letterheadUrl;
+            letterhead.classList.add('letterhead');
+            content.insertBefore(letterhead, content.firstChild);
+            letterheadAdded = true;
+        }
 
         if (footerImageUrl && !content.querySelector('.footer')) {
             var footerImage = document.createElement('img');
@@ -207,8 +215,12 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
         }
 
         setTimeout(function() {
+            var img = new Image();
+            img.src = footerImageUrl;
+
             html2pdf().set(opt).from(content).toPdf().get('pdf').then(function(pdf) {
                 var pageCount = pdf.internal.getNumberOfPages();
+                // Loop through each page
                 for (var i = 1; i <= pageCount; i++) {
                     pdf.setPage(i);
                     pdf.setFontStyle("medium");
@@ -218,12 +230,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
                     var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
                     pdf.text(pageWidth - (${margin} + 70), pageHeight - 30, 'Page ' + i + ' of ' + pageCount);
 
-                    // Add footer image to each page
-                    if (footerImageAdded) {
-                        var img = new Image();
-                        img.src = footerImageUrl;
-                        pdf.addImage(img, 'png', 0, pageHeight - 30 - 23, 52, 23); // Adjust the coordinates and dimensions as needed
-                    }
+                    pdf.addImage(img, 'png', 0, pageHeight - 30 - 23, 52, 23); // Adjust the coordinates and dimensions as needed
                 }
 
                 pdf.save('${fileName}.pdf');
@@ -232,6 +239,9 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
                 setTimeout(function() {
                     button.innerText = 'Download PDF';
                     button.className = '';
+                    if (letterheadAdded) {
+                        content.removeChild(content.querySelector('.letterhead'));
+                    }
                     if (footerImageAdded) {
                         content.removeChild(content.querySelector('.footer'));
                     }
@@ -241,7 +251,6 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
     }, false);
     </script>
     `;
-
     var encodedHtml = encodeURIComponent(originalHTML);
     return "data:text/html;charset=utf-8," + encodedHtml;
 };
