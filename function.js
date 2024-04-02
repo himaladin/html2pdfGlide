@@ -188,7 +188,7 @@ document.getElementById('download').addEventListener('click', function() {
             hotfixes: ['px_scaling']
         },
     };
-    button.innerText = 'Downloading...';
+    button.innerText = 'Downloading..';
     button.className = 'downloading';
 
     var content = document.getElementById('content');
@@ -211,11 +211,6 @@ document.getElementById('download').addEventListener('click', function() {
         var footerImage = document.createElement('img');
         footerImage.src = footerImageUrl;
         footerImage.classList.add('footer');
-        footerImage.style.position = 'absolute';
-        footerImage.style.bottom = '0';
-        footerImage.style.left = '0';
-        footerImage.style.right = '0';
-        footerImage.style.margin = 'auto';
         content.appendChild(footerImage);
         footerImageAdded = true;
     }
@@ -232,11 +227,13 @@ document.getElementById('download').addEventListener('click', function() {
                 var pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
                 var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
                 pdf.text(pageWidth - (${margin} + 70), pageHeight - 30, 'Page ' + i + ' of ' + pageCount);
-            }
 
-            // Add footer image to the last page
-            if (footerImageAdded) {
-                pdf.addImage(footerImageUrl, 'PNG', 0, pageHeight - 50, 50, 50);
+                // Add footer image to each page
+                if (footerImageUrl) {
+                    var footerImgWidth = 200; // Set the width of the footer image
+                    var footerImgHeight = 50; // Set the height of the footer image
+                    pdf.addImage(footerImageUrl, 'PNG', 50, pageHeight - 50, footerImgWidth, footerImgHeight);
+                }
             }
 
             pdf.save('${fileName}.pdf');
