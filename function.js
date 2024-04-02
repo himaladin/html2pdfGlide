@@ -71,6 +71,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
     const finalDimensions = dimensions.map((dimension) => Math.round(dimension / zoom));
     const paperWidth = formatDimensions[format][0];
     const maxLetterheadWidth = Math.min(paperWidth, 1120);
+    const paperHeight = (formatDimensions[format][1] / formatDimensions[format][0]) * paperWidth;
 
 
     // LOG SETTINGS TO CONSOLE
@@ -114,7 +115,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
       width: 100%;
       max-width: ${maxLetterheadWidth}px;
       height: auto;
-      bottom: 0px;
+      bottom: ${paperHeight * zoom}px; /* Adjust as needed */
     }
         
     button {
