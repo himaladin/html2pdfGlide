@@ -228,7 +228,6 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
                     pdf.setPage(i);
                     pdf.setFontStyle("medium");
                     pdf.setFontSize(12);
-                    pdf.style.bottom(0);
                     var pageSize = pdf.internal.pageSize;
                     var pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
                     var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
