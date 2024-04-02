@@ -210,7 +210,7 @@ if (footerImageUrl && !content.querySelector('.footer')) {
     var footerImage = document.createElement('img');
     footerImage.src = footerImageUrl;
     footerImage.classList.add('footer');
-    footerImage.style.position = 'absolute';
+    footerImage.style.position = 'fixed';
     footerImage.style.bottom = '0';
     footerImage.style.left = '0';
     footerImage.style.right = '0';
