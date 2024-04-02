@@ -215,35 +215,44 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
             footerImageAdded = true;
         }
 
-        setTimeout(function() {
-            html2pdf().set(opt).from(content).toPdf().get('pdf').then(function(pdf) {
-                var pageCount = pdf.internal.getNumberOfPages();
-                // Loop through each page
-                for (var i = 1; i <= pageCount; i++) {
-                    pdf.setPage(i);
-                    pdf.setFontStyle("medium");
-                    pdf.setFontSize(12);
-                    var pageSize = pdf.internal.pageSize;
-                    var pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
-                    var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
-                    pdf.text(pageWidth - (${margin} + 70), pageHeight - 30, 'Page ' + i + ' of ' + pageCount);
-                }
+setTimeout(function() {
+    html2pdf().set(opt).from(content).toPdf().get('pdf').then(function(pdf) {
+        var pageCount = pdf.internal.getNumberOfPages();
+        // Loop through each page
+        for (var i = 1; i <= pageCount; i++) {
+            pdf.setPage(i);
 
-                pdf.save('${fileName}.pdf');
-                button.innerText = 'Downloaded';
-                button.className = 'downloaded';
-                setTimeout(function() {
-                    button.innerText = 'Download PDF';
-                    button.className = '';
-                    if (letterheadAdded) {
-                        content.removeChild(content.querySelector('.letterhead'));
-                    }
-                    if (footerImageAdded) {
-                        content.removeChild(content.querySelector('.footer'));
-                    }
-                }, 2000);
-            });
-        }, 1000);
+            // Add header
+            var header = `
+            <div class="header">
+                ${letterheadUrl ? `<img src="${letterheadUrl}" class="letterhead"/>` : `<img src="empty-image.png" class="letterhead empty"/>`}
+            </div>`;
+            pdf.html(header, {page: i});
+
+            // Add footer
+            var footer = `
+            <div class="footer">
+                ${footerImageUrl ? `<img src="${footerImageUrl}" class="footer"/>` : ""}
+            </div>`;
+            pdf.html(footer, {page: i});
+
+            pdf.setFontStyle("medium");
+            pdf.setFontSize(12);
+            var pageSize = pdf.internal.pageSize;
+            var pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
+            var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
+            pdf.text(pageWidth - (${margin} + 70), pageHeight - 30, 'Page ' + i + ' of ' + pageCount);
+        }
+
+        pdf.save('${fileName}.pdf');
+        button.innerText = 'Downloaded';
+        button.className = 'downloaded';
+        setTimeout(function() {
+            button.innerText = 'Download PDF';
+            button.className = '';
+        }, 2000);
+    });
+}, 1000);
     }, false);
     </script>
     `;
