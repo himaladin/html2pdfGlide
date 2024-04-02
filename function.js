@@ -161,15 +161,15 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
     const originalHTML = `
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
     <style>${customCSS}</style>
-    <div class="main">
-        <div class="header">
-            ${letterheadUrl ? `<img src="${letterheadUrl}" class="letterhead"/>` : `<img src="empty-image.png" class="letterhead empty"/>`}
-            <button class="button" id="download">Download PDF</button>
-        </div>
-        <div id="content">${html}</div>
-        ${footerImageUrl ? `<img src="${footerImageUrl}" class="footer"/>` : ""}
+<div class="main">
+    <div class="header">
+        ${letterheadUrl ? `<img src="${letterheadUrl}" class="letterhead"/>` : `<img src="empty-image.png" class="letterhead empty"/>`}
+        <button class="button" id="download">Download PDF</button>
     </div>
-    <script>
+    <div id="content">${html}</div>
+</div>
+${footerImageUrl ? `<img src="${footerImageUrl}" class="footer"/>` : ""}
+<script>
 document.getElementById('download').addEventListener('click', function() {
     var button = this;
     var opt = {
@@ -244,6 +244,8 @@ document.getElementById('download').addEventListener('click', function() {
         });
     }, 1000);
 }, false);
+</script>
+
     </script>
     `;
     var encodedHtml = encodeURIComponent(originalHTML);
