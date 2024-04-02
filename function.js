@@ -72,6 +72,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
     const paperWidth = formatDimensions[format][0];
     const maxLetterheadWidth = Math.min(paperWidth, 1120);
 
+
     // LOG SETTINGS TO CONSOLE
     console.log(
         `Filename: ${fileName}\n` +
@@ -93,7 +94,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
     body {
       margin: 0!important
     }
-    .header {
+     .header {
       display: flex;
       justify-content: center;
       align-items: center;
@@ -101,29 +102,20 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
       width: 100%;
       text-align: center;
     }
-
+    
     .letterhead {
       width: 100%;
       max-width:  ${maxLetterheadWidth}px;
       height: auto;
     }
-
+    
     .footer {
       width: 100%;
       max-width: 1120px;
       height: auto;
       margin-top: 20px; /* Adjust as needed */
-      position: fixed;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: -1; /* Push it to the back */
     }
-    .footer img {
-      width: 100%;
-      height: auto;
-    }
-
+        
     button {
       position: fixed;
       top: 8px;
@@ -140,7 +132,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
       cursor: pointer;
       z-index: 999;
     }
-
+    
     button::before {
       position: absolute;
       content: '';
@@ -153,12 +145,12 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
       box-shadow: 0.2em 0.2em 0.2em rgba(0, 0, 0, 0.3);
       transition: 0.3s;
     }
-
+    
     button:hover::before {
       width: 1.6em;
       height: 1.6em;
     }
-
+    
     button:active {
       box-shadow: 0.2em 0.2em 0.3em rgba(0, 0, 0, 0.3);
       transform: translate(0.1em, 0.1em);
@@ -176,7 +168,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
             <button class="button" id="download">Download PDF</button>
         </div>
         <div id="content">${html}</div>
-        ${footerImageUrl ? `<img src="${footerImageUrl}" class="footer" style="display: none;"/>` : ""}
+        ${footerImageUrl ? `<img src="${footerImageUrl}" class="footer"/>` : ""}
     </div>
     <script>
     document.getElementById('download').addEventListener('click', function() {
@@ -196,7 +188,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
                 hotfixes: ['px_scaling']
             },
         };
-        button.innerText = 'Downloading...';
+        button.innerText = 'Downloading..';
         button.className = 'downloading';
 
         var content = document.getElementById('content');
@@ -224,7 +216,6 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
         }
 
         setTimeout(function() {
-            var footerImages = content.querySelectorAll('.footer');
             html2pdf().set(opt).from(content).toPdf().get('pdf').then(function(pdf) {
                 var pageCount = pdf.internal.getNumberOfPages();
                 // Loop through each page
@@ -236,11 +227,6 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
                     var pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
                     var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
                     pdf.text(pageWidth - (${margin} + 70), pageHeight - 30, 'Page ' + i + ' of ' + pageCount);
-
-                    // Add footer image to each page
-                    footerImages.forEach(function(footerImg) {
-                        pdf.addImage(footerImg.src, 'PNG', 0, pageSize.height - footerImg.height, footerImg.width, footerImg.height);
-                    });
                 }
 
                 pdf.save('${fileName}.pdf');
@@ -260,7 +246,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
         }, 1000);
     }, false);
     </script>
-`;
+    `;
     var encodedHtml = encodeURIComponent(originalHTML);
     return "data:text/html;charset=utf-8," + encodedHtml;
 };
