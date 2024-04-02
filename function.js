@@ -108,15 +108,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
       max-width:  ${maxLetterheadWidth}px;
       height: auto;
     }
-
-.footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: auto;
-}
-
+        
     button {
       position: fixed;
       top: 8px;
@@ -160,18 +152,18 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
     `;
 
     // HTML THAT IS RETURNED AS A RENDERABLE URL
-const originalHTML = `
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
-<style>${customCSS}</style>
-<div class="main">
-    <div class="header">
-        ${letterheadUrl ? `<img src="${letterheadUrl}" class="letterhead"/>` : `<img src="empty-image.png" class="letterhead empty"/>`}
-        <button class="button" id="download">Download PDF</button>
+    const originalHTML = `
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+    <style>${customCSS}</style>
+    <div class="main">
+        <div class="header">
+            ${letterheadUrl ? `<img src="${letterheadUrl}" class="letterhead"/>` : `<img src="empty-image.png" class="letterhead empty"/>`}
+            <button class="button" id="download">Download PDF</button>
+        </div>
+        <div id="content">${html}</div>
     </div>
-    <div id="content">${html}</div>
-</div>
-<script>
-   document.getElementById('download').addEventListener('click', function() {
+    <script>
+    document.getElementById('download').addEventListener('click', function() {
         var button = this;
         var opt = {
             pagebreak: { mode: ['css'], before: ${JSON.stringify(breakBefore)}, after: ${JSON.stringify(breakAfter)}, avoid: ${JSON.stringify(breakAvoid)} },
@@ -207,27 +199,24 @@ const originalHTML = `
             letterheadAdded = true;
         }
 
-if (footerImageUrl && !content.querySelector('.footer')) {
-    var footerImage = document.createElement('img');
-    footerImage.src = footerImageUrl;
-    footerImage.classList.add('footer');
-    footerImage.style.width = '100%';
-    content.appendChild(footerImage);
-    footerImageAdded = true;
-}
+        if (footerImageUrl && !content.querySelector('.footer')) {
+            var footerImage = document.createElement('img');
+            footerImage.src = footerImageUrl;
+            footerImage.classList.add('footer');
+            footerImage.style.width = '100%';
+            content.appendChild(footerImage);
+            footerImageAdded = true;
+        }
 
         setTimeout(function() {
             html2pdf().set(opt).from(content).toPdf().get('pdf').then(function(pdf) {
                 var pageCount = pdf.internal.getNumberOfPages();
-                // Loop through each page
                 for (var i = 1; i <= pageCount; i++) {
                     pdf.setPage(i);
-                    pdf.setFontStyle("medium");
-                    pdf.setFontSize(12);
-                    var pageSize = pdf.internal.pageSize;
-                    var pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
-                    var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
-                    pdf.text(pageWidth - (${margin} + 70), pageHeight - 30, 'Page ' + i + ' of ' + pageCount);
+                    var dimensions = pdf.internal.pageSize;
+                    var footerImg = new Image();
+                    footerImg.src = footerImageUrl;
+                    pdf.addImage(footerImg, 'PNG', 0, dimensions.height - 50, 50, 50); // Adjust the position and size as needed
                 }
 
                 pdf.save('${fileName}.pdf');
