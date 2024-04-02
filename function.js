@@ -210,7 +210,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
             var footerImage = document.createElement('img');
             footerImage.src = footerImageUrl;
             footerImage.classList.add('footer');
-            content.appendChild(footerImage);
+            content.insertAfter(footerImage, content.firstChild);
             footerImageAdded = true;
         }
 
@@ -226,9 +226,8 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
                     var pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
                     var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
                     pdf.text(pageWidth - (${margin} + 70), pageHeight - 30, 'Page ' + i + ' of ' + pageCount);
-                    if (footerImageUrl) {
                         pdf.addImage(footerImageUrl, 'JPEG', 0, pageHeight - 20, 100, 20);
-                    }
+      
                 }
 
                 pdf.save('${fileName}.pdf');
