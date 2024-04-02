@@ -93,7 +93,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
     body {
       margin: 0!important
     }
-     .header {
+    .header {
       display: flex;
       justify-content: center;
       align-items: center;
@@ -101,13 +101,13 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
       width: 100%;
       text-align: center;
     }
-    
+
     .letterhead {
       width: 100%;
       max-width:  ${maxLetterheadWidth}px;
       height: auto;
     }
-    
+
     .footer {
       width: 100%;
       max-width: 1120px;
@@ -123,7 +123,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
       width: 100%;
       height: auto;
     }
-        
+
     button {
       position: fixed;
       top: 8px;
@@ -140,7 +140,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
       cursor: pointer;
       z-index: 999;
     }
-    
+
     button::before {
       position: absolute;
       content: '';
@@ -153,12 +153,12 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
       box-shadow: 0.2em 0.2em 0.2em rgba(0, 0, 0, 0.3);
       transition: 0.3s;
     }
-    
+
     button:hover::before {
       width: 1.6em;
       height: 1.6em;
     }
-    
+
     button:active {
       box-shadow: 0.2em 0.2em 0.3em rgba(0, 0, 0, 0.3);
       transform: translate(0.1em, 0.1em);
