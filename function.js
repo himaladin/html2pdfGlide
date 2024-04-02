@@ -219,23 +219,23 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
             html2pdf().set(opt).from(content).toPdf().get('pdf').then(function(pdf) {
                 var pageCount = pdf.internal.getNumberOfPages();
                 // Loop through each page
-// Loop through each page
-for (var i = 1; i <= pageCount; i++) {
-    pdf.setPage(i);
-    pdf.setFontStyle("medium");
-    pdf.setFontSize(12);
-    var pageSize = pdf.internal.pageSize;
-    var pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
-    var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
-    pdf.text(pageWidth - (${margin} + 70), pageHeight - 30, 'Page ' + i + ' of ' + pageCount);
+                for (var i = 1; i <= pageCount; i++) {
+                    pdf.setPage(i);
+                    pdf.setFontStyle("medium");
+                    pdf.setFontSize(12);
+                    var pageSize = pdf.internal.pageSize;
+                    var pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
+                    var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
+                    pdf.text(pageWidth - (${margin} + 70), pageHeight - 30, 'Page ' + i + ' of ' + pageCount);
 
-    // Add footer image at the bottom of each page
-    if (footerImageUrl) {
-        var imgWidth = 100; // Adjust as needed
-        var imgHeight = 50; // Adjust as needed
-        pdf.addImage(footerImageUrl, 'PNG', (pageWidth - imgWidth) / 2, pageHeight - (imgHeight + 10), imgWidth, imgHeight);
-    }
-}
+                    // Add footer image at the bottom of each page
+                    if (footerImageUrl) {
+                        var imgWidth = 100; // Adjust as needed
+                        var imgHeight = 50; // Adjust as needed
+                        pdf.addImage(footerImageUrl, 'PNG', (pageWidth - imgWidth) / 2, pageHeight - (imgHeight + 10), imgWidth, imgHeight);
+                    }
+                }
+
                 pdf.save('${fileName}.pdf');
                 button.innerText = 'Downloaded';
                 button.className = 'downloaded';
