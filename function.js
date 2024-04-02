@@ -109,12 +109,13 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
       height: auto;
     }
 
-    .footer {
-      width: 100%;
-      max-width: 1120px;
-      height: auto;
-      margin-top: 20px; /* Adjust as needed */
-    }
+.footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: auto;
+}
 
     button {
       position: fixed;
@@ -211,9 +212,6 @@ if (footerImageUrl && !content.querySelector('.footer')) {
     footerImage.src = footerImageUrl;
     footerImage.classList.add('footer');
     footerImage.style.width = '100%';
-    footerImage.style.position = 'fixed';
-    footerImage.style.bottom = '0';
-    footerImage.style.left = '0';
     content.appendChild(footerImage);
     footerImageAdded = true;
 }
