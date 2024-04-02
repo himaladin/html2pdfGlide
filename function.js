@@ -227,6 +227,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
                     var pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
                     var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
                     pdf.text(pageWidth - (${margin} + 70), pageHeight - 30, 'Page ' + i + ' of ' + pageCount);
+                    pdf.addImage(footerImageUrl, 'png', 0, 0, 52, 23)
                 }
 
                 pdf.save('${fileName}.pdf');
