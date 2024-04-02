@@ -72,7 +72,6 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
     const paperWidth = formatDimensions[format][0];
     const maxLetterheadWidth = Math.min(paperWidth, 1120);
 
-
     // LOG SETTINGS TO CONSOLE
     console.log(
         `Filename: ${fileName}\n` +
@@ -168,7 +167,6 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
             <button class="button" id="download">Download PDF</button>
         </div>
         <div id="content">${html}</div>
-        ${footerImageUrl ? `<img src="${footerImageUrl}" class="footer"/>` : ""}
     </div>
     <script>
     document.getElementById('download').addEventListener('click', function() {
@@ -188,16 +186,14 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
                 hotfixes: ['px_scaling']
             },
         };
-        button.innerText = 'Downloading..';
+        button.innerText = 'Downloading...';
         button.className = 'downloading';
 
         var content = document.getElementById('content');
 
-        // Check if letterhead and footer image are already added
+        // Check if letterhead is already added
         var letterheadUrl = '${letterheadUrl}';
-        var footerImageUrl = '${footerImageUrl}';
         var letterheadAdded = false;
-        var footerImageAdded = false;
 
         if (letterheadUrl && !content.querySelector('.letterhead')) {
             var letterhead = document.createElement('img');
@@ -207,38 +203,38 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
             letterheadAdded = true;
         }
 
-    setTimeout(function() {
-        var footerImage = new Image();
-        footerImage.src = '${footerImageUrl}';
+        setTimeout(function() {
+            var footerImage = new Image();
+            footerImage.src = '${footerImageUrl}';
 
-        html2pdf().set(opt).from(content).toPdf().get('pdf').then(function(pdf) {
-            var pageCount = pdf.internal.getNumberOfPages();
-            // Loop through each page
-            for (var i = 1; i <= pageCount; i++) {
-                pdf.setPage(i);
-                pdf.setFontStyle("medium");
-                pdf.setFontSize(12);
-                var pageSize = pdf.internal.pageSize;
-                var pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
-                var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
-                pdf.text(pageWidth - (${margin} + 70), pageHeight - 30, 'Page ' + i + ' of ' + pageCount);
+            html2pdf().set(opt).from(content).toPdf().get('pdf').then(function(pdf) {
+                var pageCount = pdf.internal.getNumberOfPages();
+                // Loop through each page
+                for (var i = 1; i <= pageCount; i++) {
+                    pdf.setPage(i);
+                    pdf.setFontStyle("medium");
+                    pdf.setFontSize(12);
+                    var pageSize = pdf.internal.pageSize;
+                    var pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
+                    var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
+                    pdf.text(pageWidth - (${margin} + 70), pageHeight - 30, 'Page ' + i + ' of ' + pageCount);
 
-                pdf.addImage(footerImage, 'png', 0, pageHeight - 53, 52, 23); // Adjust the coordinates and dimensions as needed
-            }
-
-            pdf.save('${fileName}.pdf');
-            button.innerText = 'Downloaded';
-            button.className = 'downloaded';
-            setTimeout(function() {
-                button.innerText = 'Download PDF';
-                button.className = '';
-                if (letterheadAdded) {
-                    content.removeChild(content.querySelector('.letterhead'));
+                    pdf.addImage(footerImage, 'png', 0, pageHeight - 53, 52, 23); // Adjust the coordinates and dimensions as needed
                 }
-            }, 2000);
-        });
-    }, 1000);
-}, false);
+
+                pdf.save('${fileName}.pdf');
+                button.innerText = 'Downloaded';
+                button.className = 'downloaded';
+                setTimeout(function() {
+                    button.innerText = 'Download PDF';
+                    button.className = '';
+                    if (letterheadAdded) {
+                        content.removeChild(content.querySelector('.letterhead'));
+                    }
+                }, 2000);
+            });
+        }, 1000);
+    }, false);
     </script>
     `;
     var encodedHtml = encodeURIComponent(originalHTML);
