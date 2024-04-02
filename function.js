@@ -168,7 +168,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
             <button class="button" id="download">Download PDF</button>
         </div>
         <div id="content">${html}</div>
-        ${footerImageUrl ? `<img src="${footerImageUrl}" class="footer"/>` : ""}
+        <img src="${footerImageUrl}" class="footer"/>
     </div>
     <script>
     document.getElementById('download').addEventListener('click', function() {
@@ -200,8 +200,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
                     pdf.setPage(i);
                     pdf.setFontSize(5);
                     pdf.setTextColor(0);
-                    pdf.text(pdf.internal.pageSize.getWidth() - 5, pdf.internal.pageSize.getHeight() - 0.1, "Your Text");
-                    pdf.addImage('${footerImageUrl}', 'JPEG', pdf.internal.pageSize.getWidth() - 1.1, pdf.internal.pageSize.getHeight() - 0.25, 1, 0.2);
+                    pdf.addImage('${footerImageUrl}', 'JPEG', pdf.internal.pageSize.getWidth() - 50, pdf.internal.pageSize.getHeight() - 15, 40, 10);
                 }
 
                 pdf.save('${fileName}.pdf');
