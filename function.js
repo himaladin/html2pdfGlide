@@ -176,17 +176,17 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
     document.getElementById('download').addEventListener('click', function() {
         var button = this;
         var opt = {
-            pagebreak: { mode: ['css'], before: ${JSON.stringify(breakBefore)}, after: ${JSON.stringify(breakAfter)}, avoid: ${JSON.stringify(breakAvoid)} },
-            margin: ${margin},
-            filename: '${fileName}',
+            pagebreak: { mode: ['css'], before: [], after: [], avoid: [".divTableRow"] },
+            margin: 80,
+            filename: 'Stupa 7-Review 4 (3 April 2024 at 17:14)',
             html2canvas: {
                 useCORS: true,
-                scale: ${quality}
+                scale: 1.5
             },
             jsPDF: {
                 unit: 'px',
-                orientation: '${orientation}',
-                format: [${finalDimensions}],
+                orientation: 'portrait',
+                format: [1240,1754],
                 hotfixes: ['px_scaling']
             },
         };
@@ -201,14 +201,14 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
             imgPromises.push(new Promise((resolve) => {
                 var img = new Image();
                 img.onload = resolve;
-                img.src = ${letterheadUrl};
+                img.src = letterheadUrl;
             }));
         }
         if (footerImageUrl) {
             imgPromises.push(new Promise((resolve) => {
                 var img = new Image();
                 img.onload = resolve;
-                img.src = ${footerImageUrl};
+                img.src = footerImageUrl;
             }));
         }
         
@@ -224,24 +224,24 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
                         var pageSize = pdf.internal.pageSize;
                         var pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
                         var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
-                        pdf.text(pageWidth - (${margin} + 70), pageHeight - 30, 'Page ' + i + ' of ' + pageCount);
+                        pdf.text(pageWidth - (80 + 70), pageHeight - 30, 'Page ' + i + ' of ' + pageCount);
 
                         // Add letterhead at the top of each page
                         if (letterheadUrl) {
                             var imgWidth = 1120; // Adjust as needed
                             var imgHeight = (1120 / 1240) * 1754; // Maintain aspect ratio
-                            pdf.addImage(${letterheadUrl}, 'PNG', (pageWidth - imgWidth) / 2, 10, imgWidth, imgHeight);
+                            pdf.addImage('${letterheadUrl}', 'PNG', (pageWidth - imgWidth) / 2, 10, imgWidth, imgHeight);
                         }
 
                         // Add footer image at the bottom of each page
                         if (footerImageUrl) {
                             var imgWidth = 100; // Adjust as needed
                             var imgHeight = 50; // Adjust as needed
-                            pdf.addImage(${footerImageUrl}, 'PNG', (pageWidth - imgWidth) / 2, pageHeight - (imgHeight + 10), imgWidth, imgHeight);
+                            pdf.addImage('${footerImageUrl}', 'PNG', (pageWidth - imgWidth) / 2, pageHeight - (imgHeight + 10), imgWidth, imgHeight);
                         }
                     }
 
-                    pdf.save('${fileName}.pdf');
+                    pdf.save('Stupa 7-Review 4 (3 April 2024 at 17:14).pdf');
                     button.innerText = 'Downloaded';
                     button.className = 'downloaded';
                 });
