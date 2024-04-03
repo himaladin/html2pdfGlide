@@ -17,8 +17,6 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
     breakAfter = breakAfter.value ? breakAfter.value.split(",") : [];
     breakAvoid = breakAvoid.value ? breakAvoid.value.split(",") : [];
     quality = fidelityMap[fidelity.value] ?? 1.5;
-    letterheadUrl = letterheadUrl.value ?? "";
-    footerImageUrl = footerImageUrl.value ?? "";
     customDimensions = customDimensions.value ? customDimensions.value.split(",").map(Number) : null;
 
     // DOCUMENT DIMENSIONS
@@ -194,9 +192,9 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
         button.innerText = 'Downloading...';
         button.className = 'downloading';
 
-        var content = document.getElementById('letterhead');
         var content = document.getElementById('content');
-        var content = document.getElementById('footer');
+        var letterheadUrl = 'URL_GAMBAR_LETTERHEAD';
+        var footerImageUrl = 'URL_GAMBAR_FOOTER';
 
         setTimeout(function() {
             html2pdf().set(opt).from(content).toPdf().get('pdf').then(function(pdf) {
@@ -213,8 +211,8 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
 
                     // Add letterhead at the top of each page
                     if (letterheadUrl) {
-                        var imgWidth = ${maxLetterheadWidth}; // Adjust as needed
-                        var imgHeight = (${maxLetterheadWidth} / ${paperWidth}) * ${paperHeight}; // Maintain aspect ratio
+                        var imgWidth = 1120; // Adjust as needed
+                        var imgHeight = (1120 / 1240) * 1754; // Maintain aspect ratio
                         pdf.addImage(letterheadUrl, 'PNG', (pageWidth - imgWidth) / 2, 10, imgWidth, imgHeight);
                     }
 
