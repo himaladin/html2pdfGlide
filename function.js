@@ -169,7 +169,9 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
             ${letterheadUrl ? `<img src="${letterheadUrl}" class="letterhead"/>` : `<img src="empty-image.png" class="letterhead empty"/>`}
             <button class="button" id="download">Download PDF</button>
         </div>
-        <div id="content">${html}</div>
+        <div id="content">${html}
+        ${footerImageUrl ? `<img src="${footerImageUrl}" class="footer"/>` : ""}
+        </div>
     </div>
     <script>
     document.getElementById('download').addEventListener('click', function() {
@@ -192,7 +194,9 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
         button.innerText = 'Downloading...';
         button.className = 'downloading';
 
+        var content = document.getElementById('letterhead');
         var content = document.getElementById('content');
+        var content = document.getElementById('footer');
 
         setTimeout(function() {
             html2pdf().set(opt).from(content).toPdf().get('pdf').then(function(pdf) {
