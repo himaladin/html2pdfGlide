@@ -159,17 +159,17 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
     </style>
     `;
 
-    // HTML THAT IS RETURNED AS A RENDERABLE URL
-    const originalHTML = `
+// HTML THAT IS RETURNED AS A RENDERABLE URL
+const originalHTML = `
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
     <style>${customCSS}</style>
     <div class="main">
         <div class="header">
-            ${letterheadUrl ? `<img src="${letterheadUrl}" class="letterhead"/>` : `<img src="empty-image.png" class="letterhead empty"/>`}
+            ${letterheadUrl ? `<div class="letterhead"></div>` : ""}
             <button class="button" id="download">Download PDF</button>
         </div>
         <div id="content">${html}
-        ${footerImageUrl ? `<img src="${footerImageUrl}" class="footer"/>` : ""}
+        ${footerImageUrl ? `<div class="footer"></div>` : ""}
         </div>
     </div>
     <script>
@@ -207,20 +207,6 @@ document.getElementById('download').addEventListener('click', function() {
                 var pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
                 var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
                 pdf.text(pageWidth - (${margin} + 70), pageHeight - 30, 'Page ' + i + ' of ' + pageCount);
-
-                // Add letterhead at the top of each page
-                if ('${letterheadUrl}') {
-                    var imgWidth = 1120; // Adjust as needed
-                    var imgHeight = (1120 / 1240) * 1754; // Maintain aspect ratio
-                    pdf.addImage('https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/k7usFpDJXTEySup8gjGr/pub/idEBnkVsSm6pNgdNdaFQ.png', 'PNG', (pageWidth - imgWidth) / 2, 10, imgWidth, imgHeight);
-                }
-
-                // Add footer image at the bottom of each page
-                if ('${footerImageUrl}') {
-                    var imgWidth = 100; // Adjust as needed
-                    var imgHeight = 50; // Adjust as needed
-                    pdf.addImage('https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/k7usFpDJXTEySup8gjGr/pub/KeTIMNRVrucH6cpSv5cf.png', 'PNG', (pageWidth - imgWidth) / 2, pageHeight - (imgHeight + 10), imgWidth, imgHeight);
-                }
             }
 
             pdf.save('${fileName}.pdf');
