@@ -172,21 +172,21 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
         ${footerImageUrl ? `<img src="${footerImageUrl}" class="footer"/>` : ""}
         </div>
     </div>
-<script>
+    <script>
     document.getElementById('download').addEventListener('click', function() {
         var button = this;
         var opt = {
-            pagebreak: { mode: ['css'], before: [], after: [], avoid: [".divTableRow"] },
-            margin: 80,
-            filename: 'Stupa 7-Review 4 (3 April 2024 at 17:14)',
+            pagebreak: { mode: ['css'], before: ${JSON.stringify(breakBefore)}, after: ${JSON.stringify(breakAfter)}, avoid: ${JSON.stringify(breakAvoid)} },
+            margin: ${margin},
+            filename: '${fileName}',
             html2canvas: {
                 useCORS: true,
-                scale: 1.5
+                scale: ${quality}
             },
             jsPDF: {
                 unit: 'px',
-                orientation: 'portrait',
-                format: [1240,1754],
+                orientation: '${orientation}',
+                format: [${finalDimensions}],
                 hotfixes: ['px_scaling']
             },
         };
@@ -194,59 +194,40 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
         button.className = 'downloading';
 
         var content = document.getElementById('content');
-        
-        // Load images asynchronously
-        var imgPromises = [];
-        if (letterheadUrl) {
-            imgPromises.push(new Promise((resolve) => {
-                var img = new Image();
-                img.onload = resolve;
-                img.src = '${letterheadUrl}';
-            }));
-        }
-        if (footerImageUrl) {
-            imgPromises.push(new Promise((resolve) => {
-                var img = new Image();
-                img.onload = resolve;
-                img.src = '${footerImageUrl}';
-            }));
-        }
-        
-        Promise.all(imgPromises).then(() => {
-            setTimeout(function() {
-                html2pdf().set(opt).from(content).toPdf().get('pdf').then(function(pdf) {
-                    var pageCount = pdf.internal.getNumberOfPages();
-                    // Loop through each page
-                    for (var i = 1; i <= pageCount; i++) {
-                        pdf.setPage(i);
-                        pdf.setFontStyle("medium");
-                        pdf.setFontSize(12);
-                        var pageSize = pdf.internal.pageSize;
-                        var pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
-                        var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
-                        pdf.text(pageWidth - (80 + 70), pageHeight - 30, 'Page ' + i + ' of ' + pageCount);
 
-                        // Add letterhead at the top of each page
-                        if (letterheadUrl) {
-                            var imgWidth = 1120; // Adjust as needed
-                            var imgHeight = (1120 / 1240) * 1754; // Maintain aspect ratio
-                            pdf.addImage('${letterheadUrl}', 'PNG', (pageWidth - imgWidth) / 2, 10, imgWidth, imgHeight);
-                        }
+        setTimeout(function() {
+            html2pdf().set(opt).from(content).toPdf().get('pdf').then(function(pdf) {
+                var pageCount = pdf.internal.getNumberOfPages();
+                // Loop through each page
+                for (var i = 1; i <= pageCount; i++) {
+                    pdf.setPage(i);
+                    pdf.setFontStyle("medium");
+                    pdf.setFontSize(12);
+                    var pageSize = pdf.internal.pageSize;
+                    var pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
+                    var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
+                    pdf.text(pageWidth - (${margin} + 70), pageHeight - 30, 'Page ' + i + ' of ' + pageCount);
 
-                        // Add footer image at the bottom of each page
-                        if (footerImageUrl) {
-                            var imgWidth = 100; // Adjust as needed
-                            var imgHeight = 50; // Adjust as needed
-                            pdf.addImage('${footerImageUrl}', 'PNG', (pageWidth - imgWidth) / 2, pageHeight - (imgHeight + 10), imgWidth, imgHeight);
-                        }
+                    // Add letterhead at the top of each page
+                    if (letterheadUrl) {
+                        var imgWidth = 1120; // Adjust as needed
+                        var imgHeight = (1120 / 1240) * 1754; // Maintain aspect ratio
+                        pdf.addImage('${letterheadUrl}', 'PNG', (pageWidth - imgWidth) / 2, 10, imgWidth, imgHeight);
                     }
 
-                    pdf.save('Stupa 7-Review 4 (3 April 2024 at 17:14).pdf');
-                    button.innerText = 'Downloaded';
-                    button.className = 'downloaded';
-                });
-            }, 1000);
-        });
+                    // Add footer image at the bottom of each page
+                    if (footerImageUrl) {
+                        var imgWidth = 100; // Adjust as needed
+                        var imgHeight = 50; // Adjust as needed
+                        pdf.addImage('${footerImageUrl}', 'PNG', (pageWidth - imgWidth) / 2, pageHeight - (imgHeight + 10), imgWidth, imgHeight);
+                    }
+                }
+
+                pdf.save('${fileName}.pdf');
+                button.innerText = 'Downloaded';
+                button.className = 'downloaded';
+            });
+        }, 1000);
     }, false);
     </script>
     `;
