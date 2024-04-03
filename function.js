@@ -227,7 +227,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
                 button.innerText = 'Downloaded';
                 button.className = 'downloaded';
             });
-        }, 1000);
+        }, 3000);
     }, false);
     </script>
     `;
