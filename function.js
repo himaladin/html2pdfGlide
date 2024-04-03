@@ -193,8 +193,6 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
         button.className = 'downloading';
 
         var content = document.getElementById('content');
-        var letterheadUrl = 'URL_GAMBAR_LETTERHEAD';
-        var footerImageUrl = 'URL_GAMBAR_FOOTER';
 
         setTimeout(function() {
             html2pdf().set(opt).from(content).toPdf().get('pdf').then(function(pdf) {
