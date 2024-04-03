@@ -1,4 +1,4 @@
-window.function = function (html, fileName, format, zoom, orientation, margin, breakBefore, breakAfter, breakAvoid, fidelity, customDimensions, letterheadUrl, footerImageUrl) {
+window.function = function (html, fileName, format, zoom, orientation, margin, breakBefore, breakAfter, breakAvoid, fidelity, customDimensions, letterheadUrl) {
     // FIDELITY MAPPING
     const fidelityMap = {
         low: 1,
@@ -17,6 +17,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
     breakAfter = breakAfter.value ? breakAfter.value.split(",") : [];
     breakAvoid = breakAvoid.value ? breakAvoid.value.split(",") : [];
     quality = fidelityMap[fidelity.value] ?? 1.5;
+    letterheadUrl = letterheadUrl.value ?? "";
     customDimensions = customDimensions.value ? customDimensions.value.split(",").map(Number) : null;
 
     // DOCUMENT DIMENSIONS
@@ -64,7 +65,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
         credit_card: [319, 508],
     };
 
-    // GET FINAL DIMENSIONS FROM SELECTED FORMAT
+    // GET FINAL DIMESIONS FROM SELECTED FORMAT
     const dimensions = customDimensions || formatDimensions[format];
     const finalDimensions = dimensions.map((dimension) => Math.round(dimension / zoom));
     const paperWidth = formatDimensions[format][0];
