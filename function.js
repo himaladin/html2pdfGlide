@@ -1,4 +1,4 @@
-window.function = function (html, fileName, format, zoom, orientation, margin, breakBefore, breakAfter, breakAvoid, fidelity, customDimensions, letterheadUrl) {
+window.function = function (html, fileName, format, zoom, orientation, margin, breakBefore, breakAfter, breakAvoid, fidelity, customDimensions, letterheadUrl, footerImageUrl) {
     // FIDELITY MAPPING
     const fidelityMap = {
         low: 1,
@@ -18,6 +18,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
     breakAvoid = breakAvoid.value ? breakAvoid.value.split(",") : [];
     quality = fidelityMap[fidelity.value] ?? 1.5;
     letterheadUrl = letterheadUrl.value ?? "";
+    footerImageUrl = footerImageUrl.value ?? "";
     customDimensions = customDimensions.value ? customDimensions.value.split(",").map(Number) : null;
 
     // DOCUMENT DIMENSIONS
@@ -65,12 +66,12 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
         credit_card: [319, 508],
     };
 
-    // GET FINAL DIMESIONS FROM SELECTED FORMAT
+    // GET FINAL DIMENSIONS FROM SELECTED FORMAT
     const dimensions = customDimensions || formatDimensions[format];
     const finalDimensions = dimensions.map((dimension) => Math.round(dimension / zoom));
     const paperWidth = formatDimensions[format][0];
     const maxLetterheadWidth = Math.min(paperWidth, 1120);
-
+    const paperHeight = (formatDimensions[format][1] / formatDimensions[format][0]) * paperWidth;
 
     // LOG SETTINGS TO CONSOLE
     console.log(
@@ -85,7 +86,8 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
         `Break after: ${breakAfter}\n` +
         `Break avoid: ${breakAvoid}\n` +
         `Quality: ${quality}` +
-        `Letterhead URL: ${letterheadUrl}`
+        `Letterhead URL: ${letterheadUrl}` +
+        `Footer Image URL: ${footerImageUrl}`
     );
 
     const customCSS = `
@@ -105,6 +107,14 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
       width: 100%;
       max-width:  ${maxLetterheadWidth}px;
       height: auto;
+    }
+    
+    .footer {
+      position: absolute;
+      width: 100%;
+      max-width: ${maxLetterheadWidth}px;
+      height: auto;
+      bottom:  0px;
     }
         
     button {
@@ -158,7 +168,9 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
             ${letterheadUrl ? `<img src="${letterheadUrl}" class="letterhead"/>` : `<img src="empty-image.png" class="letterhead empty"/>`}
             <button class="button" id="download">Download PDF</button>
         </div>
-        <div id="content">${html}</div>
+        <div id="content">${html}
+        ${footerImageUrl ? `<img src="${footerImageUrl}" class="footer"/>` : ""}
+        </div>
     </div>
     <script>
     document.getElementById('download').addEventListener('click', function() {
@@ -178,20 +190,10 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
                 hotfixes: ['px_scaling']
             },
         };
-        button.innerText = 'Downloading..';
+        button.innerText = 'Downloading...';
         button.className = 'downloading';
 
         var content = document.getElementById('content');
-        var letterheadUrl = '${letterheadUrl}';
-        var letterheadAdded = false;
-
-        if (letterheadUrl && !content.querySelector('.letterhead')) {
-            var letterhead = document.createElement('img');
-            letterhead.src = letterheadUrl;
-            letterhead.classList.add('letterhead');
-            content.insertBefore(letterhead, content.firstChild);
-            letterheadAdded = true;
-        }
 
         setTimeout(function() {
             html2pdf().set(opt).from(content).toPdf().get('pdf').then(function(pdf) {
@@ -205,18 +207,25 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
                     var pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
                     var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
                     pdf.text(pageWidth - (${margin} + 70), pageHeight - 30, 'Page ' + i + ' of ' + pageCount);
+                
+                    // Add letterhead at the top of each page
+                    if ('${letterheadUrl}') {
+                        var imgWidth = 1120; // Adjust as needed
+                        var imgHeight = (1120 / 1240) * 1754; // Maintain aspect ratio
+                        pdf.addImage('${letterheadUrl}', 'PNG', (pageWidth - imgWidth) / 2, 10, imgWidth, imgHeight);
+                    }
+                    
+                    // Add footer image at the bottom of each page
+                    if ('${footerImageUrl}') {
+                        var imgWidth = 100; // Adjust as needed
+                        var imgHeight = 50; // Adjust as needed
+                        pdf.addImage('${footerImageUrl}', 'PNG', (pageWidth - imgWidth) / 2, pageHeight - (imgHeight + 10), imgWidth, imgHeight);
+                    }
                 }
 
                 pdf.save('${fileName}.pdf');
                 button.innerText = 'Downloaded';
                 button.className = 'downloaded';
-                setTimeout(function() {
-                    button.innerText = 'Download PDF';
-                    button.className = '';
-                    if (letterheadAdded) {
-                        content.removeChild(content.querySelector('.letterhead'));
-                    }
-                }, 2000);
             });
         }, 1000);
     }, false);
