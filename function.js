@@ -201,14 +201,14 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
             imgPromises.push(new Promise((resolve) => {
                 var img = new Image();
                 img.onload = resolve;
-                img.src = letterheadUrl;
+                img.src = '${letterheadUrl}';
             }));
         }
         if (footerImageUrl) {
             imgPromises.push(new Promise((resolve) => {
                 var img = new Image();
                 img.onload = resolve;
-                img.src = footerImageUrl;
+                img.src = '${footerImageUrl}';
             }));
         }
         
