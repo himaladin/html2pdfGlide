@@ -163,31 +163,32 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
     const originalHTML = `
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
     <style>${customCSS}</style>
-<div class="main">
-    <div class="header">
-        <img src="https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/k7usFpDJXTEySup8gjGr/pub/idEBnkVsSm6pNgdNdaFQ.png" class="letterhead">
-        <button class="downloading" id="download">Downloading...</button>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+    <style>${customCSS}</style>
+    <div class="main">
+        <div class="header">
+            ${letterheadUrl ? `<img src="${letterheadUrl}" class="letterhead"/>` : `<img src="empty-image.png" class="letterhead empty"/>`}
+            <button class="button" id="download">Download PDF</button>
+        </div>
+        <div id="content">${html}
+        ${footerImageUrl ? `<img src="${footerImageUrl}" class="footer"/>` : ""}
+        </div>
     </div>
-    <div id="content">
-        <!-- Content here -->
-        <img src="https://storage.googleapis.com/glide-prod.appspot.com/uploads-v2/k7usFpDJXTEySup8gjGr/pub/KeTIMNRVrucH6cpSv5cf.png" class="footer">
-    </div>
-</div>
 <script>
     document.getElementById('download').addEventListener('click', function() {
         var button = this;
         var opt = {
-            pagebreak: { mode: ['css'], before: [], after: [], avoid: [".divTableRow"] },
-            margin: 80,
-            filename: 'Stupa 7-Review 4 (3 April 2024 at 17:01)',
+            pagebreak: { mode: ['css'], before: ${JSON.stringify(breakBefore)}, after: ${JSON.stringify(breakAfter)}, avoid: ${JSON.stringify(breakAvoid)} },
+            margin: ${margin},
+            filename: '${fileName}',
             html2canvas: {
                 useCORS: true,
-                scale: 1.5
+                scale: ${quality}
             },
             jsPDF: {
                 unit: 'px',
-                orientation: 'portrait',
-                format: [1240,1754],
+                orientation: '${orientation}',
+                format: [${finalDimensions}],
                 hotfixes: ['px_scaling']
             },
         };
@@ -195,9 +196,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
         button.className = 'downloading';
 
         var content = document.getElementById('content');
-        var letterheadUrl = document.querySelector('.letterhead').src;
-        var footerImageUrl = content.querySelector('.footer').src;
-
+        
         // Load images asynchronously
         var imgPromises = [];
         if (letterheadUrl) {
@@ -214,7 +213,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
                 img.src = footerImageUrl;
             }));
         }
-
+        
         Promise.all(imgPromises).then(() => {
             setTimeout(function() {
                 html2pdf().set(opt).from(content).toPdf().get('pdf').then(function(pdf) {
@@ -227,7 +226,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
                         var pageSize = pdf.internal.pageSize;
                         var pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
                         var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
-                        pdf.text(pageWidth - (80 + 70), pageHeight - 30, 'Page ' + i + ' of ' + pageCount);
+                        pdf.text(pageWidth - (${margin} + 70), pageHeight - 30, 'Page ' + i + ' of ' + pageCount);
 
                         // Add letterhead at the top of each page
                         if (letterheadUrl) {
@@ -244,7 +243,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
                         }
                     }
 
-                    pdf.save('Stupa 7-Review 4 (3 April 2024 at 16:55).pdf');
+                    pdf.save('${fileName}.pdf');
                     button.innerText = 'Downloaded';
                     button.className = 'downloaded';
                 });
