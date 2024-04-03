@@ -212,14 +212,14 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
                     if (${letterheadUrl}) {
                         var imgWidth = 1120; // Adjust as needed
                         var imgHeight = (1120 / 1240) * 1754; // Maintain aspect ratio
-                        pdf.addImage(${letterheadUrl}, 'PNG', (pageWidth - imgWidth) / 2, 10, imgWidth, imgHeight);
+                        pdf.addImage('${letterheadUrl}', 'PNG', (pageWidth - imgWidth) / 2, 10, imgWidth, imgHeight);
                     }
                 
                     // Add footer image at the bottom of each page
                     if (${footerImageUrl}) {
                         var imgWidth = 100; // Adjust as needed
                         var imgHeight = 50; // Adjust as needed
-                        pdf.addImage(${footerImageUrl}, 'PNG', (pageWidth - imgWidth) / 2, pageHeight - (imgHeight + 10), imgWidth, imgHeight);
+                        pdf.addImage('${footerImageUrl}', 'PNG', (pageWidth - imgWidth) / 2, pageHeight - (imgHeight + 10), imgWidth, imgHeight);
                     }
                 }
 
