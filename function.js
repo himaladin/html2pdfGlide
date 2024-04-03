@@ -71,7 +71,6 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
     const maxLetterheadWidth = Math.min(paperWidth, 1120);
     const paperHeight = (formatDimensions[format][1] / formatDimensions[format][0]) * paperWidth;
 
-
     // LOG SETTINGS TO CONSOLE
     console.log(
         `Filename: ${fileName}\n` +
