@@ -1,4 +1,4 @@
-window.function = function (html, fileName, format, zoom, orientation, margin, breakBefore, breakAfter, breakAvoid, fidelity, customDimensions, letterheadUrl, footerImageUrl) {
+window.function = function (html, fileName, format, zoom, orientation, margin, breakBefore, breakAfter, breakAvoid, fidelity, customDimensions, letterheadUrl, footerImageUrl, headerImageUrl) {
     // FIDELITY MAPPING
     const fidelityMap = {
         low: 1,
@@ -19,6 +19,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
     quality = fidelityMap[fidelity.value] ?? 1.5;
     letterheadUrl = letterheadUrl.value ?? "";
     footerImageUrl = footerImageUrl.value ?? "";
+    headerImageUrl = headerImageUrl.value ?? "";
     customDimensions = customDimensions.value ? customDimensions.value.split(",").map(Number) : null;
 
     // DOCUMENT DIMENSIONS
@@ -87,7 +88,8 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
         `Break avoid: ${breakAvoid}\n` +
         `Quality: ${quality}` +
         `Letterhead URL: ${letterheadUrl}` +
-        `Footer Image URL: ${footerImageUrl}`
+        `Footer Image URL: ${footerImageUrl}` +
+        `Header Image URL: ${headerImageUrl}`
     );
 
     const customCSS = `
@@ -165,7 +167,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
     <style>${customCSS}</style>
     <div class="main">
         <div class="header">
-            ${letterheadUrl ? `<img src="${letterheadUrl}" class="letterhead"/>` : `<img src="empty-image.png" class="letterhead empty"/>`}
+            ${headerImageUrl ? `<img src="${headerImageUrl}" class="letterhead"/>` : `<img src="empty-image.png" class="letterhead empty"/>`}
             <button class="button" id="download">Download PDF</button>
         </div>
         <div id="content">${html}
