@@ -214,34 +214,12 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
                     var pageSize = pdf.internal.pageSize;
                     var pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
                     var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
-                    if (letterheadUrl && !content.querySelector('.letterhead')) {
-                        var letterhead = document.createElement('img');
-                        letterhead.src = letterheadUrl;
-                        letterhead.classList.add('letterhead');
-                        content.insertBefore(letterhead, content.firstChild);
-                    }
-                    if (footerImageUrl && !content.querySelector('.footer')) {
-                        var footer = document.createElement('img');
-                        footer.src = footerImageUrl;
-                        footer.classList.add('footer');
-                        content.appendChild(footer);
-                    }
                     pdf.text(pageWidth - (${margin} + 70), pageHeight - 30, 'Page ' + i + ' of ' + pageCount);
                 }
 
                 pdf.save('${fileName}.pdf');
                 button.innerText = 'Downloaded';
                 button.className = 'downloaded';
-                setTimeout(function() {
-                    button.innerText = 'Download PDF';
-                    button.className = '';
-                    if (letterheadUrl) {
-                        content.removeChild(content.querySelector('.letterhead'));
-                    }
-                    if (footerImageUrl) {
-                        content.removeChild(content.querySelector('.footer'));
-                    }
-                }, 2000);
             });
         }, 1000);
     }, false);
