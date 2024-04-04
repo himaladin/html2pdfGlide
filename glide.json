@@ -1,8 +1,6 @@
 [
     {
-        "name": "HTML to PDF",
-        "description": "Allows you to preview and save HTML as PDFs. Add a web-embed component to your layout, then select this column as the source.",
-        "author": "Hima",
+
         "params": [
             {
                 "name": "html",
