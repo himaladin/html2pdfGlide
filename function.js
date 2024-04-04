@@ -162,6 +162,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
     // HTML THAT IS RETURNED AS A RENDERABLE URL
     const originalHTML = `
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+    <style>${customCSS}</style>
     <div class="main">
         <div class="header">
             ${letterheadUrl ? `<img src="${letterheadUrl}" class="letterhead"/>` : ""}
@@ -170,42 +171,65 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
         <div class="footer">
             ${footerImageUrl ? `<img src="${footerImageUrl}" class="footer"/>` : ""}
         </div>
+        <button id="download">Download PDF</button>
     </div>
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('download').addEventListener('click', function() {
+        var button = this;
         var opt = {
-            margin: [15, 2, 15, 6],
-            pagebreak: { mode: 'css' },
-            jsPDF: { format: 'a4', putTotalPages: true }
+            pagebreak: { mode: ['css'], before: ${JSON.stringify(breakBefore)}, after: ${JSON.stringify(breakAfter)}, avoid: ${JSON.stringify(breakAvoid)} },
+            margin: ${margin},
+            filename: '${fileName}',
+            html2canvas: {
+                useCORS: true,
+                scale: ${quality}
+            },
+            jsPDF: {
+                unit: 'px',
+                orientation: '${orientation}',
+                format: [${finalDimensions}],
+                hotfixes: ['px_scaling']
+            },
         };
+        button.innerText = 'Downloading...';
+        button.className = 'downloading';
 
-        html2pdf().set(opt).from(document.body).toPdf().get('pdf').then(function(pdf) {
-            var totalPages = pdf.internal.getNumberOfPages();
-            var pageHeight = pdf.internal.pageSize.height || pdf.internal.pageSize.getHeight();
-            var pageWidth = pdf.internal.pageSize.width || pdf.internal.pageSize.getWidth();
+        var content = document.getElementById('content');
 
-            for (var i = 1; i <= totalPages; i++) {
-                pdf.setPage(i);
-                pdf.setFontSize(8);
-                pdf.setTextColor(150);
-                pdf.text('page ' + i + ' of ' + totalPages, pageWidth / 2, pageHeight - 5, { align: 'center' });
-
-                if ('${letterheadUrl}' !== '') {
-                    var imgWidth = 1120; // Adjust as needed
-                    var imgHeight = (1120 / 1240) * 1754; // Maintain aspect ratio
-                    pdf.addImage('${letterheadUrl}', 'PNG', (pageWidth - imgWidth) / 2, 10, imgWidth, imgHeight);
+        setTimeout(function() {
+            html2pdf().set(opt).from(content).toPdf().get('pdf').then(function(pdf) {
+                var pageCount = pdf.internal.getNumberOfPages();
+                // Loop through each page
+                for (var i = 1; i <= pageCount; i++) {
+                    pdf.setPage(i);
+                    pdf.setFontStyle("medium");
+                    pdf.setFontSize(12);
+                    var pageSize = pdf.internal.pageSize;
+                    var pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
+                    var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
+                    pdf.text(pageWidth - (${margin} + 70), pageHeight - 30, 'Page ' + i + ' of ' + pageCount);
+                
+                    // Add letterhead at the top of each page
+                    if ('${letterheadUrl}'  !== '') {
+                        var imgWidth = 1120; // Adjust as needed
+                        var imgHeight = (1120 / 1240) * 1754; // Maintain aspect ratio
+                        pdf.addImage('${letterheadUrl}', 'PNG', (pageWidth - imgWidth) / 2, 10, imgWidth, imgHeight);
+                    }
+                    
+                    // Add footer image at the bottom of each page
+                    if ('${footerImageUrl}'  !== '') {
+                        var imgWidth = 100; // Adjust as needed
+                        var imgHeight = 50; // Adjust as needed
+                        pdf.addImage('${footerImageUrl}', 'PNG', (pageWidth - imgWidth) / 2, pageHeight - (imgHeight + 10), imgWidth, imgHeight);
+                    }
                 }
 
-                if ('${footerImageUrl}' !== '') {
-                    var imgWidth = 100; // Adjust as needed
-                    var imgHeight = 50; // Adjust as needed
-                    pdf.addImage('${footerImageUrl}', 'PNG', (pageWidth - imgWidth) / 2, pageHeight - (imgHeight + 10), imgWidth, imgHeight);
-                }
-            }
-
-            pdf.save('${fileName}.pdf');
-        });
-    });
+                pdf.save('${fileName}.pdf');
+                button.innerText = 'Downloaded';
+                button.className = 'downloaded';
+            });
+        }, 2000);
+    }, false);
     </script>
     `;
     var encodedHtml = encodeURIComponent(originalHTML);
