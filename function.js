@@ -1,4 +1,4 @@
-window.function = function (html, fileName, format, zoom, orientation, margin, breakBefore, breakAfter, breakAvoid, fidelity, customDimensions, letterheadUrl, footerImageUrl, headerImageUrl) {
+window.function = function (html, fileName, format, zoom, orientation, margin, breakBefore, breakAfter, breakAvoid, fidelity, customDimensions, letterheadUrl, footerImageUrl) {
     // FIDELITY MAPPING
     const fidelityMap = {
         low: 1,
@@ -7,20 +7,19 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
     };
 
     // DYNAMIC VALUES
-    html = html?.value ?? "No HTML set.";
-    fileName = fileName?.value ?? "file";
-    format = format?.value ?? "a4";
-    zoom = zoom?.value ?? "1";
-    orientation = orientation?.value ?? "portrait";
-    margin = margin?.value ?? "0";
-    breakBefore = breakBefore?.value ? breakBefore.value.split(",") : [];
-    breakAfter = breakAfter?.value ? breakAfter.value.split(",") : [];
-    breakAvoid = breakAvoid?.value ? breakAvoid.value.split(",") : [];
-    quality = fidelityMap[fidelity?.value] ?? 1.5;
-    letterheadUrl = letterheadUrl?.value ?? "";
-    footerImageUrl = footerImageUrl?.value ?? "";
-    headerImageUrl = headerImageUrl?.value ?? "";
-    customDimensions = customDimensions?.value ? customDimensions.value.split(",").map(Number) : null;
+    html = html.value ?? "No HTML set.";
+    fileName = fileName.value ?? "file";
+    format = format.value ?? "a4";
+    zoom = zoom.value ?? "1";
+    orientation = orientation.value ?? "portrait";
+    margin = margin.value ?? "0";
+    breakBefore = breakBefore.value ? breakBefore.value.split(",") : [];
+    breakAfter = breakAfter.value ? breakAfter.value.split(",") : [];
+    breakAvoid = breakAvoid.value ? breakAvoid.value.split(",") : [];
+    quality = fidelityMap[fidelity.value] ?? 1.5;
+    letterheadUrl = letterheadUrl.value ?? "";
+    footerImageUrl = footerImageUrl.value ?? "";
+    customDimensions = customDimensions.value ? customDimensions.value.split(",").map(Number) : null;
 
     // DOCUMENT DIMENSIONS
     const formatDimensions = {
@@ -88,8 +87,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
         `Break avoid: ${breakAvoid}\n` +
         `Quality: ${quality}` +
         `Letterhead URL: ${letterheadUrl}` +
-        `Footer Image URL: ${footerImageUrl}` +
-        `Header Image URL: ${headerImageUrl}`
+        `Footer Image URL: ${footerImageUrl}`
     );
 
     const customCSS = `
@@ -167,7 +165,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
     <style>${customCSS}</style>
     <div class="main">
         <div class="header">
-            ${headerImageUrl ? `<img src="${headerImageUrl}" class="letterhead"/>` : `<img src="empty-image.png" class="letterhead empty"/>`}
+            ${letterheadUrl ? `<img src="${letterheadUrl}" class="letterhead"/>` : `<img src="empty-image.png" class="letterhead empty"/>`}
             <button class="button" id="download">Download PDF</button>
         </div>
         <div id="content">${html}
@@ -175,62 +173,55 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
         </div>
     </div>
     <script>
-    document.getElementById('download').addEventListener('click', function() {
-        var button = this;
-        var opt = {
-            pagebreak: { mode: ['css'], before: ${JSON.stringify(breakBefore)}, after: ${JSON.stringify(breakAfter)}, avoid: ${JSON.stringify(breakAvoid)} },
-            margin: ${margin},
-            filename: '${fileName}',
-            html2canvas: {
-                useCORS: true,
-                scale: ${quality}
-            },
-            jsPDF: {
-                unit: 'px',
-                orientation: '${orientation}',
-                format: [${finalDimensions}],
-                hotfixes: ['px_scaling']
-            },
-        };
-        button.innerText = 'Downloading...';
-        button.className = 'downloading';
+document.getElementById('download').addEventListener('click', function() {
+    var button = this;
+    var opt = {
+        format: '${format}',
+        orientation: '${orientation}',
+        margin: JSON.parse('${margin}'),
+        printBackground: true
+    };
+    button.innerText = 'Downloading...';
+    button.className = 'downloading';
 
-        var content = document.getElementById('content');
+    var content = document.getElementById('content');
 
-        setTimeout(function() {
-            html2pdf().set(opt).from(content).toPdf().get('pdf').then(function(pdf) {
-                var pageCount = pdf.internal.getNumberOfPages();
-                // Loop through each page
-                for (var i = 1; i <= pageCount; i++) {
-                    pdf.setPage(i);
-                    pdf.setFontStyle("medium");
-                    pdf.setFontSize(12);
-                    var pageSize = pdf.internal.pageSize;
-                    var pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
-                    var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
-                    pdf.text(pageWidth - (${margin} + 70), pageHeight - 30, 'Page ' + i + ' of ' + pageCount);
-                
-                    // Add letterhead at the top of each page
-                    if ('${letterheadUrl}'  !== '') {
-                        var imgWidth = 1120; // Adjust as needed
-                        var imgHeight = (1120 / 1240) * 1754; // Maintain aspect ratio
-                        pdf.addImage('${letterheadUrl}', 'PNG', (pageWidth - imgWidth) / 2, 10, imgWidth, imgHeight);
-                    }
-                    
-                    // Add footer image at the bottom of each page
-                    if ('${footerImageUrl}'  !== '') {
-                        var imgWidth = 100; // Adjust as needed
-                        var imgHeight = 50; // Adjust as needed
-                        pdf.addImage('${footerImageUrl}', 'PNG', (pageWidth - imgWidth) / 2, pageHeight - (imgHeight + 10), imgWidth, imgHeight);
-                    }
-                }
+    htmlToPdf.createPdf(content, opt).toBuffer(function(pdf) {
+        var totalPages = pdf.getNumberOfPages();
+        for (var i = 1; i <= totalPages; i++) {
+            var page = pdf.getPage(i);
 
-                pdf.save('${fileName}.pdf');
-                button.innerText = 'Downloaded';
-                button.className = 'downloaded';
-            });
-        }, 2000);
-    }, false);
+            // Add header image
+            if ('${letterheadUrl}' !== '') {
+                var imgWidth = page.width; // Adjust as needed
+                var imgHeight = (page.width / maxLetterheadWidth) * 100; // Maintain aspect ratio
+                page.drawText('Page ' + i + ' of ' + totalPages, { x: page.width / 2, y: 10, size: 8, align: 'center' });
+                page.drawImage({ path: '${letterheadUrl}', x: 0, y: page.height - imgHeight, width: imgWidth, height: imgHeight });
+            }
+
+            // Add footer image
+            if ('${footerImageUrl}' !== '') {
+                var imgWidth = page.width; // Adjust as needed
+                var imgHeight = (page.width / maxLetterheadWidth) * 50; // Maintain aspect ratio
+                page.drawImage({ path: '${footerImageUrl}', x: 0, y: 0, width: imgWidth, height: imgHeight });
+            }
+        }
+
+        // Save the modified PDF
+        pdfStream = pdf.save();
+        button.innerText = 'Downloaded';
+        button.className = 'downloaded';
+        var blob = new Blob([pdfStream], { type: 'application/pdf' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        a.download = '${fileName}.pdf';
+        document.body.appendChild(a);
+        a.click();
+        URL.revokeObjectURL(url);
+    });
+}, false);
     </script>
     `;
     var encodedHtml = encodeURIComponent(originalHTML);
