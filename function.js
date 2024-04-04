@@ -72,7 +72,6 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
     const paperWidth = formatDimensions[format][0];
     const maxLetterheadWidth = Math.min(paperWidth, 1120);
 
-
     // LOG SETTINGS TO CONSOLE
     console.log(
         `Filename: ${fileName}\n` +
@@ -108,15 +107,21 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
       max-width:  ${maxLetterheadWidth}px;
       height: auto;
     }
-    
+
     .footer {
       display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
       width: 100%;
-      max-width: ${maxLetterheadWidth}px;
-      height: auto;
-      margin: 0 auto;
+      text-align: center;
     }
-        
+    
+    .footer img {
+      max-width: 100%;
+      height: auto;
+    }
+    
     button {
       position: fixed;
       top: 8px;
