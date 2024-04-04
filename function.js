@@ -220,7 +220,12 @@ document.getElementById('download').addEventListener('click', function() {
                 }                
             }
 
-
+            // Add letterhead image to first page
+            if (letterheadUrl) {
+                pdf.setPage(1);
+                var firstPageSize = pdf.internal.pageSize;
+                pdf.addImage(letterheadUrl, 'PNG', 40, 30, 60, 60);
+            }
 
             pdf.save('${fileName}.pdf');
             button.innerText = 'Downloaded';
