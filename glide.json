@@ -1,6 +1,9 @@
 [
     {
-
+        "kind": "column",
+        "name": "HTML to PDF",
+        "description": "7R",
+        "author": "Hima",
         "params": [
             {
                 "name": "html",
