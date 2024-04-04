@@ -166,9 +166,8 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
         <div class="header">
             ${letterheadUrl ? `<img src="${letterheadUrl}" class="letterhead"/>` : ""}
         </div>
-        <div id="content">${html}
+        <div id="content">${html}</div>
         ${footerImageUrl ? `<img src="${footerImageUrl}" class="footer"/>` : ""}
-        </div>
     </div>
     <script>
     document.addEventListener('DOMContentLoaded', function() {
