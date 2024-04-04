@@ -186,40 +186,26 @@ document.getElementById('download').addEventListener('click', function() {
 
     var content = document.getElementById('content');
 
-    htmlToPdf.createPdf(content, opt).toBuffer(function(pdf) {
-        var totalPages = pdf.getNumberOfPages();
-        for (var i = 1; i <= totalPages; i++) {
-            var page = pdf.getPage(i);
-
-            // Add header image
-            if ('${letterheadUrl}' !== '') {
-                var imgWidth = page.width; // Adjust as needed
-                var imgHeight = (page.width / maxLetterheadWidth) * 100; // Maintain aspect ratio
-                page.drawText('Page ' + i + ' of ' + totalPages, { x: page.width / 2, y: 10, size: 8, align: 'center' });
-                page.drawImage({ path: '${letterheadUrl}', x: 0, y: page.height - imgHeight, width: imgWidth, height: imgHeight });
-            }
-
-            // Add footer image
-            if ('${footerImageUrl}' !== '') {
-                var imgWidth = page.width; // Adjust as needed
-                var imgHeight = (page.width / maxLetterheadWidth) * 50; // Maintain aspect ratio
-                page.drawImage({ path: '${footerImageUrl}', x: 0, y: 0, width: imgWidth, height: imgHeight });
-            }
-        }
-
-        // Save the modified PDF
-        pdfStream = pdf.save();
-        button.innerText = 'Downloaded';
-        button.className = 'downloaded';
-        var blob = new Blob([pdfStream], { type: 'application/pdf' });
-        var url = URL.createObjectURL(blob);
+    htmlToPdf.createPdf(content, opt).toBuffer(function(pdfBuffer) {
+        var pdfBlob = new Blob([pdfBuffer], { type: 'application/pdf' });
+        var pdfUrl = URL.createObjectURL(pdfBlob);
+        
+        // Create an anchor element to trigger the download
         var a = document.createElement('a');
         a.style.display = 'none';
-        a.href = url;
+        a.href = pdfUrl;
         a.download = '${fileName}.pdf';
         document.body.appendChild(a);
+
+        // Simulate click on the anchor element to start the download
         a.click();
-        URL.revokeObjectURL(url);
+
+        // Clean up: remove the anchor element and revoke the object URL
+        document.body.removeChild(a);
+        URL.revokeObjectURL(pdfUrl);
+
+        button.innerText = 'Downloaded';
+        button.className = 'downloaded';
     });
 }, false);
     </script>
