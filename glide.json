@@ -64,15 +64,10 @@
                 "name": "letterheadUrl",
                 "displayName": "Letterhead Image URL",
                 "type": "string"
-            },
-            {
-                "name": "footerImageUrl",
-                "displayName": "Footer Image URL",
-                "type": "string"
             }
         ],
         "result": {
             "type": "string"
-        }        
+        }
     }
 ]
