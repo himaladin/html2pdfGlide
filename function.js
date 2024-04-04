@@ -7,20 +7,20 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
     };
 
     // DYNAMIC VALUES
-    html = html.value ?? "No HTML set.";
-    fileName = fileName.value ?? "file";
-    format = format.value ?? "a4";
-    zoom = zoom.value ?? "1";
-    orientation = orientation.value ?? "portrait";
-    margin = margin.value ?? "0";
-    breakBefore = breakBefore.value ? breakBefore.value.split(",") : [];
-    breakAfter = breakAfter.value ? breakAfter.value.split(",") : [];
-    breakAvoid = breakAvoid.value ? breakAvoid.value.split(",") : [];
-    quality = fidelityMap[fidelity.value] ?? 1.5;
-    letterheadUrl = letterheadUrl.value ?? "";
-    footerImageUrl = footerImageUrl.value ?? "";
-    headerImageUrl = headerImageUrl.value ?? "";
-    customDimensions = customDimensions.value ? customDimensions.value.split(",").map(Number) : null;
+    html = html?.value ?? "No HTML set.";
+    fileName = fileName?.value ?? "file";
+    format = format?.value ?? "a4";
+    zoom = zoom?.value ?? "1";
+    orientation = orientation?.value ?? "portrait";
+    margin = margin?.value ?? "0";
+    breakBefore = breakBefore?.value ? breakBefore.value.split(",") : [];
+    breakAfter = breakAfter?.value ? breakAfter.value.split(",") : [];
+    breakAvoid = breakAvoid?.value ? breakAvoid.value.split(",") : [];
+    quality = fidelityMap[fidelity?.value] ?? 1.5;
+    letterheadUrl = letterheadUrl?.value ?? "";
+    footerImageUrl = footerImageUrl?.value ?? "";
+    headerImageUrl = headerImageUrl?.value ?? "";
+    customDimensions = customDimensions?.value ? customDimensions.value.split(",").map(Number) : null;
 
     // DOCUMENT DIMENSIONS
     const formatDimensions = {
