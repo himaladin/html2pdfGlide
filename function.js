@@ -107,7 +107,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
       max-width:  ${maxLetterheadWidth}px;
       height: auto;
     }
-
+    
     .footer {
       display: flex;
       justify-content: center;
