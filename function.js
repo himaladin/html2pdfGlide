@@ -18,6 +18,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
     breakAvoid = breakAvoid.value ? breakAvoid.value.split(",") : [];
     quality = fidelityMap[fidelity.value] ?? 1.5;
     letterheadUrl = letterheadUrl.value ?? "";
+    footerImageUrl = footerImageUrl.value ?? "";
     customDimensions = customDimensions.value ? customDimensions.value.split(",").map(Number) : null;
 
     // DOCUMENT DIMENSIONS
@@ -85,7 +86,8 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
         `Break after: ${breakAfter}\n` +
         `Break avoid: ${breakAvoid}\n` +
         `Quality: ${quality}` +
-        `Letterhead URL: ${letterheadUrl}`
+        `Letterhead URL: ${letterheadUrl}` +
+        `Footer Image URL: ${footerImageUrl}`
     );
 
     const customCSS = `
