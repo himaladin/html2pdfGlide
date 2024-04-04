@@ -1,4 +1,4 @@
-window.function = function (html, fileName, format, zoom, orientation, margin, breakBefore, breakAfter, breakAvoid, fidelity, customDimensions, letterheadUrl) {
+window.function = function (html, fileName, format, zoom, orientation, margin, breakBefore, breakAfter, breakAvoid, fidelity, customDimensions, letterheadUrl, footerImageUrl) {
     // FIDELITY MAPPING
     const fidelityMap = {
         low: 1,
@@ -66,12 +66,12 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
         credit_card: [319, 508],
     };
 
-    // GET FINAL DIMESIONS FROM SELECTED FORMAT
+    // GET FINAL DIMENSIONS FROM SELECTED FORMAT
     const dimensions = customDimensions || formatDimensions[format];
     const finalDimensions = dimensions.map((dimension) => Math.round(dimension / zoom));
     const paperWidth = formatDimensions[format][0];
     const maxLetterheadWidth = Math.min(paperWidth, 1120);
-
+    const paperHeight = (formatDimensions[format][1] / formatDimensions[format][0]) * paperWidth;
 
     // LOG SETTINGS TO CONSOLE
     console.log(
@@ -107,6 +107,14 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
       width: 100%;
       max-width:  ${maxLetterheadWidth}px;
       height: auto;
+    }
+    
+    .footer {
+      display: flex;
+      width: 100%;
+      max-width: ${maxLetterheadWidth}px;
+      height: auto;
+      margin: 0 auto;
     }
         
     button {
@@ -183,9 +191,11 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
         button.innerText = 'Downloading..';
         button.className = 'downloading';
 
-        var content = document.getElementById('content');
-        var letterheadUrl = '${letterheadUrl}';
-        var letterheadAdded = false;
+    var content = document.getElementById('content');
+    var letterheadUrl = '${letterheadUrl}';
+    var footerImageUrl = '${footerImageUrl}';
+    var letterheadAdded = false;
+    var footerAdded = false;
 
         if (letterheadUrl && !content.querySelector('.letterhead')) {
             var letterhead = document.createElement('img');
@@ -194,12 +204,6 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
             content.insertBefore(letterhead, content.firstChild);
             letterheadAdded = true;
         }
-
-    var content = document.getElementById('content');
-    var letterheadUrl = '${letterheadUrl}';
-    var footerImageUrl = '${footerImageUrl}';
-    var letterheadAdded = false;
-    var footerAdded = false;
 
     setTimeout(function() {
         html2pdf().set(opt).from(content).toPdf().get('pdf').then(function(pdf) {
