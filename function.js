@@ -1,4 +1,4 @@
-window.function = function (html, fileName, format, zoom, orientation, margin, breakBefore, breakAfter, breakAvoid, fidelity, customDimensions, letterheadUrl, footerImageUrl) {
+window.function = function (html, fileName, format, zoom, orientation, margin, breakBefore, breakAfter, breakAvoid, fidelity, customDimensions, letterheadUrl) {
     // FIDELITY MAPPING
     const fidelityMap = {
         low: 1,
@@ -18,7 +18,6 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
     breakAvoid = breakAvoid.value ? breakAvoid.value.split(",") : [];
     quality = fidelityMap[fidelity.value] ?? 1.5;
     letterheadUrl = letterheadUrl.value ?? "";
-    footerImageUrl = footerImageUrl.value ?? "";
     customDimensions = customDimensions.value ? customDimensions.value.split(",").map(Number) : null;
 
     // DOCUMENT DIMENSIONS
@@ -34,15 +33,44 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
         a8: [307, 437],
         a9: [219, 307],
         a10: [154, 219],
-        // Add other format dimensions here
+        b0: [5906, 8350],
+        b1: [4175, 5906],
+        b2: [2953, 4175],
+        b3: [2085, 2953],
+        b4: [1476, 2085],
+        b5: [1039, 1476],
+        b6: [738, 1039],
+        b7: [520, 738],
+        b8: [366, 520],
+        b9: [260, 366],
+        b10: [183, 260],
+        c0: [5415, 7659],
+        c1: [3827, 5415],
+        c2: [2705, 3827],
+        c3: [1913, 2705],
+        c4: [1352, 1913],
+        c5: [957, 1352],
+        c6: [673, 957],
+        c7: [478, 673],
+        c8: [337, 478],
+        c9: [236, 337],
+        c10: [165, 236],
+        dl: [650, 1299],
+        letter: [1276, 1648],
+        government_letter: [1199, 1577],
+        legal: [1276, 2102],
+        junior_legal: [1199, 750],
+        ledger: [2551, 1648],
+        tabloid: [1648, 2551],
+        credit_card: [319, 508],
     };
 
-    // GET FINAL DIMENSIONS FROM SELECTED FORMAT
+    // GET FINAL DIMESIONS FROM SELECTED FORMAT
     const dimensions = customDimensions || formatDimensions[format];
     const finalDimensions = dimensions.map((dimension) => Math.round(dimension / zoom));
     const paperWidth = formatDimensions[format][0];
     const maxLetterheadWidth = Math.min(paperWidth, 1120);
-    const paperHeight = (formatDimensions[format][1] / formatDimensions[format][0]) * paperWidth;
+
 
     // LOG SETTINGS TO CONSOLE
     console.log(
@@ -57,8 +85,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
         `Break after: ${breakAfter}\n` +
         `Break avoid: ${breakAvoid}\n` +
         `Quality: ${quality}` +
-        `Letterhead URL: ${letterheadUrl}` +
-        `Footer Image URL: ${footerImageUrl}`
+        `Letterhead URL: ${letterheadUrl}`
     );
 
     const customCSS = `
@@ -78,18 +105,6 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
       width: 100%;
       max-width:  ${maxLetterheadWidth}px;
       height: auto;
-    }
-    
-    .footer {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: relative;
-      width: 100%;
-      text-align: center;
-      max-width: ${maxLetterheadWidth}px;
-      height: auto;
-      margin: 0 auto;
     }
         
     button {
@@ -144,9 +159,6 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
             <button class="button" id="download">Download PDF</button>
         </div>
         <div id="content">${html}</div>
-        <div class="footer">
-            ${footerImageUrl ? `<img src="${footerImageUrl}" class="footer"/>` : ''}
-        </div>
     </div>
     <script>
     document.getElementById('download').addEventListener('click', function() {
@@ -181,52 +193,33 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
             letterheadAdded = true;
         }
 
-    var content = document.getElementById('content');
-    var letterheadUrl = '${letterheadUrl}';
-    var footerImageUrl = '${footerImageUrl}';
-    var letterheadAdded = false;
-    var footerAdded = false;
-
-    setTimeout(function() {
-        html2pdf().set(opt).from(content).toPdf().get('pdf').then(function(pdf) {
-            var pageCount = pdf.internal.getNumberOfPages();
-            // Loop through each page
-            for (var i = 1; i <= pageCount; i++) {
-                pdf.setPage(i);
-                pdf.setFontStyle("medium");
-                pdf.setFontSize(12);
-                var pageSize = pdf.internal.pageSize;
-                var pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
-                var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
-                pdf.text(pageWidth - (${margin} + 70), pageHeight - 30, 'Page ' + i + ' of ' + pageCount);
-                
-                // Add letterhead to each page
-                if (letterheadUrl && !letterheadAdded) {
-                    var letterheadImg = new Image();
-                    letterheadImg.src = letterheadUrl;
-                    pdf.addImage(letterheadImg, 'PNG', 0, 0, maxLetterheadWidth, 0);
-                    letterheadAdded = true;
+        setTimeout(function() {
+            html2pdf().set(opt).from(content).toPdf().get('pdf').then(function(pdf) {
+                var pageCount = pdf.internal.getNumberOfPages();
+                // Loop through each page
+                for (var i = 1; i <= pageCount; i++) {
+                    pdf.setPage(i);
+                    pdf.setFontStyle("medium");
+                    pdf.setFontSize(12);
+                    var pageSize = pdf.internal.pageSize;
+                    var pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
+                    var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
+                    pdf.text(pageWidth - (${margin} + 70), pageHeight - 30, 'Page ' + i + ' of ' + pageCount);
                 }
-                
-                // Add footer to each page
-                if (footerImageUrl && !footerAdded) {
-                    var footerImg = new Image();
-                    footerImg.src = footerImageUrl;
-                    pdf.addImage(footerImg, 'PNG', 0, pageHeight - 50, maxLetterheadWidth, 0);
-                    footerAdded = true;
-                }
-            }
 
-            pdf.save('${fileName}.pdf');
-            button.innerText = 'Downloaded';
-            button.className = 'downloaded';
-            setTimeout(function() {
-                button.innerText = 'Download PDF';
-                button.className = '';
-            }, 2000);
-        });
-    }, 1000);
-}, false);
+                pdf.save('${fileName}.pdf');
+                button.innerText = 'Downloaded';
+                button.className = 'downloaded';
+                setTimeout(function() {
+                    button.innerText = 'Download PDF';
+                    button.className = '';
+                    if (letterheadAdded) {
+                        content.removeChild(content.querySelector('.letterhead'));
+                    }
+                }, 2000);
+            });
+        }, 1000);
+    }, false);
     </script>
     `;
     var encodedHtml = encodeURIComponent(originalHTML);
