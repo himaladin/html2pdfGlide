@@ -34,36 +34,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
         a8: [307, 437],
         a9: [219, 307],
         a10: [154, 219],
-        b0: [5906, 8350],
-        b1: [4175, 5906],
-        b2: [2953, 4175],
-        b3: [2085, 2953],
-        b4: [1476, 2085],
-        b5: [1039, 1476],
-        b6: [738, 1039],
-        b7: [520, 738],
-        b8: [366, 520],
-        b9: [260, 366],
-        b10: [183, 260],
-        c0: [5415, 7659],
-        c1: [3827, 5415],
-        c2: [2705, 3827],
-        c3: [1913, 2705],
-        c4: [1352, 1913],
-        c5: [957, 1352],
-        c6: [673, 957],
-        c7: [478, 673],
-        c8: [337, 478],
-        c9: [236, 337],
-        c10: [165, 236],
-        dl: [650, 1299],
-        letter: [1276, 1648],
-        government_letter: [1199, 1577],
-        legal: [1276, 2102],
-        junior_legal: [1199, 750],
-        ledger: [2551, 1648],
-        tabloid: [1648, 2551],
-        credit_card: [319, 508],
+        // Add other format dimensions here
     };
 
     // GET FINAL DIMENSIONS FROM SELECTED FORMAT
@@ -111,7 +82,11 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
     
     .footer {
       display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
       width: 100%;
+      text-align: center;
       max-width: ${maxLetterheadWidth}px;
       height: auto;
       margin: 0 auto;
@@ -165,13 +140,13 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
     <style>${customCSS}</style>
     <div class="main">
         <div class="header">
-            ${letterheadUrl ? `<img src="${letterheadUrl}" class="letterhead"/>` : ""}
+            ${letterheadUrl ? `<img src="${letterheadUrl}" class="letterhead"/>` : `<img src="empty-image.png" class="letterhead empty"/>`}
+            <button class="button" id="download">Download PDF</button>
         </div>
         <div id="content">${html}</div>
         <div class="footer">
-            ${footerImageUrl ? `<img src="${footerImageUrl}" class="footer"/>` : ""}
+            ${footerImageUrl ? `<img src="${footerImageUrl}" class="footer"/>` : ''}
         </div>
-        <button id="download">Download PDF</button>
     </div>
     <script>
     document.getElementById('download').addEventListener('click', function() {
@@ -191,42 +166,47 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
                 hotfixes: ['px_scaling']
             },
         };
-        button.innerText = 'Downloading...';
+        button.innerText = 'Downloading..';
         button.className = 'downloading';
 
         var content = document.getElementById('content');
+        var letterheadUrl = '${letterheadUrl}';
+        var letterheadAdded = false;
 
-        html2pdf().set(opt).from(content).toPdf().get('pdf').then(function(pdf) {
-            var pageCount = pdf.internal.getNumberOfPages();
-            // Loop through each page
-            for (var i = 1; i <= pageCount; i++) {
-                pdf.setPage(i);
-                pdf.setFontStyle("medium");
-                pdf.setFontSize(12);
-                var pageSize = pdf.internal.pageSize;
-                var pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
-                var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
-                pdf.text(pageWidth - (${margin} + 70), pageHeight - 30, 'Page ' + i + ' of ' + pageCount);
-            
-                // Add letterhead at the top of each page
-                if ('${letterheadUrl}'  !== '') {
-                    var imgWidth = 1120; // Adjust as needed
-                    var imgHeight = (1120 / 1240) * 1754; // Maintain aspect ratio
-                    pdf.addImage('${letterheadUrl}', 'PNG', (pageWidth - imgWidth) / 2, 10, imgWidth, imgHeight);
-                }
-                
-                // Add footer image at the bottom of each page
-                if ('${footerImageUrl}'  !== '') {
-                    var imgWidth = 100; // Adjust as needed
-                    var imgHeight = 50; // Adjust as needed
-                    pdf.addImage('${footerImageUrl}', 'PNG', (pageWidth - imgWidth) / 2, pageHeight - (imgHeight + 10), imgWidth, imgHeight);
-                }
-            }
+        if (letterheadUrl && !content.querySelector('.letterhead')) {
+            var letterhead = document.createElement('img');
+            letterhead.src = letterheadUrl;
+            letterhead.classList.add('letterhead');
+            content.insertBefore(letterhead, content.firstChild);
+            letterheadAdded = true;
+        }
 
-            pdf.save('${fileName}.pdf');
-            button.innerText = 'Downloaded';
-            button.className = 'downloaded';
-        });
+        setTimeout(function() {
+            html2pdf().set(opt).from(content).toPdf().get('pdf').then(function(pdf) {
+                var pageCount = pdf.internal.getNumberOfPages();
+                // Loop through each page
+                for (var i = 1; i <= pageCount; i++) {
+                    pdf.setPage(i);
+                    pdf.setFontStyle("medium");
+                    pdf.setFontSize(12);
+                    var pageSize = pdf.internal.pageSize;
+                    var pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
+                    var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
+                    pdf.text(pageWidth - (${margin} + 70), pageHeight - 30, 'Page ' + i + ' of ' + pageCount);
+                }
+
+                pdf.save('${fileName}.pdf');
+                button.innerText = 'Downloaded';
+                button.className = 'downloaded';
+                setTimeout(function() {
+                    button.innerText = 'Download PDF';
+                    button.className = '';
+                    if (letterheadAdded) {
+                        content.removeChild(content.querySelector('.letterhead'));
+                    }
+                }, 2000);
+            });
+        }, 1000);
     }, false);
     </script>
     `;
