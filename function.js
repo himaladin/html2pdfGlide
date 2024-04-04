@@ -215,14 +215,12 @@ document.getElementById('download').addEventListener('click', function() {
                 var pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
                 var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
                 pdf.text(pageWidth - (${margin} + 70), pageHeight - 30, 'Page ' + i + ' of ' + pageCount);
+                if (footerImageUrl) {
+                    pdf.addImage(footerImageUrl, 'PNG', 40, pageHeight - 80, 60, 60);
+                }                
             }
 
-            // Add letterhead image to first page
-            if (letterheadUrl) {
-                pdf.setPage(1);
-                var firstPageSize = pdf.internal.pageSize;
-                pdf.addImage(letterheadUrl, 'PNG', 40, 30, 60, 60);
-            }
+
 
             pdf.save('${fileName}.pdf');
             button.innerText = 'Downloaded';
