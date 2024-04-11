@@ -195,15 +195,11 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
                 hotfixes: ['px_scaling']
             },
         };
-        button.innerText = 'Downloading..';
+        button.innerText = 'Downloading...';
         button.className = 'downloading';
 
-        var content = document.getElementById('content');
-        var letterheadUrl = '${letterheadUrl}';
-        var footerImageUrl = '${footerImageUrl}';
-
         setTimeout(function() {
-            html2pdf().set(opt).from(content).toPdf().get('pdf').then(function(pdf) {
+            html2pdf().set(opt).from(document.getElementById('content')).toPdf().get('pdf').then(function(pdf) {
                 var pageCount = pdf.internal.getNumberOfPages();
                 for (var i = 1; i <= pageCount; i++) {
                     pdf.setPage(i);
@@ -215,13 +211,13 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
                     pdf.text(pageWidth - (${margin} + 70), pageHeight - 30, 'Page ' + i + ' of ' + pageCount);
                 
                     // Add footer image
-                    if (footerImageUrl) {
-                        pdf.addImage(footerImageUrl, 'PNG', 40, pageHeight - 80, 60, 60);
+                    if ('${footerImageUrl}') {
+                        pdf.addImage('${footerImageUrl}', 'PNG', 40, pageHeight - 80, 60, 60);
                     }
                 
                     // Add letterhead image to first page
-                    if (letterheadUrl && i === 1) {
-                        pdf.addImage(letterheadUrl, 'PNG', 40, 30, 60, 60);
+                    if ('${letterheadUrl}' && i === 1) {
+                        pdf.addImage('${letterheadUrl}', 'PNG', 40, 30, 60, 60);
                     }
                 }
                 pdf.save('${fileName}.pdf');
