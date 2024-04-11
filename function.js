@@ -200,18 +200,21 @@ document.getElementById('download').addEventListener('click', function() {
 
     setTimeout(function() {
         html2pdf().set(opt).from(document.getElementById('content')).toPdf().get('pdf').then(function(pdf) {
-            var pageCount = pdf.internal.getNumberOfPages();
-            for (var i = 1; i <= pageCount; i++) {
-                pdf.setPage(i);
-                pdf.setFontStyle("medium");
-                pdf.setFontSize(12);
-                var pageSize = pdf.internal.pageSize;
-                var pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
-                var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
-                pdf.text(pageWidth - (80 + 70), pageHeight - 30, 'Page ' + i + ' of ' + pageCount);
+        var pageCount = pdf.internal.getNumberOfPages();
+        for (var i = 1; i <= pageCount; i++) {
+            pdf.setPage(i);
+            pdf.setFontStyle("medium");
+            pdf.setFontSize(12);
+            var pageSize = pdf.internal.pageSize;
+            var pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
+            var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
+            pdf.text(pageWidth - (80 + 70), pageHeight - 30, 'Page ' + i + ' of ' + pageCount);
+            
+            // Add letterhead image to the first page only
+            if (i === 1) {
                 pdf.addImage('${letterheadUrl}', 'PNG', 40, 30, 60, 60);
-                }
             }
+}
             pdf.save('Stupa 7-Review 4 (11 April 2024 at 8:42).pdf');
             button.innerText = 'Downloaded';
             button.className = 'downloaded';
