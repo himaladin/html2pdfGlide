@@ -7,19 +7,19 @@ window.generatePDF = function (html, fileName, format, zoom, orientation, margin
     };
 
     // DYNAMIC VALUES
-    html = html.value ?? "No HTML set.";
-    fileName = fileName.value ?? "file";
-    format = format.value ?? "a4";
-    zoom = zoom.value ?? "1";
-    orientation = orientation.value ?? "portrait";
-    margin = margin.value ?? "0";
-    breakBefore = breakBefore.value ? breakBefore.value.split(",") : [];
-    breakAfter = breakAfter.value ? breakAfter.value.split(",") : [];
-    breakAvoid = breakAvoid.value ? breakAvoid.value.split(",") : [];
-    quality = fidelityMap[fidelity.value] ?? 1.5;
-    letterheadUrl = letterheadUrl.value ?? "";
-    footerImageUrl = footerImageUrl.value ?? "";
-    customDimensions = customDimensions.value ? customDimensions.value.split(",").map(Number) : null;
+    html = html ?? "No HTML set.";
+    fileName = fileName ?? "file";
+    format = format ?? "a4";
+    zoom = zoom ?? "1";
+    orientation = orientation ?? "portrait";
+    margin = margin ?? "0";
+    breakBefore = breakBefore ? breakBefore.split(",") : [];
+    breakAfter = breakAfter ? breakAfter.split(",") : [];
+    breakAvoid = breakAvoid ? breakAvoid.split(",") : [];
+    quality = fidelityMap[fidelity] ?? 1.5;
+    letterheadUrl = letterheadUrl ?? "";
+    footerImageUrl = footerImageUrl ?? "";
+    customDimensions = customDimensions ? customDimensions.split(",").map(Number) : null;
 
     // DOCUMENT DIMENSIONS
     const formatDimensions = {
@@ -80,13 +80,7 @@ window.generatePDF = function (html, fileName, format, zoom, orientation, margin
         `Zoom: ${zoom}\n` +
         `Final Dimensions: ${finalDimensions}\n` +
         `Orientation: ${orientation}\n` +
-        `Margin: ${margin}\n` +
-        `Break before: ${breakBefore}\n` +
-        `Break after: ${breakAfter}\n` +
-        `Break avoid: ${breakAvoid}\n` +
-        `Quality: ${quality}` +
-        `Letterhead URL: ${letterheadUrl}` +
-        `Footer Image URL: ${footerImageUrl}`
+        `Margin: ${margin}\n`
     );
 
     const customCSS = `
@@ -201,7 +195,7 @@ document.getElementById('download').addEventListener('click', function() {
     setTimeout(function() {
         var header = `
             <header style="text-align: center;">
-                <img src="${headerImageUrl}" style="width: 200px; height: auto;">
+                <img src="${letterheadUrl}" style="width: 200px; height: auto;">
             </header>
         `;
         var footer = `
