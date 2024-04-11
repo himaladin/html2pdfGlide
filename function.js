@@ -1,4 +1,4 @@
-window.generatePDF = function (html, fileName, format, zoom, orientation, margin, breakBefore, breakAfter, breakAvoid, fidelity, customDimensions, letterheadUrl, footerImageUrl) {
+window.generatePDF = function(html, fileName, format, zoom, orientation, margin, breakBefore, breakAfter, breakAvoid, fidelity, customDimensions, letterheadUrl, footerImageUrl) {
     // FIDELITY MAPPING
     const fidelityMap = {
         low: 1,
