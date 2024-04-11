@@ -201,6 +201,9 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
         setTimeout(function() {
             html2pdf().set(opt).from(document.getElementById('content')).toPdf().get('pdf').then(function(pdf) {
                 var pageCount = pdf.internal.getNumberOfPages();
+                var footerUrl = '${footerImageUrl}';
+                var letterheadUrl = '${letterheadUrl}';
+                
                 for (var i = 1; i <= pageCount; i++) {
                     pdf.setPage(i);
                     pdf.setFontStyle("medium");
@@ -209,7 +212,16 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
                     var pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
                     var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
                     pdf.text(pageWidth - (${margin} + 70), pageHeight - 30, 'Page ' + i + ' of ' + pageCount);
-                
+                    
+                    // Add footer image
+                    if (footerUrl) {
+                        pdf.addImage(footerUrl, 'PNG', 40, pageHeight - 80, 60, 60);
+                    }
+                    
+                    // Add letterhead image to first page
+                    if (letterheadUrl && i === 1) {
+                        pdf.addImage(letterheadUrl, 'PNG', 40, 30, 60, 60);
+                    }
                 }
                 pdf.save('${fileName}.pdf');
                 button.innerText = 'Downloaded';
