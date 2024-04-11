@@ -209,10 +209,7 @@ document.getElementById('download').addEventListener('click', function() {
                 var pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
                 var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
                 pdf.text(pageWidth - (80 + 70), pageHeight - 30, 'Page ' + i + ' of ' + pageCount);
-                
-                // Add letterhead image to first page
-                if ('${letterheadUrl}' && i === 1) {
-                    pdf.addImage('${letterheadUrl}', 'PNG', 40, 30, 60, 60);
+                pdf.addImage('${letterheadUrl}', 'PNG', 40, 30, 60, 60);
                 }
             }
             pdf.save('Stupa 7-Review 4 (11 April 2024 at 8:42).pdf');
