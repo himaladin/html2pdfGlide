@@ -181,23 +181,17 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
     <script>
 document.getElementById('download').addEventListener('click', function() {
     var button = this;
-    var margin = 80; // Atur nilai margin sesuai kebutuhan Anda
-    var fileName = 'Nama_File'; // Atur nama file sesuai kebutuhan Anda
-    var quality = 1.5; // Atur kualitas sesuai kebutuhan Anda
-    var orientation = 'portrait'; // Atur orientasi sesuai kebutuhan Anda
-    var finalDimensions = [1240, 1754]; // Atur dimensi akhir sesuai kebutuhan Anda
-
     var opt = {
-        margin: margin,
-        filename: fileName,
+        margin: ${margin},
+        filename: '${fileName}',
         html2canvas: {
             useCORS: true,
-            scale: quality
+            scale: ${quality}
         },
         jsPDF: {
             unit: 'px',
-            orientation: orientation,
-            format: finalDimensions,
+            orientation: '${orientation}',
+            format: [${finalDimensions}],
             hotfixes: ['px_scaling']
         },
     };
@@ -218,7 +212,7 @@ document.getElementById('download').addEventListener('click', function() {
                 var pageSize = pdf.internal.pageSize;
                 var pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
                 var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
-                pdf.text(pageWidth - (margin + 70), pageHeight - 30, 'Page ' + i + ' of ' + pageCount);
+                pdf.text(pageWidth - (80 + 70), pageHeight - 30, 'Page ' + i + ' of ' + pageCount);
                 
                 // Add letterhead image to the first page only
                 if (i === 1) {
@@ -227,7 +221,7 @@ document.getElementById('download').addEventListener('click', function() {
                 // Add footer image to every page
                 pdf.addImage(footerImageUrl, 'PNG', 40, pageHeight - 90, 60, 60);
             }
-            pdf.save(fileName + '.pdf');
+            pdf.save('${fileName}.pdf');
             button.innerText = 'Downloaded';
             button.className = 'downloaded';
         }).catch(function(error) {
