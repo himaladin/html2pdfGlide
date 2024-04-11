@@ -210,11 +210,6 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
                     var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
                     pdf.text(pageWidth - (${margin} + 70), pageHeight - 30, 'Page ' + i + ' of ' + pageCount);
                 
-                
-                    // Add letterhead image to first page
-                    if ('${letterheadUrl}' && i === 1) {
-                        pdf.addImage('${letterheadUrl}', 'PNG', 40, 30, 60, 60);
-                    }
                 }
                 pdf.save('${fileName}.pdf');
                 button.innerText = 'Downloaded';
