@@ -182,16 +182,16 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
     document.getElementById('download').addEventListener('click', function() {
         var button = this;
         var opt = {
-            margin: 80,
-            filename: 'Stupa 7-Review 4 (11 April 2024 at 8:42)',
+            margin: ${margin},
+            filename: '${fileName}',
             html2canvas: {
                 useCORS: true,
-                scale: 1.5
+                scale: ${quality}
             },
             jsPDF: {
                 unit: 'px',
-                orientation: 'portrait',
-                format: [1240,1754],
+                orientation: '${orientation}',
+                format: [${finalDimensions}],
                 hotfixes: ['px_scaling']
             },
         };
@@ -212,10 +212,12 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
                     
                     // Add letterhead image to the first page only
                     if (i === 1) {
-                        pdf.addImage('${letterheadUrl}', 'PNG', 40, 30, 60, 60);
+                        pdf.addImage(letterheadUrl, 'PNG', 40, 30, 60, 60);
                     }
+                    // Add footer image to every page
+                    pdf.addImage(footerImageUrl, 'PNG', 40, pageHeight - 90, 60, 60);
                 }
-                pdf.save('Stupa 7-Review 4 (11 April 2024 at 8:42).pdf');
+                pdf.save('${fileName}.pdf');
                 button.innerText = 'Downloaded';
                 button.className = 'downloaded';
             }).catch(function(error) {
