@@ -193,34 +193,34 @@ document.getElementById('download').addEventListener('click', function() {
     button.className = 'downloading';
 
     setTimeout(function() {
-        var header = `
+        var header = \`
             <header style="text-align: center;">
                 <img src="${letterheadUrl}" style="width: 200px; height: auto;">
             </header>
-        `;
-        var footer = `
+        \`;
+        var footer = \`
             <footer style="text-align: center;">
                 <img src="${footerImageUrl}" style="width: 200px; height: auto;">
                 <div style="position: absolute; bottom: 20px; width: 100%; text-align: center;">
                     Page ${pageNumber} of ${pageCount}
                 </div>
             </footer>
-        `;
+        \`;
 
-        var originalHTML = `
+        var originalHTML = \`
             <html>
             <head>
                 <style>
-                    ${customCSS}
+                    \${customCSS}
                 </style>
             </head>
             <body>
-                ${header}
+                \${header}
                 <div id="content">${html}</div>
-                ${footer}
+                \${footer}
             </body>
             </html>
-        `;
+        \`;
 
         html2pdf().set(opt).from(originalHTML).toPdf().get('pdf').then(function(pdf) {
             var pageCount = pdf.internal.getNumberOfPages();
