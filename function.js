@@ -164,21 +164,21 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
     </style>
     `;
 
-    // HTML THAT IS RETURNED AS A RENDERABLE URL
-    const originalHTML = `
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
-    <style>${customCSS}</style>
-    <div class="main">
-        <div class="header">
-            ${letterheadUrl ? `<img src="${letterheadUrl}" class="letterhead"/>` : `<img src="empty-image.png" class="letterhead empty"/>`}
-            <button class="button" id="download">Download PDF</button>
-        </div>
-        <div id="content">${html}</div>
-        <div class="footer">
-            ${footerImageUrl ? `<img src="${footerImageUrl}" class="footer"/>` : ''}
-        </div>
+// HTML THAT IS RETURNED AS A RENDERABLE URL
+const originalHTML = `
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+<style>${customCSS}</style>
+<div class="main">
+    <div class="header">
+        ${letterheadUrl ? `<img src="${letterheadUrl}" class="letterhead"/>` : `<img src="empty-image.png" class="letterhead empty"/>`}
+        <button class="button" id="download">Download PDF</button>
     </div>
-    <script>
+    <div id="content">${html}</div>
+    <div class="footer">
+        ${footerImageUrl ? `<img src="${footerImageUrl}" class="footer"/>` : ''}
+    </div>
+</div>
+<script>
 document.getElementById('download').addEventListener('click', function() {
     var button = this;
     var opt = {
@@ -213,19 +213,17 @@ document.getElementById('download').addEventListener('click', function() {
                 var pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
                 var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
                 pdf.text(pageWidth - (${margin} + 70), pageHeight - 30, 'Page ' + i + ' of ' + pageCount);
-
+            
                 // Add footer image
                 if (footerImageUrl) {
                     pdf.addImage(footerImageUrl, 'PNG', 40, pageHeight - 80, 60, 60);
                 }
+            
+                // Add letterhead image to first page
+                if (letterheadUrl && i === 1) {
+                    pdf.addImage(letterheadUrl, 'PNG', 40, 30, 60, 60);
+                }
             }
-
-            // Add letterhead image to first page
-            if (letterheadUrl) {
-                pdf.setPage(1);
-                pdf.addImage(letterheadUrl, 'PNG', 40, 30, 60, 60);
-            }
-
             pdf.save('${fileName}.pdf');
             button.innerText = 'Downloaded';
             button.className = 'downloaded';
@@ -236,8 +234,9 @@ document.getElementById('download').addEventListener('click', function() {
         });
     }, 1000);
 }, false);
-    </script>
-    `;
-    var encodedHtml = encodeURIComponent(originalHTML);
-    return "data:text/html;charset=utf-8," + encodedHtml;
+</script>
+`;
+
+var encodedHtml = encodeURIComponent(originalHTML);
+return "data:text/html;charset=utf-8," + encodedHtml;
 };
