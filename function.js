@@ -210,10 +210,6 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
                     var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
                     pdf.text(pageWidth - (${margin} + 70), pageHeight - 30, 'Page ' + i + ' of ' + pageCount);
                 
-                    // Add footer image
-                    if ('${footerImageUrl}') {
-                        pdf.addImage('${footerImageUrl}', 'PNG', 40, pageHeight - 80, 60, 60);
-                    }
                 
                     // Add letterhead image to first page
                     if ('${letterheadUrl}' && i === 1) {
