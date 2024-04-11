@@ -178,49 +178,54 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
             ${footerImageUrl ? `<img src="${footerImageUrl}" class="footer"/>` : ''}
         </div>
     </div>
-    <script>
-    document.getElementById('download').addEventListener('click', function() {
-        var button = this;
-        var opt = {
-            margin: ${margin},
-            filename: '${fileName}',
-            html2canvas: {
-                useCORS: true,
-                scale: ${quality}
-            },
-            jsPDF: {
-                unit: 'px',
-                orientation: '${orientation}',
-                format: [${finalDimensions}],
-                hotfixes: ['px_scaling']
-            },
-        };
-        button.innerText = 'Downloading...';
-        button.className = 'downloading';
+<script>
+document.getElementById('download').addEventListener('click', function() {
+    var button = this;
+    var opt = {
+        margin: 80,
+        filename: 'Stupa 7-Review 4 (11 April 2024 at 8:42)',
+        html2canvas: {
+            useCORS: true,
+            scale: 1.5
+        },
+        jsPDF: {
+            unit: 'px',
+            orientation: 'portrait',
+            format: [1240,1754],
+            hotfixes: ['px_scaling']
+        },
+    };
+    button.innerText = 'Downloading...';
+    button.className = 'downloading';
 
-        setTimeout(function() {
-            html2pdf().set(opt).from(document.getElementById('content')).toPdf().get('pdf').then(function(pdf) {
-                var pageCount = pdf.internal.getNumberOfPages();
-                for (var i = 1; i <= pageCount; i++) {
-                    pdf.setPage(i);
-                    pdf.setFontStyle("medium");
-                    pdf.setFontSize(12);
-                    var pageSize = pdf.internal.pageSize;
-                    var pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
-                    var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
-                    pdf.text(pageWidth - (${margin} + 70), pageHeight - 30, 'Page ' + i + ' of ' + pageCount);
+    setTimeout(function() {
+        html2pdf().set(opt).from(document.getElementById('content')).toPdf().get('pdf').then(function(pdf) {
+            var pageCount = pdf.internal.getNumberOfPages();
+            for (var i = 1; i <= pageCount; i++) {
+                pdf.setPage(i);
+                pdf.setFontStyle("medium");
+                pdf.setFontSize(12);
+                var pageSize = pdf.internal.pageSize;
+                var pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
+                var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
+                pdf.text(pageWidth - (80 + 70), pageHeight - 30, 'Page ' + i + ' of ' + pageCount);
+                
+                // Add letterhead image to first page
+                if ('${letterheadUrl}' && i === 1) {
+                    pdf.addImage('${letterheadUrl}', 'PNG', 40, 30, 60, 60);
                 }
-                pdf.save('${fileName}.pdf');
-                button.innerText = 'Downloaded';
-                button.className = 'downloaded';
-            }).catch(function(error) {
-                console.error('Error generating PDF:', error);
-                button.innerText = 'Error';
-                button.className = 'error';
-            });
-        }, 1000);
-    }, false);
-    </script>
+            }
+            pdf.save('Stupa 7-Review 4 (11 April 2024 at 8:42).pdf');
+            button.innerText = 'Downloaded';
+            button.className = 'downloaded';
+        }).catch(function(error) {
+            console.error('Error generating PDF:', error);
+            button.innerText = 'Error';
+            button.className = 'error';
+        });
+    }, 1000);
+}, false);
+</script>
     `;
 
     var encodedHtml = encodeURIComponent(originalHTML);
