@@ -212,7 +212,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
                     
                     // Add letterhead image to the first page only
                     if (i === 1) {
-                        pdf.addImage(letterheadUrl, 'PNG', 40, 30, 60, 60);
+                        pdf.addImage('${letterheadUrl}', 'PNG', 40, 30, 60, 60);
                     }
                 }
                 pdf.save('Stupa 7-Review 4 (11 April 2024 at 8:42).pdf');
