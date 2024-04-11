@@ -164,20 +164,20 @@ window.function = function (html, fileName, format, zoom, orientation, margin, b
     </style>
     `;
 
-    // HTML THAT IS RETURNED AS A RENDERABLE URL
-    const originalHTML = `
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
-    <style>${customCSS}</style>
-    <div class="main">
-        <div class="header">
-            ${letterheadUrl ? `<img src="${letterheadUrl}" class="letterhead"/>` : `<img src="empty-image.png" class="letterhead empty"/>`}
-            <button class="button" id="download">Download PDF</button>
-        </div>
-        <div id="content">${html}</div>
-        <div class="footer">
-            ${footerImageUrl ? `<img src="${footerImageUrl}" class="footer"/>` : ''}
-        </div>
+// HTML THAT IS RETURNED AS A RENDERABLE URL
+const originalHTML = `
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+<style>${customCSS}</style>
+<div class="main">
+    <div class="header">
+        ${headerImageUrl ? `<img src="${headerImageUrl}" class="letterhead"/>` : `<img src="empty-image.png" class="letterhead empty"/>`}
+        <button class="button" id="download">Download PDF</button>
     </div>
+    <div id="content">${html}</div>
+    <div class="footer">
+        ${footerImageUrl ? `<img src="${footerImageUrl}" class="footer"/>` : ''}
+    </div>
+</div>
 <script>
 document.getElementById('download').addEventListener('click', function() {
     var button = this;
@@ -200,21 +200,21 @@ document.getElementById('download').addEventListener('click', function() {
 
     setTimeout(function() {
         html2pdf().set(opt).from(document.getElementById('content')).toPdf().get('pdf').then(function(pdf) {
-        var pageCount = pdf.internal.getNumberOfPages();
-        for (var i = 1; i <= pageCount; i++) {
-            pdf.setPage(i);
-            pdf.setFontStyle("medium");
-            pdf.setFontSize(12);
-            var pageSize = pdf.internal.pageSize;
-            var pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
-            var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
-            pdf.text(pageWidth - (80 + 70), pageHeight - 30, 'Page ' + i + ' of ' + pageCount);
-            
-            // Add letterhead image to the first page only
-            if (i === 1) {
-                pdf.addImage('${letterheadUrl}', 'PNG', 40, 30, 60, 60);
+            var pageCount = pdf.internal.getNumberOfPages();
+            for (var i = 1; i <= pageCount; i++) {
+                pdf.setPage(i);
+                pdf.setFontStyle("medium");
+                pdf.setFontSize(12);
+                var pageSize = pdf.internal.pageSize;
+                var pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
+                var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
+                pdf.text(pageWidth - (80 + 70), pageHeight - 30, 'Page ' + i + ' of ' + pageCount);
+                
+                // Add letterhead image to the first page only
+                if (i === 1) {
+                    pdf.addImage(headerImageUrl, 'PNG', 40, 30, 60, 60);
+                }
             }
-}
             pdf.save('Stupa 7-Review 4 (11 April 2024 at 8:42).pdf');
             button.innerText = 'Downloaded';
             button.className = 'downloaded';
@@ -226,8 +226,8 @@ document.getElementById('download').addEventListener('click', function() {
     }, 1000);
 }, false);
 </script>
-    `;
+`;
 
-    var encodedHtml = encodeURIComponent(originalHTML);
-    return "data:text/html;charset=utf-8," + encodedHtml;
+var encodedHtml = encodeURIComponent(originalHTML);
+return "data:text/html;charset=utf-8," + encodedHtml;
 };
